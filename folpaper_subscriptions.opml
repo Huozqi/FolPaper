@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>FolPaper Subscriptions</title>
+    </head>
+    <body>
+        <outline text="JCIM" title="JCIM" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=jcisd8" description="Type: rss"/>
+        <outline text="JCTC" title="JCTC" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=jctcce" description="Type: rss"/>
+        <outline text="Angew" title="Angew" type="rss" xmlUrl="https://onlinelibrary.wiley.com/feed/15213773/most-recent" description="Type: rss"/>
+        <outline text="JMC" title="JMC" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=jmcmar" description="Type: rss"/>
+        <outline text="Nature Computational Science" title="Nature Computational Science" type="rss" xmlUrl="https://www.nature.com/natcomputsci.rss" description="Type: rss"/>
+        <outline text="NMI" title="NMI" type="rss" xmlUrl="https://www.nature.com/natmachintell.rss" description="Type: rss"/>
+        <outline text="Nature Chemistry" title="Nature Chemistry" type="rss" xmlUrl="https://www.nature.com/nchem.rss" description="Type: rss"/>
+        <outline text="BIB" title="BIB" type="rss" xmlUrl="https://academic.oup.com/rss/site_5143/3005.xml" description="Type: rss"/>
+        <outline text="Bioinformatics" title="Bioinformatics" type="rss" xmlUrl="https://academic.oup.com/rss/site_5139/advanceAccess_3001.xml" description="Type: rss"/>
+        <outline text="Chemical Reviews" title="Chemical Reviews" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=chreay" description="Type: rss"/>
+        <outline text="JACS" title="JACS" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=jacsat" description="Type: rss"/>
+        <outline text="AIC" title="AIC" type="rss" xmlUrl="https://rss.sciencedirect.com/publication/science/29497477" description="Type: rss"/>
+        <outline text="Analytical Chemistry" title="Analytical Chemistry" type="rss" xmlUrl="https://pubs.acs.org/action/showFeed?type=axatoc&amp;feed=rss&amp;jc=ancham" description="Type: rss"/>
+        <outline text="bioRxiv" title="bioRxiv" type="rss" xmlUrl="https://connect.biorxiv.org/biorxiv_xml.php?subject=Biochemistry+bioinformatics+Molecular_Biology" description="Type: rss"/>
+        <outline text="EJMC" title="EJMC" type="rss" xmlUrl="https://rss.sciencedirect.com/publication/science/02235234" description="Type: rss"/>
+        <outline text="arXiv AI" title="arXiv AI" type="rss" xmlUrl="https://export.arxiv.org/rss/cs.AI" description="Type: rss"/>
+        <outline text="arXiv LG" title="arXiv LG" type="rss" xmlUrl="https://export.arxiv.org/rss/cs.LG" description="Type: rss"/>
+        <outline text="arXiv SML" title="arXiv SML" type="rss" xmlUrl="https://export.arxiv.org/rss/stat.ML" description="Type: rss"/>
+        <outline text="arXiv PC" title="arXiv PC" type="rss" xmlUrl="https://rss.arxiv.org/rss/physics.chem-ph" description="Type: rss"/>
+        <outline text="arXiv BM" title="arXiv BM" type="rss" xmlUrl="https://rss.arxiv.org/rss/q-bio.BM" description="Type: rss"/>
+        <outline text="Journal of Cheminformatics" title="Journal of Cheminformatics" type="rss" xmlUrl="Journal of Cheminformatics" description="Type: openalex"/>
+    </body>
+</opml>
