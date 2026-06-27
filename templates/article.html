@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+    <section class="reading-surface p-8 md:p-12">
+        <div class="relative z-10">
+            <a href="{{ return_url if return_url else url_for('index') }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 mb-10 text-sm font-bold tracking-[0.18em] uppercase">
+                &larr; Back to atlas
+            </a>
+
+            <div class="grid lg:grid-cols-[minmax(0,1fr)_220px] gap-8 items-start">
+                <div class="space-y-5">
+                    <div class="workbench-kicker">Reading Surface / Paper Dossier</div>
+                    <h1 class="cyber-title text-4xl md:text-6xl font-black font-serif leading-tight">{{ article.title }}</h1>
+                    {% if article.translated_title %}
+                    <h2 class="text-xl md:text-2xl font-medium text-gray-600 cursor-pointer hover:text-gray-800 transition-colors max-w-4xl" onclick="copyText(event, this.getAttribute('data-text') || this.innerText, this)" data-text="{{ article.translated_title }}" title="点击复制翻译标题">{{ article.translated_title }}</h2>
+                    {% endif %}
+                </div>
+                <aside class="cyber-stat-card text-sm space-y-3">
+                    <div class="workbench-kicker">Source</div>
+                    <div class="font-bold text-gray-800">{{ article.source }}</div>
+                    {% if article.journal %}<div class="text-gray-600 leading-relaxed">{{ article.journal }}</div>{% endif %}
+                    <div class="meta-chip">{{ article.published | format_date }}</div>
+                </aside>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 py-7 border-y border-gray-100 mt-8 mb-8">
+                {% for author in article.author_list %}
+                <div class="meta-chip">
+                    <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-[10px] font-bold uppercase">{{ author[0] if author else '?' }}</span>
+                    <span>{{ author }}</span>
+                </div>
+                {% endfor %}
+                {% if article.doi %}
+                <span class="meta-chip cursor-pointer hover:bg-blue-100" onclick="copyDOI(event, '{{ article.doi }}', this)" title="点击复制 DOI">DOI: {{ article.doi }}</span>
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 gap-5">
+                {% if article.translated_summary %}
+                <div class="workbench-card reading-copy p-7 cursor-pointer transition-colors" onclick="copyText(event, this.getAttribute('data-text') || this.innerText, this)" data-text="{{ article.translated_summary | remove_html_tags }}" title="点击复制中文摘要">
+                    <div class="relative z-10">
+                        <div class="workbench-kicker mb-3">Chinese Abstract</div>
+                        <p class="text-gray-700 leading-8 text-justify text-base md:text-lg">{{ article.translated_summary | remove_html_tags }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="workbench-card reading-copy p-7 {% if not article.translated_summary %}bg-gray-50{% endif %}">
+                    <div class="relative z-10">
+                        <div class="workbench-kicker mb-3">Original Abstract</div>
+                        <p class="text-gray-700 leading-8 text-justify text-base md:text-lg">{{ article.summary | remove_html_tags }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-3 items-center">
+                {% if article.status == 'pending' %}
+                <form action="{{ url_for('save_article', db_id=article.id) }}" method="POST" class="ajax-form ajax-save">
+                    <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium shadow-sm flex items-center">
+                        添加到我的文库
+                    </button>
+                </form>
+                {% endif %}
+
+                <a href="{{ article.link }}" target="_blank" class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm flex items-center">
+                    查看原文
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+
+                {% if not article.translated_title %}
+                <form action="{{ url_for('translate', db_id=article.id) }}" method="POST">
+                    <button type="submit" class="px-6 py-2.5 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium shadow-sm flex items-center">
+                        AI 翻译
+                    </button>
+                </form>
+                {% endif %}
+
+                <div class="flex-1"></div>
+                <form action="{{ url_for('remove_article', db_id=article.id) }}" method="POST" class="ajax-form ajax-remove" onsubmit="return confirm('确定要删除吗？');">
+                    <button type="submit" class="px-6 py-2.5 bg-white text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition font-medium shadow-sm flex items-center">
+                        删除文献
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

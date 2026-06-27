@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero-layout">
+    <header class="hero-top">
+        <div class="hero-brand">
+            <h1 class="hero-logo">FolPaper</h1>
+            <span class="hero-tagline">Research Atlas</span>
+        </div>
+        <nav class="hero-nav">
+            <a href="{{ url_for('inbox') }}" class="hero-pill"><span class="hero-pill__no">01</span>最新进展</a>
+            <a href="{{ url_for('pubmed_page') }}" class="hero-pill"><span class="hero-pill__no">02</span>文献探索</a>
+            <a href="{{ url_for('openalex_page') }}" class="hero-pill"><span class="hero-pill__no">03</span>期刊雷达</a>
+            <a href="{{ url_for('top_conferences_page') }}" class="hero-pill"><span class="hero-pill__no">04</span>学术前沿</a>
+            <a href="{{ url_for('recommend_page') }}" class="hero-pill hero-pill--hl"><span class="hero-pill__no">05</span>AI 洞察</a>
+            <a href="{{ url_for('library') }}" class="hero-pill"><span class="hero-pill__no">06</span>研究文库</a>
+            <a href="{{ url_for('archive') }}" class="hero-pill"><span class="hero-pill__no">07</span>时间档案</a>
+            <span class="hero-gap"></span>
+            <a href="{{ url_for('subscriptions') }}" class="hero-pill hero-pill--dim">数据源</a>
+            <a href="{{ url_for('settings') }}" class="hero-pill hero-pill--dim">设置</a>
+            <a href="{{ url_for('about_page') }}" class="hero-pill hero-pill--dim">关于</a>
+        </nav>
+    </header>
+
+    <section class="hero-stage">
+        <canvas id="particles-canvas" class="particles-canvas"></canvas>
+        <div class="hero-stage__bg-text" aria-hidden="true">TRACK</div>
+        <div class="hero-statement">
+            <div class="hero-statement__rule" aria-hidden="true"></div>
+            <h2 class="hero-statement__cn">万物皆可追踪</h2>
+            <p class="hero-statement__en">Everything Trackable</p>
+            <div class="hero-statement__rule" aria-hidden="true"></div>
+        </div>
+        <div class="pulse-ring" id="pulse-ring">
+            <div class="pulse-ring__core"></div>
+            <div class="pulse-ring__wave"></div>
+            <div class="pulse-ring__wave"></div>
+            <div class="pulse-ring__wave"></div>
+        </div>
+    </section>
+
+    <!-- KPI Row -->
+    <section class="kpi-row anim-up" id="kpi-row">
+        <div class="kpi-card" id="kpi-today"><span class="kpi-card__label">今日新增</span><span class="kpi-card__value">--</span></div>
+        <div class="kpi-card" id="kpi-unread"><span class="kpi-card__label">待处理</span><span class="kpi-card__value">--</span></div>
+        <div class="kpi-card" id="kpi-sources"><span class="kpi-card__label">活跃来源</span><span class="kpi-card__value">--</span></div>
+        <div class="kpi-card" id="kpi-week"><span class="kpi-card__label">本周累计</span><span class="kpi-card__value">--</span></div>
+    </section>
+
+    <!-- Waterfall -->
+    <section class="wf-section anim-up" id="wf-section" style="display:none">
+        <div class="wf-head">
+            <h3 class="wf-title">今日最新</h3>
+            <div class="wf-arrows"><button class="wf-arrow" onclick="slideWF(-1)">&larr;</button><button class="wf-arrow" onclick="slideWF(1)">&rarr;</button></div>
+        </div>
+        <div class="wf-track" id="wf-track"></div>
+    </section>
+
+    <!-- Charts Grid -->
+    <section class="dash anim-up" id="dash-section">
+        <div class="dash-head">
+            <h2 class="dash-title">数据看板</h2>
+            <div class="dash-head__right">
+                <button class="dash-btn" id="btn-categorize" onclick="triggerCategorize()">AI 分类</button>
+                <button class="dash-btn dash-btn--sec" id="btn-refresh" onclick="loadDashboard()">刷新</button>
+            </div>
+        </div>
+        <div id="dash-loading" class="dash-loading">加载中...</div>
+        <div id="dash-body" class="dash-body" style="display:none">
+            <div class="dash-grid">
+                <div class="dash-panel dash-panel--sm">
+                    <div class="dash-panel__title">来源分布</div>
+                    <div id="sources-list" style="max-height:300px;overflow-y:auto"></div>
+                </div>
+                <div class="dash-panel">
+                    <div class="dash-panel__title">AI 应用领域</div>
+                    <div class="donut-wrap">
+                        <canvas id="donut-canvas" class="donut-canvas" width="200" height="200" style="cursor:pointer" onclick="handleDonutClick(event)"></canvas>
+                        <div class="donut-legend" id="donut-legend"></div>
+                    </div>
+                    <div id="cat-expand" class="cat-expand" style="display:none"></div>
+                </div>
+                <div class="dash-panel dash-panel--wide">
+                    <div class="dash-panel__title">热词云</div>
+                    <div id="word-cloud" class="word-cloud"></div>
+                </div>
+            </div>
+        </div>
+        <div id="dash-empty" class="dash-empty" style="display:none"><p>今日暂无新文献</p><p class="dash-empty__sub">文献将在抓取后自动出现在此看板</p></div>
+    </section>
+
+    <div class="ticker" id="ticker-bar" style="display:none"><div class="ticker__track" id="ticker-track"></div></div>
+    <button class="theme-toggle" id="theme-toggle" title="切换日/夜模式" onclick="toggleTheme()">&#9788;</button>
+</div>
+
+<script>
+// === Constellation + Particle Engine ===
+(function() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const particles = [], COUNT = 50;
+    function resize() { const p = canvas.parentElement; canvas.width = p.offsetWidth; canvas.height = p.offsetHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for (let i = 0; i < COUNT; i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.6+.4,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,alpha:Math.random()*.35+.12});
+    const constellations = [];
+    for (let c=0;c<4;c++){const m=[Math.floor(Math.random()*COUNT)];for(let j=1;j<5;j++)m.push((m[0]+j*3+c*7)%COUNT);constellations.push({members:m,twinkle:0});}
+    function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const rgb=document.body.classList.contains('theme-night')?'73,197,182':'17,55,34';
+        particles.forEach(p=>{particles.forEach(q=>{const dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);if(d<90){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(${rgb},${.05*(1-d/90)})`;ctx.stroke();}})});
+        constellations.forEach(con=>{con.twinkle=(con.twinkle+.02)%(Math.PI*2);const a=.18+Math.sin(con.twinkle)*.08;ctx.beginPath();const f=particles[con.members[0]];ctx.moveTo(f.x,f.y);con.members.forEach((idx,i)=>{if(i===0)return;const p=particles[idx];ctx.lineTo(p.x,p.y);});ctx.closePath();ctx.strokeStyle=`rgba(${rgb},${a})`;ctx.lineWidth=.8;ctx.stroke();ctx.fillStyle=`rgba(${rgb},${a*.4})`;ctx.fill();});
+        particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${rgb},${p.alpha})`;ctx.fill();});
+        requestAnimationFrame(draw);
+    }draw();
+})();
+
+// === Pulse, Scroll, Theme ===
+function updatePulse(count){const waves=document.querySelectorAll('.pulse-ring__wave');const s=Math.max(1.5,4-count/200);waves.forEach(w=>{w.style.animationDuration=s+'s';});}
+(function(){const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('is-visible');});},{threshold:.15});document.querySelectorAll('.anim-up').forEach(el=>ob.observe(el));})();
+function toggleTheme(){document.body.classList.toggle('theme-night');document.getElementById('theme-toggle').innerHTML=document.body.classList.contains('theme-night')?'&#9790;':'&#9788;';localStorage.setItem('theme',document.body.classList.contains('theme-night')?'night':'day');}
+(function(){const s=localStorage.getItem('theme'),h=new Date().getHours();if(s==='night'||(!s&&(h<6||h>=19))){document.body.classList.add('theme-night');document.getElementById('theme-toggle').innerHTML='&#9790;';}})();
+
+// === Dashboard ===
+const CAT_COLORS=['#3ea094','#e95144','#8a3ffc','#2556d9','#ff8b21','#c0ab3c','#e52e86','#49B3FC','#27ae60','#FA5D29','#726996'];
+const CAT_BG=['#e2f4e9','#fdede8','#f0e8fe','#dce6fc','#fff0e0','#f7f0cc','#fce8f3','#d8effd','#daf2e4','#ffe8e2','#ece9f5'];
+let dashboardData=null,donutSlices=[],wfIndex=0;
+
+async function loadDashboard(){
+    document.getElementById('dash-loading').style.display='block';
+    document.getElementById('dash-body').style.display='none';
+    document.getElementById('dash-empty').style.display='none';
+    document.getElementById('ticker-bar').style.display='none';
+    document.getElementById('wf-section').style.display='none';
+    document.getElementById('cat-expand').style.display='none';
+    try{
+        const r=await fetch('/api/dashboard/today'),data=await r.json();
+        dashboardData=data;
+        if(!data.success||data.stats.total===0){document.getElementById('dash-loading').style.display='none';document.getElementById('dash-empty').style.display='block';return;}
+
+        // KPI cards
+        document.getElementById('kpi-today').querySelector('.kpi-card__value').textContent=data.stats.total;
+        document.getElementById('kpi-unread').querySelector('.kpi-card__value').textContent=data.stats.by_source.reduce((s,x)=>s+x.cnt,0);
+        document.getElementById('kpi-sources').querySelector('.kpi-card__value').textContent=data.stats.by_source.length;
+        document.getElementById('kpi-week').querySelector('.kpi-card__value').textContent=data.stats.total;
+        updatePulse(data.stats.total);
+
+        // Source list with bar chart
+        const maxSrc=Math.max(...data.stats.by_source.map(s=>s.cnt),1);
+        let srcHtml='';
+        data.stats.by_source.forEach((s,i)=>{
+            const pct=Math.round(s.cnt/maxSrc*100);
+            const c=CAT_COLORS[i%CAT_COLORS.length];
+            srcHtml+=`<div class="src-row"><span class="src-row__name">${escHtml(s.source)}</span><span class="src-row__bar"><span class="src-row__fill" style="width:${pct}%;background:${c}"></span></span><span class="src-row__cnt">${s.cnt}</span></div>`;
+        });
+        document.getElementById('sources-list').innerHTML=srcHtml||'<span class="dash-muted">暂无</span>';
+
+        // Donut
+        donutSlices=[]; drawDonut(data.stats.by_category);
+
+        // Waterfall
+        buildWaterfall(data.articles||[]);
+
+        // Word cloud
+        buildWordCloud(data.articles||[]);
+
+        // Ticker
+        if(data.articles&&data.articles.length>0){const tt=document.getElementById('ticker-track');const items=data.articles.slice(0,30);let th='';for(let i=0;i<2;i++)items.forEach(a=>{th+=`<span class="ticker__item">${escHtml(a.title||'?')}</span>`;});tt.innerHTML=th;document.getElementById('ticker-bar').style.display='';}
+
+        document.getElementById('dash-loading').style.display='none';
+        document.getElementById('dash-body').style.display='block';
+    }catch(e){document.getElementById('dash-loading').innerHTML='加载失败: '+e.message;}
+}
+
+function buildWaterfall(articles){
+    const top8=articles.slice(0,8);if(top8.length===0)return;
+    let html='';
+    top8.forEach((a,i)=>{
+        const cnTitle=escHtml(a.translated_title||'');
+        const enTitle=escHtml(a.title||'');
+        const displayTitle=cnTitle?`${cnTitle}<br><span class="wf-card__en">${enTitle}</span>`:enTitle;
+        const ab=(a.summary||'').replace(/<[^>]+>/g,'').substring(0,100);
+        html+=`<div class="wf-card"><span class="wf-card__idx">${String(i+1).padStart(2,'0')}</span><div class="wf-card__body"><span class="wf-card__source">${escHtml(a.source||'?')}</span><span class="wf-card__title">${displayTitle}</span><span class="wf-card__abs">${escHtml(ab)}</span></div></div>`;
+    });
+    document.getElementById('wf-track').innerHTML=html;
+    document.getElementById('wf-section').style.display='';wfIndex=0;updateWF();
+}
+function updateWF(){document.querySelectorAll('.wf-card').forEach((c,i)=>{c.style.display=(i>=wfIndex&&i<wfIndex+4)?'':'none';});}
+function slideWF(d){const t=document.querySelectorAll('.wf-card').length;wfIndex=Math.max(0,Math.min(t-4,wfIndex+d));updateWF();}
+
+function drawDonut(categories){
+    const canvas=document.getElementById('donut-canvas');if(!canvas)return;
+    const ctx=canvas.getContext('2d'),cx=100,cy=100,R=80,ir=50;
+    ctx.clearRect(0,0,200,200);donutSlices=[];
+    if(!categories||categories.length===0){ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(17,55,34,.08)';ctx.lineWidth=R-ir;ctx.stroke();ctx.fillStyle='rgba(17,55,34,.36)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('暂无分类',cx,cy+4);document.getElementById('donut-legend').innerHTML='<span class="dash-muted">点击 AI 分类按钮</span>';return;}
+    const total=categories.reduce((s,c)=>s+c.cnt,0);let angle=-Math.PI/2,legendHtml='';
+    categories.forEach((c,i)=>{const slice=(c.cnt/total)*Math.PI*2,color=CAT_COLORS[i%CAT_COLORS.length];ctx.beginPath();ctx.arc(cx,cy,R,angle,angle+slice);ctx.arc(cx,cy,ir,angle+slice,angle,true);ctx.closePath();ctx.fillStyle=color;ctx.fill();donutSlices.push({category:c,startAngle:angle,endAngle:angle+slice,color,idx:i});angle+=slice;legendHtml+=`<div class="donut-legend__item donut-legend__item--clickable" data-idx="${i}" onclick="expandCategory(${i})"><span class="donut-legend__dot" style="background:${color}"></span><span class="donut-legend__name">${escHtml(c.category)}</span><span class="donut-legend__cnt">${c.cnt}</span></div>`;});
+    ctx.fillStyle=document.body.classList.contains('theme-night')?'rgba(200,228,211,.8)':'rgba(17,55,34,.8)';ctx.font='bold 14px Georgia,serif';ctx.textAlign='center';ctx.fillText(total,cx,cy+4);ctx.font='10px sans-serif';ctx.fillText('total',cx,cy+18);
+    document.getElementById('donut-legend').innerHTML=legendHtml;
+}
+function handleDonutClick(e){const canvas=document.getElementById('donut-canvas'),rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left-100,y=e.clientY-rect.top-100,dist=Math.sqrt(x*x+y*y);if(dist<50||dist>80)return;let angle=Math.atan2(y,x);if(angle<-Math.PI/2)angle+=Math.PI*2;for(const s of donutSlices){if(angle>=s.startAngle&&angle<s.endAngle){expandCategory(s.idx);return;}}}
+function expandCategory(idx){const s=donutSlices[idx];if(!s||!dashboardData)return;const el=document.getElementById('cat-expand'),catName=s.category.category,articles=(dashboardData.articles||[]).filter(a=>a.category===catName);let html=`<div class="cat-expand__head"><span class="cat-expand__dot" style="background:${s.color}"></span><span class="cat-expand__title">${escHtml(catName)}</span><span class="cat-expand__cnt">${articles.length} 篇</span><button class="cat-expand__close" onclick="document.getElementById('cat-expand').style.display='none'">&times;</button></div>`;if(articles.length===0){html+='<p class="dash-muted" style="padding:.5rem">该分类暂无可显示文献（需先运行 AI 分类）</p>';}else{articles.forEach(a=>{html+=`<div class="cat-expand__item"><span class="cat-expand__item-title">${escHtml(a.title||'?')}</span><span class="cat-expand__item-src">${escHtml(a.source||'?')}</span></div>`;});}el.innerHTML=html;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+function buildWordCloud(articles){const c=document.getElementById('word-cloud');if(!articles||articles.length===0){c.innerHTML='<span class="dash-muted">暂无文献</span>';return;}const stop=new Set(['the','a','an','of','in','on','to','for','and','or','with','by','from','at','is','it','as','be','are','was','we','our','this','that','using','based','via','its','not','but','can','has','been','new','all','more','no','also','some','each','both','which','their','these','have','into','over','than','through','between','about','other','such','novel','method','approach','towards','toward','efficient','learning','deep','prediction','data','model','models','analysis','study','results','two','one','high','low','large','small','first','part','role','key','non','de','et','al']);const freq={};articles.forEach(a=>{const text=((a.title||'')+' '+(a.summary||'')).toLowerCase().replace(/<[^>]+>/g,'').replace(/[^a-z0-9\\s]/g,' ').replace(/\s+/g,' ').trim();const words=text.split(' ').filter(w=>w.length>3&&!stop.has(w)&&!/^\d+$/.test(w));words.forEach(w=>{freq[w]=(freq[w]||0)+1;});});const entries=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,60);if(!entries.length){c.innerHTML='<span class="dash-muted">暂无关键词</span>';return;}const maxF=entries[0][1],minF=entries[entries.length-1][1];const colors=['#3ea094','#113722','#e95144','#2556d9','#8a3ffc','#c0ab3c','#FA5D29','#49B3FC','#27ae60'];let h='';entries.forEach(([w,f])=>{const s=.8+(f-minF)/Math.max(maxF-minF,1)*1.6;h+=`<span class="word-tag" style="font-size:${s.toFixed(2)}rem;color:${colors[Math.floor(Math.random()*colors.length)]}">${escHtml(w)}</span>`;});c.innerHTML=h;}
+
+async function triggerCategorize(){const btn=document.getElementById('btn-categorize');btn.disabled=true;btn.textContent='分类中...';try{const r=await fetch('/api/dashboard/categorize',{method:'POST'});const d=await r.json();if(d.success){await loadDashboard();}else{alert(d.message||'分类失败');}}catch(e){alert('请求失败: '+e.message);}btn.disabled=false;btn.textContent='AI 分类';}
+function escHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+document.addEventListener('DOMContentLoaded',loadDashboard);
+</script>
+{% endblock %}

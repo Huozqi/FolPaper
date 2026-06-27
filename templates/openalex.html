@@ -1,0 +1,480 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="h-full flex flex-col overflow-hidden">
+    <div class="flex-1 overflow-y-auto p-6">
+        <div class="cyber-hero p-6 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 relative z-10">
+                <div>
+                    <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">OpenAlex Radar</div>
+                    <h2 class="cyber-title text-4xl font-black">OpenAlex 检索与智能分析</h2>
+                    <p class="text-sm text-gray-500 mt-2">依据期刊名称拉取文献、数据清洗并使用 LLM 进行主题智能筛选</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="cyber-chip">API Scan</span>
+                    <span class="cyber-chip">LLM Filter</span>
+                    <span class="cyber-chip">CSV Export</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-grid-dashboard mb-6">
+        <div class="cyber-console shrink-0">
+        <form id="fetch-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">期刊名称 (支持多个,用逗号分隔) <span class="text-red-500">*</span></label>
+                <input type="text" name="journal" required value="Journal of Medicinal Chemistry, European Journal of Medicinal Chemistry" placeholder="如: Nature, Science" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">开始日期 <span class="text-red-500">*</span></label>
+                <input type="date" name="start_date" required value="2023-01-01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">结束日期 <span class="text-red-500">*</span></label>
+                <input type="date" name="end_date" required value="{{ current_date }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">拉取上限</label>
+                <input type="number" name="max_results" value="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <button type="submit" id="btn-fetch" class="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center">
+                    <span>开始拉取</span>
+                </button>
+            </div>
+            <div class="md:col-span-5">
+                <label class="block text-sm font-medium text-gray-700 mb-1">OpenAlex API Key (可选，提升拉取速率和稳定性)</label>
+                <input type="text" name="api_key" placeholder="输入您的 API Key" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+            </div>
+        </form>
+        </div>
+        <aside class="cyber-scan-panel space-y-4">
+            <div class="text-xs uppercase tracking-[0.3em] text-gray-400">Pipeline</div>
+            <div class="cyber-step flex gap-3"><span class="cyber-step-index">1</span><div><div class="font-bold text-cyan-100">匹配期刊源</div><div class="text-xs text-gray-500 mt-1">通过 OpenAlex source 搜索定位期刊。</div></div></div>
+            <div class="cyber-step flex gap-3"><span class="cyber-step-index">2</span><div><div class="font-bold text-violet-100">拉取与去重</div><div class="text-xs text-gray-500 mt-1">按日期窗口获取 works 并进行 DOI/标题去重。</div></div></div>
+            <div class="cyber-step flex gap-3"><span class="cyber-step-index">3</span><div><div class="font-bold text-lime-100">AI 筛选与导出</div><div class="text-xs text-gray-500 mt-1">主题判定后可导出 CSV 继续分析。</div></div></div>
+        </aside>
+        </div>
+
+    <!-- 加载与提示区 -->
+    <div id="loading-area" class="hidden mb-6 bg-blue-50 p-4 rounded-xl text-blue-800 text-sm flex items-center justify-center border border-blue-100 shrink-0">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="loading-text">正在通过 OpenAlex API 拉取并清洗数据...</span>
+    </div>
+
+    <div id="error-message" class="hidden mb-6 bg-red-50 p-4 rounded-xl text-red-800 text-sm border border-red-100 shrink-0"></div>
+
+    <!-- 结果与分析区 (初始隐藏) -->
+    <div id="results-area" class="hidden flex-col space-y-6">
+        
+        <!-- 统计图表区 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 shrink-0">
+            <div class="cyber-stat-card">
+                <h3 class="text-sm font-bold text-gray-700 mb-3">出版年份分布</h3>
+                <div class="h-48 relative">
+                    <canvas id="yearChart"></canvas>
+                </div>
+            </div>
+            <div class="cyber-stat-card">
+                <h3 class="text-sm font-bold text-gray-700 mb-3">清洗情况与匹配期刊</h3>
+                <div class="h-48 flex flex-col justify-center px-4">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+                        <span class="text-gray-500">匹配期刊</span>
+                        <span id="stat-journal" class="font-bold text-gray-800 truncate max-w-[200px]" title="">-</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+                        <span class="text-gray-500">原始拉取条目</span>
+                        <span id="stat-fetched" class="font-bold text-blue-600 text-lg">-</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">去重后条目</span>
+                        <span id="stat-cleaned" class="font-bold text-green-600 text-lg">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能筛选配置 -->
+        <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 shrink-0">
+            <form id="filter-form" class="flex flex-col md:flex-row gap-4 items-end">
+                <input type="hidden" name="session_id" id="session-id-input">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-purple-800 mb-1">主题/筛选要求 <span class="text-red-500">*</span></label>
+                    <input type="text" name="topic" required placeholder="如: 肠道微生物与免疫相关的研究" class="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-purple-500 focus:border-purple-500 bg-white">
+                </div>
+                <div class="w-48">
+                    <label class="block text-sm font-medium text-purple-800 mb-1">判断依据</label>
+                    <select name="mode" class="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-purple-500 focus:border-purple-500 bg-white">
+                        <option value="title_abstract">标题 + 摘要</option>
+                        <option value="title_only">仅标题</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" id="btn-filter" class="w-full bg-purple-600 text-white font-medium py-2 px-6 rounded-lg hover:bg-purple-700 transition duration-200">
+                        开始 AI 筛选
+                    </button>
+                </div>
+                <div>
+                    <a id="btn-export" href="#" class="w-full bg-green-600 text-white font-medium py-2 px-6 rounded-lg hover:bg-green-700 transition duration-200 text-center block">
+                        导出当前数据 (CSV)
+                    </a>
+                </div>
+            </form>
+
+            <!-- 筛选进度条 -->
+            <div id="filter-progress-container" class="hidden mt-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-medium text-purple-700">AI 筛选进度 (<span id="filter-progress-text">0/0</span>)</span>
+                    <span id="filter-progress-percent" class="text-xs font-bold text-purple-700">0%</span>
+                </div>
+                <div class="w-full bg-purple-200 rounded-full h-1.5">
+                    <div id="filter-progress-bar" class="bg-purple-600 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+            <!-- 数据表格 -->
+            <div class="cyber-data-table mt-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0 z-10">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">标题 / DOI</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">作者</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">年份</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">相关性</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">判定理由</th>
+                        </tr>
+                    </thead>
+                    <tbody id="works-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- JS 动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- 引入 Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const OPENALEX_MEMORY_KEY = 'openalex_page_state';
+    let yearChart = null;
+    let currentSessionId = null;
+    let progressTimer = null;
+
+    function collectOpenAlexPageState() {
+        const fetchForm = document.getElementById('fetch-form');
+        const filterForm = document.getElementById('filter-form');
+        const resultsArea = document.getElementById('results-area');
+
+        return {
+            journal: fetchForm?.journal?.value || '',
+            start_date: fetchForm?.start_date?.value || '',
+            end_date: fetchForm?.end_date?.value || '',
+            max_results: fetchForm?.max_results?.value || '',
+            api_key: fetchForm?.api_key?.value || '',
+            topic: filterForm?.topic?.value || '',
+            mode: filterForm?.mode?.value || 'title_abstract',
+            session_id: currentSessionId || '',
+            export_href: document.getElementById('btn-export')?.getAttribute('href') || '#',
+            stat_journal: document.getElementById('stat-journal')?.textContent || '',
+            stat_fetched: document.getElementById('stat-fetched')?.textContent || '',
+            stat_cleaned: document.getElementById('stat-cleaned')?.textContent || '',
+            results_visible: resultsArea ? !resultsArea.classList.contains('hidden') : false,
+            works: window.openalexWorks || [],
+            years: window.openalexYearStats || {},
+            progress_text: document.getElementById('filter-progress-text')?.textContent || '',
+            progress_percent: document.getElementById('filter-progress-percent')?.textContent || '',
+            progress_width: document.getElementById('filter-progress-bar')?.style.width || '',
+            progress_visible: !document.getElementById('filter-progress-container')?.classList.contains('hidden')
+        };
+    }
+
+    function saveOpenAlexPageState() {
+        try {
+            localStorage.setItem(OPENALEX_MEMORY_KEY, JSON.stringify(collectOpenAlexPageState()));
+        } catch (e) {
+            console.error('保存 OpenAlex 页面状态失败', e);
+        }
+    }
+
+    function restoreOpenAlexPageState() {
+        const raw = localStorage.getItem(OPENALEX_MEMORY_KEY);
+        if (!raw) return;
+
+        try {
+            const state = JSON.parse(raw);
+            const fetchForm = document.getElementById('fetch-form');
+            const filterForm = document.getElementById('filter-form');
+            const resultsArea = document.getElementById('results-area');
+
+            if (fetchForm) {
+                fetchForm.journal.value = state.journal || '';
+                fetchForm.start_date.value = state.start_date || '';
+                fetchForm.end_date.value = state.end_date || '';
+                fetchForm.max_results.value = state.max_results || '500';
+                fetchForm.api_key.value = state.api_key || '';
+            }
+
+            if (filterForm) {
+                filterForm.topic.value = state.topic || '';
+                filterForm.mode.value = state.mode || 'title_abstract';
+            }
+
+            currentSessionId = state.session_id || null;
+            document.getElementById('session-id-input').value = state.session_id || '';
+            document.getElementById('btn-export').href = state.export_href || '#';
+            document.getElementById('stat-journal').textContent = state.stat_journal || '-';
+            document.getElementById('stat-journal').title = state.stat_journal || '';
+            document.getElementById('stat-fetched').textContent = state.stat_fetched || '-';
+            document.getElementById('stat-cleaned').textContent = state.stat_cleaned || '-';
+
+            window.openalexWorks = state.works || [];
+            window.openalexYearStats = state.years || {};
+
+            if (state.results_visible) {
+                renderTable(window.openalexWorks);
+                if (window.openalexYearStats && Object.keys(window.openalexYearStats).length > 0) {
+                    renderChart(window.openalexYearStats);
+                }
+                resultsArea.classList.remove('hidden');
+            }
+
+            const progressContainer = document.getElementById('filter-progress-container');
+            if (state.progress_visible) {
+                progressContainer.classList.remove('hidden');
+                document.getElementById('filter-progress-text').textContent = state.progress_text || '0/0';
+                document.getElementById('filter-progress-percent').textContent = state.progress_percent || '0%';
+                document.getElementById('filter-progress-bar').style.width = state.progress_width || '0%';
+            }
+        } catch (e) {
+            console.error('恢复 OpenAlex 页面状态失败', e);
+        }
+    }
+
+    document.getElementById('fetch-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-fetch');
+        const loading = document.getElementById('loading-area');
+        const error = document.getElementById('error-message');
+        const results = document.getElementById('results-area');
+        
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+        loading.classList.remove('hidden');
+        error.classList.add('hidden');
+        results.classList.add('hidden');
+        
+        try {
+            const formData = new FormData(this);
+            const response = await fetch("{{ url_for('api_openalex_fetch') }}", {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                currentSessionId = data.session_id;
+                document.getElementById('session-id-input').value = data.session_id;
+                
+                // 更新统计数据
+                document.getElementById('stat-journal').textContent = data.journal_matched;
+                document.getElementById('stat-journal').title = data.journal_matched;
+                document.getElementById('stat-fetched').textContent = data.total_fetched;
+                document.getElementById('stat-cleaned').textContent = data.total_cleaned;
+                
+                // 更新导出按钮链接
+                const btnExport = document.getElementById('btn-export');
+                btnExport.href = "/api/openalex/export/" + data.session_id;
+                
+                // 渲染表格
+                window.openalexWorks = data.works || [];
+                renderTable(data.works);
+                
+                // 渲染图表
+                window.openalexYearStats = data.stats.years || {};
+                renderChart(data.stats.years);
+                
+                results.classList.remove('hidden');
+                saveOpenAlexPageState();
+            } else {
+                error.textContent = data.message;
+                error.classList.remove('hidden');
+            }
+        } catch (err) {
+            error.textContent = '请求失败: ' + err.message;
+            error.classList.remove('hidden');
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-70');
+            loading.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('filter-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        if (!currentSessionId) return;
+        
+        const btn = document.getElementById('btn-filter');
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+        
+        const progressContainer = document.getElementById('filter-progress-container');
+        progressContainer.classList.remove('hidden');
+        
+        try {
+            const formData = new FormData(this);
+            const response = await fetch("{{ url_for('api_openalex_filter') }}", {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                // 启动轮询
+                if (progressTimer) clearInterval(progressTimer);
+                progressTimer = setInterval(checkProgress, 2000);
+            } else {
+                alert(data.message);
+                btn.disabled = false;
+                btn.classList.remove('opacity-70');
+            }
+        } catch (err) {
+            alert('请求失败: ' + err.message);
+            btn.disabled = false;
+            btn.classList.remove('opacity-70');
+        }
+    });
+
+    async function checkProgress() {
+        if (!currentSessionId) return;
+        
+        try {
+            const response = await fetch(`/api/openalex/progress/${currentSessionId}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const progress = data.progress;
+                const total = data.total;
+                const percent = total > 0 ? Math.round((progress / total) * 100) : 0;
+                
+                document.getElementById('filter-progress-text').textContent = `${progress}/${total}`;
+                document.getElementById('filter-progress-percent').textContent = `${percent}%`;
+                document.getElementById('filter-progress-bar').style.width = `${percent}%`;
+                
+                if (data.status === 'done') {
+                    clearInterval(progressTimer);
+                    document.getElementById('btn-filter').disabled = false;
+                    document.getElementById('btn-filter').classList.remove('opacity-70');
+                    document.getElementById('filter-progress-text').textContent = '筛选完成';
+                    
+                    // 渲染更新后的表格
+                    if (data.works && data.works.length > 0) {
+                        window.openalexWorks = data.works;
+                        renderTable(data.works);
+                    }
+                    saveOpenAlexPageState();
+                }
+            }
+        } catch (err) {
+            console.error('检查进度失败', err);
+        }
+    }
+
+    function renderTable(works) {
+        const tbody = document.getElementById('works-table-body');
+        tbody.innerHTML = '';
+        
+        works.forEach(w => {
+            const tr = document.createElement('tr');
+            
+            const doiHtml = w.doi ? `<br><a href="https://doi.org/${w.doi}" target="_blank" class="text-blue-500 hover:underline text-xs">${w.doi}</a>` : '';
+            
+            // 依据 is_related 显示不同颜色标签
+            let relatedBadge = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">待判定</span>';
+            if (w.is_related === '是') {
+                relatedBadge = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">相关</span>';
+            } else if (w.is_related === '否') {
+                relatedBadge = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">不相关</span>';
+            } else if (w.is_related === '未知' || w.is_related === '错误') {
+                relatedBadge = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">${w.is_related}</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-6 py-4">
+                    <div class="text-sm font-medium text-gray-900 line-clamp-2" title="${w.title}">${w.title}</div>
+                    ${doiHtml}
+                </td>
+                <td class="px-6 py-4">
+                    <div class="text-sm text-gray-500 line-clamp-2" title="${w.authors}">${w.authors || '-'}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${w.publication_year || '-'}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    ${relatedBadge}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-500 line-clamp-2" title="${w.llm_reason || '-'}">
+                    ${w.llm_reason || '-'}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderChart(yearData) {
+        const ctx = document.getElementById('yearChart').getContext('2d');
+        
+        if (yearChart) {
+            yearChart.destroy();
+        }
+        
+        const labels = Object.keys(yearData).sort();
+        const data = labels.map(l => yearData[l]);
+        
+        yearChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '文献数量',
+                    data: data,
+                    backgroundColor: 'rgba(77, 238, 255, 0.35)',
+                    borderColor: 'rgba(77, 238, 255, 0.95)',
+                    borderWidth: 1,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#93a4bd' },
+                        grid: { color: 'rgba(77, 238, 255, 0.08)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#93a4bd' },
+                        grid: { color: 'rgba(77, 238, 255, 0.08)' }
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        restoreOpenAlexPageState();
+        document.getElementById('fetch-form').addEventListener('input', saveOpenAlexPageState);
+        document.getElementById('filter-form').addEventListener('input', saveOpenAlexPageState);
+        window.addEventListener('pagehide', saveOpenAlexPageState);
+    });
+</script>
+{% endblock %}

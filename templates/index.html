@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <section class="workbench-toolbar p-6">
+        <div class="flex items-center justify-between gap-4 flex-nowrap relative z-10">
+            <div class="flex items-center gap-3 flex-nowrap overflow-hidden">
+                <h2 class="cyber-title text-2xl font-black whitespace-nowrap">
+                    {% if view_type == 'saved' %}
+                    我的文库
+                    {% elif current_source %}
+                    {{ current_source }}
+                    {% else %}
+                    最新进展
+                    {% endif %}
+                </h2>
+                {% if view_type == 'pending' and not current_source and total_unread %}
+                <span class="unread-badge">{{ total_unread }} 篇未读</span>
+                {% endif %}
+                <span class="meta-chip">共 {{ total_articles }} 篇</span>
+                {% if view_type == 'pending' and sources %}
+                <form action="{{ url_for('inbox') }}" method="GET" class="flex items-center shrink-0">
+                    <select name="source" onchange="this.form.submit()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        <option value="">全部来源 ({{ total_articles }} 篇)</option>
+                        {% for src in sources %}
+                        <option value="{{ src }}" {% if current_source == src %}selected{% endif %}>{{ src }} ({{ unread_counts.get(src, 0) }} 未读)</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                {% endif %}
+            </div>
+
+            <div class="flex items-center gap-1.5 flex-nowrap shrink-0">
+                <form action="{% if view_type == 'pending' %}{{ url_for('inbox') }}{% else %}{{ url_for('library') }}{% endif %}" method="GET" class="flex items-center">
+                    {% if current_source %}
+                    <input type="hidden" name="source" value="{{ current_source }}">
+                    {% endif %}
+                    <select name="sort_by" onchange="this.form.submit()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        <option value="id_desc" {% if sort_by == 'id_desc' %}selected{% endif %}>按获取时间排序</option>
+                        <option value="published_desc" {% if sort_by == 'published_desc' %}selected{% endif %}>按发布时间排序</option>
+                        <option value="read_status" {% if sort_by == 'read_status' %}selected{% endif %}>按是否已读排序</option>
+                    </select>
+                </form>
+
+                {% if view_type == 'pending' %}
+                <form action="{{ url_for('mark_all_read') }}" method="POST">
+                    <input type="hidden" name="source" value="{{ current_source }}">
+                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100 transition border border-yellow-200 shadow-sm whitespace-nowrap">标记已读</button>
+                </form>
+
+                <form action="{{ url_for('translate_titles') }}" method="POST">
+                    <input type="hidden" name="source" value="{{ current_source }}">
+                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition border border-indigo-200 shadow-sm whitespace-nowrap">翻译标题</button>
+                </form>
+
+                <form action="{{ url_for('fetch_source') }}" method="POST">
+                    <input type="hidden" name="source_name" value="{{ current_source }}">
+                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition border border-green-200 shadow-sm whitespace-nowrap">获取更新</button>
+                </form>
+
+                <form action="{{ url_for('clear_inbox') }}" method="POST" onsubmit="return confirm('确定要清空当前列表中的所有待处理文献吗？');">
+                    <input type="hidden" name="source" value="{{ current_source }}">
+                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition border border-red-200 shadow-sm whitespace-nowrap">清空</button>
+                </form>
+                {% endif %}
+
+                <a href="{% if view_type == 'pending' %}{{ url_for('inbox', source=current_source, sort_by=sort_by, page=current_page) }}{% else %}{{ url_for('library', source=current_source, sort_by=sort_by, page=current_page) }}{% endif %}" class="text-xs font-bold px-2.5 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition border border-gray-200 shadow-sm whitespace-nowrap">刷新</a>
+            </div>
+        </div>
+    </section>
+
+    {% if articles %}
+    <div class="space-y-4">
+        {% include "components/article_cards.html" %}
+    </div>
+    {% else %}
+    <div class="workbench-card p-12 text-center">
+        <div class="text-4xl mb-3">📚</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">当前没有文献</h3>
+        <p class="text-sm text-gray-500">
+            {% if view_type == 'saved' %}
+            您还没有收藏文献，可以从收件箱或检索结果中加入文库。
+            {% else %}
+            当前筛选条件下暂无待处理文献，稍后刷新或调整来源继续查看。
+            {% endif %}
+        </p>
+    </div>
+    {% endif %}
+
+    {% if total_pages > 1 %}
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <div class="text-sm text-gray-500">
+            第 {{ current_page }} / {{ total_pages }} 页，每页 {{ page_size }} 条
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{% if current_page > 1 %}{% if view_type == 'pending' %}{{ url_for('inbox', source=current_source, sort_by=sort_by, page=current_page - 1) }}{% else %}{{ url_for('library', source=current_source, sort_by=sort_by, page=current_page - 1) }}{% endif %}{% else %}#{% endif %}"
+               class="px-3 py-1.5 rounded-lg border text-sm {% if current_page > 1 %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% else %}bg-gray-100 text-gray-400 border-gray-200 pointer-events-none{% endif %}">
+                上一页
+            </a>
+            <a href="{% if current_page < total_pages %}{% if view_type == 'pending' %}{{ url_for('inbox', source=current_source, sort_by=sort_by, page=current_page + 1) }}{% else %}{{ url_for('library', source=current_source, sort_by=sort_by, page=current_page + 1) }}{% endif %}{% else %}#{% endif %}"
+               class="px-3 py-1.5 rounded-lg border text-sm {% if current_page < total_pages %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% else %}bg-gray-100 text-gray-400 border-gray-200 pointer-events-none{% endif %}">
+                下一页
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- script 部分不再需要 copyDOI，已移至 base.html -->
+<script>
+// 翻译状态自动轮询刷新功能
+document.addEventListener('DOMContentLoaded', () => {
+    // 收集页面上所有可能是正在翻译的文献 ID (如果有动态圈圈的话)
+    let pendingIds = new Set();
+    let pollingStarted = false;
+    document.querySelectorAll('[id^="trans-status-"]').forEach(el => {
+        if (el.innerHTML.includes('animate-spin')) {
+            const id = el.id.replace('trans-status-', '');
+            pendingIds.add(id);
+        }
+    });
+
+    function ensurePolling() {
+        // 单条翻译是异步提交，这里要在提交成功后立刻把新任务接入轮询
+        if (pollingStarted || pendingIds.size === 0) {
+            return;
+        }
+        pollingStarted = true;
+        pollTranslationStatus();
+    }
+
+    function pollTranslationStatus() {
+        // 将正在等待的 ID 传给后端
+        const idsParam = Array.from(pendingIds).join(',');
+        fetch(`/api/check_translation_status?ids=${idsParam}`)
+            .then(res => res.json())
+            .then(data => {
+                // 后端返回的 translating_ids 是数据库里目前真正的 translating 状态的 ID
+                // 我们可以把页面上没有显示、但在后台正在翻译的 ID 也加进来
+                data.translating_ids.forEach(id => pendingIds.add(id.toString()));
+
+                // 处理已经完成或失败的更新
+                if (data.updates) {
+                    Object.keys(data.updates).forEach(aid => {
+                        const update = data.updates[aid];
+                        const statusEl = document.getElementById(`trans-status-${aid}`);
+                        const titleEl = document.getElementById(`trans-title-${aid}`);
+                        const actionBtnsEl = document.getElementById(`action-btns-${aid}`);
+
+                        if (statusEl && update.status === 'done') {
+                            // 更新状态图标为完成
+                            statusEl.innerHTML = '<span class="text-green-500 font-bold" title="翻译已完成">✔️</span>';
+                            // 显示翻译标题
+                            if (titleEl) {
+                                titleEl.textContent = update.translated_title;
+                                titleEl.classList.remove('hidden');
+                            }
+                            // 隐藏翻译按钮
+                            if (actionBtnsEl) {
+                                const transForm = actionBtnsEl.querySelector('form[action*="translate_single_title"]');
+                                if (transForm) transForm.remove();
+                            }
+                            pendingIds.delete(aid.toString());
+                        } else if (statusEl && update.status === 'error') {
+                            statusEl.innerHTML = '<span class="text-red-500 font-bold" title="翻译失败">❌</span>';
+                            pendingIds.delete(aid.toString());
+                        }
+                    });
+                }
+
+                // 如果还有正在翻译的，继续轮询
+                if (pendingIds.size > 0) {
+                    setTimeout(pollTranslationStatus, 3000);
+                } else {
+                    pollingStarted = false;
+                }
+            })
+            .catch(err => {
+                console.error("翻译状态轮询出错", err);
+                if (pendingIds.size > 0) {
+                    setTimeout(pollTranslationStatus, 5000);
+                } else {
+                    pollingStarted = false;
+                }
+            });
+    }
+
+    document.addEventListener('translation-started', (event) => {
+        const articleId = event.detail && event.detail.articleId;
+        if (!articleId) {
+            return;
+        }
+        pendingIds.add(articleId.toString());
+        ensurePolling();
+    });
+
+    ensurePolling();
+});
+</script>
+{% endblock %}

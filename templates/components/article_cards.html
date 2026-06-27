@@ -1,0 +1,129 @@
+{% for article in articles %}
+<div id="article-{{ article.id }}" class="workbench-card block rounded-2xl border p-6 md:p-7 mb-5 transition duration-200 group relative overflow-hidden
+    {% if view_type == 'pending' and article.is_read == 0 %}ring-1 ring-blue-100
+    {% elif view_type == 'saved' %}
+        {% if article.is_followed %}ring-1 ring-green-100{% else %}ring-1 ring-slate-200{% endif %}
+    {% endif %}">
+    <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent opacity-80"></div>
+    <div class="absolute right-6 bottom-5 text-[10px] tracking-[0.32em] uppercase text-gray-400/60 pointer-events-none">Paper {{ loop.index }}</div>
+    {% if view_type == 'pending' and article.is_read == 0 %}
+    <div class="absolute left-0 top-7 bottom-7 w-1 rounded-r-full bg-amber-400"></div>
+    {% endif %}
+
+    <a {% if not is_wos_file %}href="{{ url_for('article_detail', db_id=article.id, return_url=request.full_path) }}"{% endif %} class="block relative z-10 {% if is_wos_file %}cursor-default{% endif %}">
+        <div class="flex justify-between items-start gap-4 pl-2">
+            <div class="min-w-0 space-y-3">
+                <div class="flex items-center flex-wrap gap-2">
+                    <span class="meta-chip shrink-0">{{ article.published | format_date }}</span>
+                    <span class="meta-chip shrink-0">{{ article.source }}</span>
+                    {% if view_type == 'pending' and article.status == 'saved' %}
+                    <span class="meta-chip shrink-0">已入库</span>
+                    {% endif %}
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black font-serif text-gray-900 leading-tight group-hover:text-blue-700 transition-colors max-w-5xl">{{ article.title }}</h3>
+            </div>
+            <div id="trans-status-{{ article.id }}" class="shrink-0 flex items-center h-8 ml-4 relative z-10" onclick="event.preventDefault(); event.stopPropagation();">
+                {% if article.translated_title %}
+                    <span class="text-green-600 font-bold" title="翻译已完成">✔️</span>
+                {% elif article.trans_status == 'translating' %}
+                    <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                {% elif article.trans_status == 'error' %}
+                    <span class="text-red-500 font-bold" title="翻译中断或失败，请重试">❌</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <p id="trans-title-{{ article.id }}" class="text-sm text-blue-600 mt-3 pr-24 cursor-pointer hover:text-blue-700 pl-2 {% if not article.translated_title %}hidden{% endif %}" onclick="copyText(event, this.getAttribute('data-text') || this.innerText, this)" data-text="{{ article.translated_title }}" title="点击复制翻译标题">{{ article.translated_title }}</p>
+
+        <div class="flex items-center mt-5 flex-wrap gap-3 pl-2">
+            {% for author in article.author_list[:2] %}
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-xs font-bold uppercase border border-blue-100 shadow-sm">
+                    {{ author[0] if author else '?' }}
+                </div>
+                <span class="text-sm text-gray-600">{{ author }}</span>
+            </div>
+            {% endfor %}
+            {% if article.author_list|length > 2 %}
+            <div class="w-10 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold border border-slate-200">
+                +{{ article.author_list|length - 2 }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="text-sm text-gray-500 mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 pl-2">
+            {% if article.journal %}
+            <span class="text-gray-600 flex items-center"><span class="mr-1">Journal</span>{{ article.journal }}</span>
+            {% endif %}
+            {% if article.doi %}
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 cursor-pointer hover:bg-blue-100 transition-colors border border-blue-100" onclick="copyDOI(event, '{{ article.doi }}', this)" title="点击复制 DOI">
+                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                DOI: {{ article.doi }}
+            </span>
+            {% elif article.source.startswith('arXiv') and article.article_id %}
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 cursor-pointer hover:bg-rose-100 transition-colors border border-rose-100" onclick="copyDOI(event, '{{ article.article_id.split("/")[-1] }}', this)" title="点击复制 arXiv ID">
+                arXiv: {{ article.article_id.split("/")[-1] }}
+            </span>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-gray-700 mt-5 line-clamp-2 leading-8 pr-10 pl-2 max-w-6xl">
+            {% if article.translated_summary %}
+                <span class="font-semibold text-blue-700">摘要：</span>{{ article.translated_summary | remove_html_tags }}
+            {% else %}
+                <span class="font-semibold text-blue-700">Abstract:</span> {{ article.summary | remove_html_tags }}
+            {% endif %}
+        </p>
+    </a>
+
+    <div id="action-btns-{{ article.id }}" class="absolute top-5 right-5 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+        {% if is_wos_file %}
+        <button type="button" onclick="translateWosTitle('{{ article.id }}', '{{ article.title | escape }}', this)" class="px-3 py-1.5 bg-white text-gray-700 text-xs font-medium rounded-lg border border-gray-200 hover:bg-gray-50 shadow-sm">
+            翻译标题
+        </button>
+        {% else %}
+        {% if not article.translated_title and article.trans_status != 'translating' %}
+        <form action="{{ url_for('translate_single_title', db_id=article.id) }}" method="POST" class="ajax-form ajax-translate">
+            <button type="submit" class="w-full px-3 py-1.5 bg-white text-gray-700 text-xs font-medium rounded-lg border border-gray-200 hover:bg-gray-50 shadow-sm">
+                翻译标题
+            </button>
+        </form>
+        {% endif %}
+
+        {% if view_type == 'pending' %}
+            {% if article.status == 'pending' %}
+            <form action="{{ url_for('save_article', db_id=article.id) }}" method="POST" class="ajax-form ajax-save">
+                <button type="submit" class="w-full px-3 py-1.5 bg-green-50 text-green-700 text-xs font-medium rounded-lg border border-green-100 hover:bg-green-100 shadow-sm">
+                    加入文库
+                </button>
+            </form>
+            {% endif %}
+            {% if article.is_read == 0 %}
+            <form action="{{ url_for('mark_read', db_id=article.id) }}" method="POST" class="ajax-form ajax-read">
+                <button type="submit" class="w-full px-3 py-1.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-lg border border-amber-100 hover:bg-amber-100 shadow-sm">
+                    标记已读
+                </button>
+            </form>
+            {% endif %}
+        {% endif %}
+
+        {% if view_type == 'saved' %}
+        <form action="{{ url_for('toggle_follow', db_id=article.id) }}" method="POST" class="ajax-form ajax-follow">
+            <button type="submit" id="btn-follow-{{ article.id }}" class="w-full px-3 py-1.5 text-xs font-medium rounded-lg shadow-sm border transition-colors {% if article.is_followed %}bg-green-50 text-green-700 border-green-100{% else %}bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100{% endif %}">
+                {% if article.is_followed %}已关注{% else %}关注全文{% endif %}
+            </button>
+        </form>
+        {% endif %}
+
+        <form action="{{ url_for('remove_article', db_id=article.id) }}" method="POST" class="ajax-form ajax-remove" onsubmit="return confirm('确定要删除吗？');">
+            <button type="submit" class="w-full px-3 py-1.5 bg-rose-50 text-rose-600 border border-rose-100 text-xs font-medium rounded-lg hover:bg-rose-100 shadow-sm">
+                删除
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}

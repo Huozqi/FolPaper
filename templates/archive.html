@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <section class="workbench-toolbar p-6">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 relative z-10">
+            <div>
+                <div class="workbench-kicker">Archive Matrix</div>
+                <div class="flex flex-wrap items-center gap-3 mt-2">
+                    <h2 class="cyber-title text-3xl font-black">{% if current_source %}{{ current_source }} - 历史文献{% else %}历史文献归档{% endif %}</h2>
+                    <span class="meta-chip">共 {{ total_archives }} 篇</span>
+                </div>
+                <p class="text-sm text-gray-500 mt-3">面向长期追踪的归档视图，适合核对翻译覆盖情况、DOI 完整性与来源分布。</p>
+            </div>
+
+            <div class="flex items-center space-x-3 ml-auto">
+                <form action="{{ url_for('archive') }}" method="GET" class="flex items-center">
+                    <select name="source" onchange="this.form.submit()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white max-w-xs">
+                        <option value="">-- 所有期刊源 --</option>
+                        {% for src in sources %}
+                        <option value="{{ src }}" {% if current_source == src %}selected{% endif %}>{{ src }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <a href="{{ url_for('archive', source=current_source, page=current_page) }}" class="text-sm font-medium px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition border border-gray-200 shadow-sm flex items-center">
+                    <span class="mr-1">🔄</span> 刷新列表
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="cyber-data-table">
+        <div class="overflow-x-auto pb-2">
+            <table class="w-full text-left border-collapse table-fixed min-w-[1000px]">
+                <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                        <th class="px-6 py-4 w-[30%]">英文标题</th>
+                        <th class="px-6 py-4 w-[30%] border-l border-gray-200">中文翻译</th>
+                        <th class="px-6 py-4 w-[20%]">DOI</th>
+                        <th class="px-6 py-4 w-[10%]">来源期刊</th>
+                        <th class="px-6 py-4 w-[10%] text-right">发表时间</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                    {% for archive in archives %}
+                    <tr class="hover:bg-gray-50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-gray-800 line-clamp-3" title="{{ archive.title }}">{{ archive.title }}</div>
+                        </td>
+                        <td class="px-6 py-4 border-l border-gray-100">
+                            {% if archive.translated_title %}
+                            <div class="text-blue-700 font-serif line-clamp-3" title="{{ archive.translated_title }}">{{ archive.translated_title }}</div>
+                            {% else %}
+                            <span class="text-gray-400 text-xs italic">- 暂无翻译 -</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if archive.doi %}
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-2 py-1 rounded font-mono text-xs bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100 transition-colors border border-blue-100 truncate max-w-full block" onclick="copyArchiveID(event, '{{ archive.doi }}', this, 'blue')" title="点击复制 DOI">
+                                    <span class="truncate">{{ archive.doi }}</span>
+                                </span>
+                            </div>
+                            {% elif archive.source.startswith('arXiv') and archive.article_id %}
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-2 py-1 rounded font-mono text-xs bg-rose-50 text-rose-600 cursor-pointer hover:bg-rose-100 transition-colors border border-rose-100 truncate max-w-full block" onclick="copyArchiveID(event, '{{ archive.article_id.split("/")[-1] }}', this, 'red')" title="点击复制 arXiv ID">
+                                    <span class="truncate">arXiv: {{ archive.article_id.split("/")[-1] }}</span>
+                                </span>
+                            </div>
+                            {% else %}
+                            <span class="text-gray-400 text-xs">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 text-xs">
+                            <span class="inline-block px-2 py-1 bg-gray-100 rounded-md truncate max-w-[150px]" title="{{ archive.source }}">{{ archive.source }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right text-gray-400 text-xs whitespace-nowrap font-mono">
+                            {{ archive.published | format_date if archive.published else '-' }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-gray-500 bg-gray-50">
+                            暂无历史归档记录。当您获取更新时，系统会自动在此处持久化记录。
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if total_pages > 1 %}
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <div class="text-sm text-gray-500">
+            第 {{ current_page }} / {{ total_pages }} 页，每页 {{ page_size }} 条
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ url_for('archive', source=current_source, page=current_page - 1) if current_page > 1 else '#' }}"
+               class="px-3 py-1.5 rounded-lg border text-sm {% if current_page > 1 %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% else %}bg-gray-100 text-gray-400 border-gray-200 pointer-events-none{% endif %}">
+                上一页
+            </a>
+            <a href="{{ url_for('archive', source=current_source, page=current_page + 1) if current_page < total_pages else '#' }}"
+               class="px-3 py-1.5 rounded-lg border text-sm {% if current_page < total_pages %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% else %}bg-gray-100 text-gray-400 border-gray-200 pointer-events-none{% endif %}">
+                下一页
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function copyArchiveID(event, textToCopy, element, colorTheme) {
+    event.preventDefault();
+    event.stopPropagation();
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = element.textContent;
+        element.textContent = '已复制!';
+        element.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+        element.classList.remove(`bg-${colorTheme}-50`, `text-${colorTheme}-600`, `border-${colorTheme}-100`);
+        setTimeout(() => {
+            element.textContent = originalText;
+            element.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
+            element.classList.add(`bg-${colorTheme}-50`, `text-${colorTheme}-600`, `border-${colorTheme}-100`);
+        }, 2000);
+    }).catch(err => {
+        console.error('复制失败', err);
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,864 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6 pb-12">
+    <!-- Header -->
+    <div class="cyber-hero p-6 mb-8">
+    <div class="relative z-10">
+        <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">PubMed Query Lab</div>
+        <h2 class="cyber-title text-4xl font-black">PubMed 检索与调研</h2>
+        <p class="text-gray-500 text-sm mt-2">基于 NCBI E-utilities 实现的文献检索、背景调研与研究进展追踪功能</p>
+    </div>
+</div>
+
+    <!-- Search Section -->
+    <div class="cyber-console rounded-xl shadow-sm border overflow-hidden mb-6">
+        <div class="p-6">
+            <!-- 易用型检索构造器与 AI 辅助生成检索式 -->
+            <div class="mb-4 space-y-3">
+                <!-- AI 辅助生成 -->
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-bold text-indigo-800 flex items-center">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            AI 辅助生成检索式
+                        </h3>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <label class="flex items-center text-indigo-700 cursor-pointer">
+                                <input type="radio" name="ai_query_mode" value="natural" checked class="mr-1.5 text-indigo-600 focus:ring-indigo-500" onchange="updateAIInputPlaceholder()">
+                                自然语言
+                            </label>
+                            <label class="flex items-center text-indigo-700 cursor-pointer">
+                                <input type="radio" name="ai_query_mode" value="keywords" class="mr-1.5 text-indigo-600 focus:ring-indigo-500" onchange="updateAIInputPlaceholder()">
+                                关键词组合
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="ai-query-input" class="flex-1 border border-indigo-200 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-indigo-500 outline-none" placeholder="用自然语言描述你想找什么文献，例如：找一下关于深度学习在医学图像分割领域的应用，最好是近三年的...">
+                        <button type="button" id="btn-ai-generate" onclick="generateQueryByAI()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition text-sm font-medium flex items-center whitespace-nowrap">
+                            ✨ AI 生成
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 易用型检索构造器 -->
+                <div id="query-builder" class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-bold text-gray-700">构建检索式</h3>
+                    <button type="button" onclick="addQueryRow()" class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        添加条件
+                    </button>
+                </div>
+                <div id="query-rows" class="space-y-2">
+                    <!-- 第一行固定不带逻辑连接词 -->
+                    <div class="query-row flex gap-2 items-center">
+                        <select class="w-24 bg-transparent border-none text-gray-400 text-sm opacity-0" disabled><option>AND</option></select>
+                        <input type="text" class="query-term flex-1 border border-gray-300 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 outline-none" placeholder="输入关键词 (如 cancer)">
+                        <select class="query-field w-32 border border-gray-300 rounded px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 outline-none bg-white">
+                            <option value="">所有字段</option>
+                            <option value="[Title/Abstract]">标题/摘要</option>
+                            <option value="[Title]">标题</option>
+                            <option value="[Author]">作者</option>
+                            <option value="[Journal]">期刊</option>
+                        </select>
+                        <button type="button" class="w-8 text-gray-400 opacity-0 cursor-default"><svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                </div>
+                
+                <div class="pt-2 border-t border-gray-200 mt-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-gray-600">发表时间:</label>
+                        <select id="query-date" class="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-500 outline-none bg-white">
+                            <option value="">不限时间</option>
+                            <option value="1month">近 1 个月</option>
+                            <option value="1year">近 1 年</option>
+                            <option value="5years">近 5 年</option>
+                            <option value="10years">近 10 年</option>
+                        </select>
+                    </div>
+                    <button type="button" onclick="generateQuery()" class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded transition font-medium">
+                        ↓ 生成检索式
+                    </button>
+                </div>
+            </div>
+
+            <!-- 原始检索表单 -->
+            <form id="search-form" method="POST" action="{{ url_for('pubmed_page') }}" class="flex flex-col md:flex-row gap-4" onsubmit="showSearchProgress()">
+                <div class="flex-1 flex gap-2">
+                    <input type="text" id="final-query" name="query" value="{{ query }}" placeholder="最终检索式 (例如: cancer[Title/Abstract] AND 2023[PDAT])" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition font-mono text-sm" required>
+                    <select name="retmax" class="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-sm">
+                        <option value="50" {% if retmax == 50 %}selected{% endif %}>50 条</option>
+                        <option value="100" {% if retmax == 100 %}selected{% endif %}>100 条</option>
+                        <option value="200" {% if retmax == 200 %}selected{% endif %}>200 条</option>
+                        <option value="500" {% if retmax == 500 %}selected{% endif %}>500 条</option>
+                    </select>
+                </div>
+                <button type="submit" id="btn-search" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-medium flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    检索文献
+                </button>
+            </form>
+            
+            <!-- 检索进度条 -->
+            <div id="search-progress-container" class="hidden mt-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-sm font-medium text-blue-700">正在与 PubMed 数据库建立连接并检索文献...</span>
+                    <span id="search-progress-text" class="text-sm font-medium text-blue-700">0%</span>
+                </div>
+                <div class="w-full bg-blue-100 rounded-full h-2.5">
+                    <div id="search-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div id="query-action-bar" class="mt-4 flex flex-wrap gap-3 items-center {% if not query %}hidden{% endif %}">
+                <!-- 生成背景调研按钮 -->
+                <button id="btn-survey" onclick="generateSurvey()" class="bg-purple-50 text-purple-700 border border-purple-200 px-4 py-2 rounded-lg hover:bg-purple-100 transition text-sm font-medium flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    生成 AI 背景调研
+                </button>
+
+                <!-- 添加为追踪源按钮 -->
+                <form action="{{ url_for('subscriptions') }}" method="POST" id="track-form">
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="sub_type" value="pubmed">
+                    <input type="hidden" name="sub_value" id="sub-value-input" value="">
+                    <input type="hidden" name="source_name" id="sub-name-input" value="">
+                    <input type="hidden" name="fetch_days" value="7">
+                    <input type="hidden" name="retention_days" value="30">
+                    <button type="submit" onclick="prepareTrackQuery()" class="bg-green-600 text-white border border-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm font-medium flex items-center">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        追踪研究进展
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Survey Result Section (Hidden by default) -->
+    <div id="survey-result-container" class="hidden cyber-console rounded-xl p-6 border mb-6">
+        <div class="flex justify-between items-center mb-4 border-b border-purple-200 pb-2">
+            <h3 class="text-lg font-bold text-purple-800 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                AI 背景调研报告
+            </h3>
+            <div class="flex items-center gap-2">
+                <button onclick="copySurveyMarkdown()" class="text-purple-600 hover:text-purple-800 bg-white border border-purple-200 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center" title="复制原始 Markdown">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    复制 MD
+                </button>
+                <button onclick="downloadSurveyMarkdown()" class="text-purple-600 hover:text-purple-800 bg-white border border-purple-200 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center" title="下载为 .md 文件">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    下载 MD
+                </button>
+                <button onclick="downloadSurveyArticlesCSV()" class="text-blue-600 hover:text-blue-800 bg-white border border-blue-200 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center" title="下载被选中的相关文献为 CSV 文件">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    下载筛选文献(CSV)
+                </button>
+                <button onclick="document.getElementById('survey-result-container').classList.add('hidden')" class="text-purple-400 hover:text-purple-600 ml-2" title="关闭报告">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="survey-content" class="markdown-body max-w-none text-gray-800 text-sm md:text-base leading-relaxed">
+            <!-- 报告内容将插入这里 -->
+        </div>
+        <!-- 隐藏的原始 Markdown 存储区 -->
+        <textarea id="survey-raw-md" class="hidden"></textarea>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section-container">
+    {% if query %}
+    <div>
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-gray-800 border-l-4 border-blue-500 pl-3">检索结果 ({{ results|length }} 条)</h3>
+            {% if results %}
+            <button id="translate-all-btn" onclick="translateAllTitles()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium flex items-center shadow-sm">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                一键翻译标题
+            </button>
+            {% endif %}
+        </div>
+        
+        <!-- 一键翻译进度条 -->
+        <div id="translate-progress-container" class="hidden mb-4 cyber-panel-strong p-4 rounded-xl border">
+            <div class="flex justify-between items-center mb-2">
+                <span id="translate-progress-text" class="text-sm font-medium text-indigo-700">正在翻译标题... 0/{{ results|length }}</span>
+                <span id="translate-progress-percent" class="text-sm font-bold text-indigo-700">0%</span>
+            </div>
+            <div class="w-full bg-indigo-100 rounded-full h-2.5">
+                <div id="translate-progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        {% if results %}
+        <div class="grid gap-6">
+            {% for r in results %}
+            <div class="workbench-card rounded-xl border p-5 transition">
+                <div class="flex justify-between items-start gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
+                                {{ r.source }}
+                            </span>
+                            {% if r.journal %}
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200 shrink-0">
+                                📖 {{ r.journal }}
+                            </span>
+                            {% endif %}
+                            <span class="text-xs text-gray-500 font-medium">{{ r.published }}</span>
+                            {% if r.doi %}
+                            <span class="text-xs text-gray-400 hover:text-gray-600 cursor-pointer" onclick="copyDOI(event, '{{ r.doi }}', this)" title="点击复制 DOI">
+                                DOI: {{ r.doi }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-2 leading-snug">
+                            <a href="{{ r.link }}" target="_blank" class="hover:text-blue-600 transition" id="title-{{ loop.index }}">{{ r.title }}</a>
+                        </h4>
+                        <div id="trans-title-{{ loop.index }}" class="text-indigo-700 font-bold mb-2 text-md hidden"></div>
+                        <p class="text-sm text-gray-600 mb-3 italic">{{ r.authors }}</p>
+                        
+                        {% if r.summary %}
+                        <div class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100 mb-2">
+                            <span class="font-semibold text-gray-500 mr-1">Abstract:</span>
+                            <span id="summary-{{ loop.index }}">{{ r.summary[:1500] }}{% if r.summary|length > 1500 %}...{% endif %}</span>
+                        </div>
+                        <div id="trans-summary-{{ loop.index }}" class="text-sm text-indigo-800 leading-relaxed bg-indigo-50 p-3 rounded-lg border border-indigo-100 hidden"></div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex flex-col gap-2 shrink-0">
+                        <button type="button" id="btn-trans-title-{{ loop.index }}" onclick="translateText('{{ loop.index }}', 'title')" class="w-full bg-indigo-50 text-indigo-600 border border-indigo-200 hover:bg-indigo-100 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center justify-center">
+                            翻译标题
+                        </button>
+                        {% if r.summary %}
+                        <button type="button" id="btn-trans-summary-{{ loop.index }}" onclick="translateText('{{ loop.index }}', 'summary')" class="w-full bg-indigo-50 text-indigo-600 border border-indigo-200 hover:bg-indigo-100 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center justify-center">
+                            翻译摘要
+                        </button>
+                        {% endif %}
+                        <form class="ajax-form ajax-save" action="{{ url_for('pubmed_save') }}" method="POST">
+                            <input type="hidden" name="article_id" value="{{ r.article_id }}">
+                            <input type="hidden" name="title" value="{{ r.title }}">
+                            <input type="hidden" name="authors" value="{{ r.authors }}">
+                            <input type="hidden" name="summary" value="{{ r.summary }}">
+                            <input type="hidden" name="link" value="{{ r.link }}">
+                            <input type="hidden" name="published" value="{{ r.published }}">
+                            <input type="hidden" name="doi" value="{{ r.doi }}">
+                            <button type="submit" class="w-full bg-white text-green-600 border border-green-200 hover:bg-green-50 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                入库
+                            </button>
+                        </form>
+                        <a href="{{ r.link }}" target="_blank" class="w-full bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 px-3 py-1.5 rounded text-sm font-medium transition shadow-sm flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            阅读
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl p-12 text-center">
+            <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <p class="text-gray-500 font-medium">没有找到相关文献，请尝试更换检索词</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    </div>
+</div>
+
+<script>
+async function translateText(index, type) {
+    const textElement = document.getElementById(`${type}-${index}`);
+    if (!textElement) return false;
+    
+    let textToTranslate = textElement.innerText || textElement.textContent;
+    if (type === 'summary') {
+        textToTranslate = textToTranslate.replace('Abstract:', '').trim();
+    }
+    
+    const btn = document.getElementById(`btn-trans-${type}-${index}`);
+    const originalBtnHtml = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = `
+        <svg class="animate-spin h-4 w-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    `;
+    
+    try {
+        const formData = new FormData();
+        formData.append('text', textToTranslate);
+        
+        const response = await fetch('/api/translate_text', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const transDiv = document.getElementById(`trans-${type}-${index}`);
+            transDiv.innerText = data.translated_text;
+            transDiv.classList.remove('hidden');
+            btn.remove();
+            return true;
+        } else {
+            alert(data.message || '翻译失败');
+            btn.innerHTML = originalBtnHtml;
+            btn.disabled = false;
+            return false;
+        }
+    } catch (error) {
+        console.error('翻译出错:', error);
+        btn.innerHTML = originalBtnHtml;
+        btn.disabled = false;
+        return false;
+    }
+}
+
+async function translateAllTitles() {
+    const mainBtn = document.getElementById('translate-all-btn');
+    if (mainBtn) {
+        mainBtn.disabled = true;
+        mainBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            翻译进行中...
+        `;
+        mainBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+        mainBtn.classList.add('bg-indigo-400', 'cursor-not-allowed');
+    }
+    
+    const container = document.getElementById('translate-progress-container');
+    const bar = document.getElementById('translate-progress-bar');
+    const text = document.getElementById('translate-progress-text');
+    const percentText = document.getElementById('translate-progress-percent');
+    
+    if (container) container.classList.remove('hidden');
+    
+    const translateBtns = document.querySelectorAll('button[id^="btn-trans-title-"]');
+    const total = translateBtns.length;
+    let completed = 0;
+    
+    for (let btn of translateBtns) {
+        const idMatch = btn.id.match(/btn-trans-title-(\d+)/);
+        if (idMatch) {
+            const index = idMatch[1];
+            await translateText(index, 'title');
+            completed++;
+            
+            if (bar && text && percentText) {
+                const percent = Math.round((completed / total) * 100);
+                bar.style.width = percent + '%';
+                text.innerText = `正在翻译标题... ${completed}/${total}`;
+                percentText.innerText = percent + '%';
+            }
+            
+            // 添加小延迟防止被限流
+            await new Promise(resolve => setTimeout(resolve, 800));
+        }
+    }
+    
+    if (mainBtn) {
+        mainBtn.innerHTML = `
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            翻译全部完成
+        `;
+        mainBtn.classList.remove('bg-indigo-400', 'cursor-not-allowed');
+        mainBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+        setTimeout(() => mainBtn.remove(), 3000);
+    }
+    if (text) text.innerText = `翻译完成: 共 ${total} 篇`;
+}
+
+function showSearchProgress() {
+    window.isSubmittingNewSearch = true;
+    localStorage.removeItem('pubmed_last_query');
+    localStorage.removeItem('pubmed_last_survey');
+    localStorage.removeItem('pubmed_last_articles');
+    localStorage.removeItem('pubmed_results_html');
+
+    const btn = document.getElementById('btn-search');
+    const container = document.getElementById('search-progress-container');
+    const bar = document.getElementById('search-progress-bar');
+    const text = document.getElementById('search-progress-text');
+    
+    btn.disabled = true;
+    btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        检索中...
+    `;
+    container.classList.remove('hidden');
+    
+    let progress = 0;
+    // 模拟进度条，由于表单是同步提交的，直到页面刷新前会逐渐增长到90%
+    const interval = setInterval(() => {
+        progress += (90 - progress) * 0.05;
+        if (progress > 89) clearInterval(interval);
+        bar.style.width = progress + '%';
+        text.innerText = Math.round(progress) + '%';
+    }, 200);
+}
+
+function addQueryRow() {
+    const container = document.getElementById('query-rows');
+    const row = document.createElement('div');
+    row.className = 'query-row flex gap-2 items-center mt-2';
+    row.innerHTML = `
+        <select class="query-operator w-24 border border-gray-300 rounded px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 outline-none bg-white font-medium text-gray-700">
+            <option value=" AND ">AND (与)</option>
+            <option value=" OR ">OR (或)</option>
+            <option value=" NOT ">NOT (非)</option>
+        </select>
+        <input type="text" class="query-term flex-1 border border-gray-300 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 outline-none" placeholder="输入关键词">
+        <select class="query-field w-32 border border-gray-300 rounded px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 outline-none bg-white">
+            <option value="">所有字段</option>
+            <option value="[Title/Abstract]">标题/摘要</option>
+            <option value="[Title]">标题</option>
+            <option value="[Author]">作者</option>
+            <option value="[Journal]">期刊</option>
+        </select>
+        <button type="button" onclick="this.parentElement.remove()" class="w-8 text-gray-400 hover:text-red-500 transition" title="移除该条件">
+            <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    `;
+    container.appendChild(row);
+}
+
+function generateQuery() {
+    const rows = document.querySelectorAll('.query-row');
+    let finalQuery = '';
+    
+    rows.forEach((row, index) => {
+        const termInput = row.querySelector('.query-term').value.trim();
+        if (!termInput) return; // 跳过空行
+        
+        let term = termInput;
+        // 如果包含 OR 或 AND，说明这是一个复杂词群，自动加括号保护其整体逻辑
+        if (term.toUpperCase().includes(' OR ') || term.toUpperCase().includes(' AND ')) {
+            term = `(${term})`;
+        } else if (term.includes(' ') && !term.startsWith('"') && !term.startsWith('(')) {
+            term = `"${term}"`;
+        }
+        
+        const field = row.querySelector('.query-field').value;
+        const operatorEl = row.querySelector('.query-operator');
+        const operator = operatorEl ? operatorEl.value : '';
+        
+        // 自动将 field 注入到复杂的 OR 结构中的每一个词组后
+        // 比如: ("AI" OR "deep learning") -> ("AI"[Title/Abstract] OR "deep learning"[Title/Abstract])
+        let part = '';
+        if (field && term.startsWith('(') && term.endsWith(')')) {
+             let innerTerm = term.substring(1, term.length - 1);
+             // 简单切分按 OR 
+             let subTerms = innerTerm.split(/\s+OR\s+/i);
+             let processedSubTerms = subTerms.map(st => {
+                 let t = st.trim();
+                 if (!t.endsWith(field) && !t.endsWith(']')) {
+                     // 确保有引号保护
+                     if (!t.startsWith('"')) t = `"${t}"`;
+                     t = `${t}${field}`;
+                 }
+                 return t;
+             });
+             part = `(${processedSubTerms.join(' OR ')})`;
+        } else {
+            if (field && !term.endsWith(field) && !term.endsWith(']')) {
+                part = `${term}${field}`;
+            } else {
+                part = term;
+            }
+        }
+        
+        if (finalQuery === '') {
+            finalQuery = part;
+        } else {
+            finalQuery += ` ${operator} ${part}`;
+        }
+    });
+    
+    const dateFilter = document.getElementById('query-date').value;
+    if (finalQuery && dateFilter) {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth() + 1;
+        const currentDay = now.getDate();
+        let dateStr = '';
+        
+        if (dateFilter === '1month') {
+            const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+            const prevMonthStr = `${prevMonth.getFullYear()}/${String(prevMonth.getMonth() + 1).padStart(2, '0')}/${String(prevMonth.getDate()).padStart(2, '0')}`;
+            const currStr = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(currentDay).padStart(2, '0')}`;
+            dateStr = ` AND ("${prevMonthStr}"[Date - Publication] : "${currStr}"[Date - Publication])`;
+        } else if (dateFilter === '1year') {
+            dateStr = ` AND ${currentYear}[dp]`;
+        } else if (dateFilter === '5years') {
+            dateStr = ` AND ${currentYear - 4}:${currentYear}[dp]`;
+        } else if (dateFilter === '10years') {
+            dateStr = ` AND ${currentYear - 9}:${currentYear}[dp]`;
+        }
+        
+        finalQuery = `(${finalQuery})${dateStr}`;
+    }
+    
+    document.getElementById('final-query').value = finalQuery;
+}
+
+function prepareTrackQuery() {
+    const query = document.getElementById('final-query').value;
+    const queryWithoutDate = query
+        .replace(/\s*AND\s*\("\d{4}\/\d{2}\/\d{2}"\[Date - Publication\]\s*:\s*"\d{4}\/\d{2}\/\d{2}"\[Date - Publication\]\)/g, '')
+        .replace(/\s*AND\s*\d{4}\[\dp\]\s*$/g, '')
+        .replace(/\s*AND\s*\d{4}:\d{4}\[dp\]\s*$/g, '')
+        .trim();
+    document.getElementById('sub-value-input').value = queryWithoutDate;
+    document.getElementById('sub-name-input').value = 'PubMed: ' + (queryWithoutDate.substring(0, 15) || '...');
+}
+
+function updateAIInputPlaceholder() {
+    const mode = document.querySelector('input[name="ai_query_mode"]:checked').value;
+    const inputEl = document.getElementById('ai-query-input');
+    if (mode === 'keywords') {
+        inputEl.placeholder = "输入关键词组合，用分号隔开，例如：gvp; ADMET; toxicity";
+    } else {
+        inputEl.placeholder = "用自然语言描述你想找什么文献，例如：找一下关于深度学习在医学图像分割领域的应用...";
+    }
+}
+
+async function generateQueryByAI() {
+    const aiInput = document.getElementById('ai-query-input').value.trim();
+    if (!aiInput) {
+        alert('请输入你的检索需求或关键词');
+        return;
+    }
+
+    const mode = document.querySelector('input[name="ai_query_mode"]:checked').value;
+    const btn = document.getElementById('btn-ai-generate');
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+    btn.innerHTML = `<svg class="animate-spin w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>生成中...`;
+    
+    try {
+        const formData = new FormData();
+        formData.append('user_input', aiInput);
+        formData.append('mode', mode);
+        
+        const response = await fetch('/api/pubmed/generate_query', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('final-query').value = data.query;
+            
+            // 可选：高亮提示框以引起用户注意
+            const finalQueryInput = document.getElementById('final-query');
+            finalQueryInput.classList.add('ring-2', 'ring-green-500', 'border-green-500');
+            setTimeout(() => {
+                finalQueryInput.classList.remove('ring-2', 'ring-green-500', 'border-green-500');
+            }, 1500);
+            
+        } else {
+            alert('生成失败: ' + data.message);
+        }
+    } catch (err) {
+        console.error(err);
+        alert('请求失败，请检查网络或后台日志');
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
+    }
+}
+
+function cachePubmedPageState() {
+    const queryInput = document.getElementById('final-query');
+    const retmaxSelect = document.querySelector('select[name="retmax"]');
+    const resultsContainer = document.getElementById('results-section-container');
+    
+    try {
+        localStorage.setItem('pubmed_last_query', queryInput ? queryInput.value.trim() : '');
+        localStorage.setItem('pubmed_last_retmax', retmaxSelect ? retmaxSelect.value : '');
+        localStorage.setItem('pubmed_last_articles', JSON.stringify(window.surveyArticles || []));
+        localStorage.setItem('pubmed_results_html', resultsContainer ? resultsContainer.innerHTML : '');
+        
+        // 保存 AI 辅助生成的单选按钮和输入框状态
+        const aiModeRadio = document.querySelector('input[name="ai_query_mode"]:checked');
+        if (aiModeRadio) {
+            localStorage.setItem('pubmed_ai_mode', aiModeRadio.value);
+        }
+        const aiInput = document.getElementById('ai-query-input');
+        if (aiInput) {
+            localStorage.setItem('pubmed_ai_input', aiInput.value);
+        }
+    } catch (e) {
+        console.error('保存 PubMed 页面缓存失败:', e);
+    }
+}
+
+async function generateSurvey() {
+    const queryInput = document.getElementById('final-query');
+    const query = queryInput ? queryInput.value.trim() : '';
+    if (!query) {
+        alert('请先输入检索式');
+        return;
+    }
+
+    const btn = document.getElementById('btn-survey');
+    const container = document.getElementById('survey-result-container');
+    const content = document.getElementById('survey-content');
+    
+    // UI Loading state
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.classList.add('opacity-50', 'cursor-not-allowed');
+    btn.innerHTML = `<svg class="animate-spin w-4 h-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 正在生成报告...`;
+    
+    container.classList.remove('hidden');
+    content.innerHTML = `<div class="flex items-center justify-center py-8 text-purple-500"><svg class="animate-spin w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> AI 正在阅读并总结文献，请稍候...</div>`;
+    
+    try {
+        const formData = new FormData();
+        formData.append('query', query);
+        
+        const response = await fetch("{{ url_for('pubmed_survey') }}", {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // 将原始 Markdown 存入隐藏区域供复制/下载使用
+            document.getElementById('survey-raw-md').value = data.survey;
+            // 存储筛选出来的文献数据供导出
+            if (data.articles && data.articles.length > 0) {
+                window.surveyArticles = data.articles;
+            } else {
+                window.surveyArticles = [];
+            }
+            // 渲染 Markdown 为 HTML 并展示
+            if (typeof marked !== 'undefined') {
+                content.innerHTML = marked.parse(data.survey);
+            } else {
+                content.innerHTML = `<div class="whitespace-pre-wrap">${data.survey}</div>`;
+            }
+            
+            // 缓存成功生成的报告数据
+            localStorage.setItem('pubmed_last_query', query);
+            localStorage.setItem('pubmed_last_survey', data.survey);
+            localStorage.setItem('pubmed_last_articles', JSON.stringify(window.surveyArticles));
+            cachePubmedPageState();
+            
+        } else {
+            content.innerHTML = `<div class="text-red-500">生成失败: ${data.message}</div>`;
+        }
+    } catch (err) {
+        console.error(err);
+        content.innerHTML = `<div class="text-red-500">网络请求失败，请稍后重试。</div>`;
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+}
+
+// 复制 Markdown 功能
+function copySurveyMarkdown() {
+    const rawMd = document.getElementById('survey-raw-md').value;
+    if (!rawMd) {
+        alert("暂无调研报告内容可复制");
+        return;
+    }
+    
+    navigator.clipboard.writeText(rawMd).then(() => {
+        // 简单提示效果
+        const btn = document.querySelector('button[title="复制原始 Markdown"]');
+        const origText = btn.innerHTML;
+        btn.innerHTML = `<svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 已复制`;
+        setTimeout(() => { btn.innerHTML = origText; }, 2000);
+    }).catch(err => {
+        console.error("复制失败: ", err);
+        alert("复制失败，请重试或手动选中复制");
+    });
+}
+
+// 下载 Markdown 功能
+function downloadSurveyMarkdown() {
+    const rawMd = document.getElementById('survey-raw-md').value;
+    if (!rawMd) {
+        alert("暂无调研报告内容可下载");
+        return;
+    }
+    
+    // 生成默认文件名，例如：AI_Survey_2023-10-25.md
+    const dateStr = new Date().toISOString().split('T')[0];
+    const filename = `AI_Survey_${dateStr}.md`;
+    
+    const blob = new Blob([rawMd], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// 下载筛选文献为 CSV 功能
+function downloadSurveyArticlesCSV() {
+    if (!window.surveyArticles || window.surveyArticles.length === 0) {
+        alert("暂无被筛选出的相关文献数据可供下载");
+        return;
+    }
+    
+    const articles = window.surveyArticles;
+    // CSV Header
+    const headers = ['Title', 'Authors', 'Published Date', 'DOI', 'Link', 'Abstract'];
+    
+    // Helper function to escape CSV fields
+    const escapeCSV = (str) => {
+        if (!str) return '""';
+        const escapedStr = String(str).replace(/"/g, '""');
+        return `"${escapedStr}"`;
+    };
+    
+    // Build CSV Content
+    let csvContent = headers.join(',') + '\n';
+    
+    articles.forEach(article => {
+        const row = [
+            escapeCSV(article.title),
+            escapeCSV(article.authors),
+            escapeCSV(article.published),
+            escapeCSV(article.doi),
+            escapeCSV(article.link),
+            escapeCSV(article.summary)
+        ];
+        csvContent += row.join(',') + '\n';
+    });
+    
+    // Generate Download
+    const dateStr = new Date().toISOString().split('T')[0];
+    const filename = `Filtered_Articles_${dateStr}.csv`;
+    
+    // Add BOM for Excel UTF-8 compatibility
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// 页面加载时恢复缓存的调研报告
+document.addEventListener('DOMContentLoaded', () => {
+    const lastQuery = localStorage.getItem('pubmed_last_query');
+    const lastSurvey = localStorage.getItem('pubmed_last_survey');
+    const lastArticles = localStorage.getItem('pubmed_last_articles');
+    const lastRetmax = localStorage.getItem('pubmed_last_retmax');
+    const lastResultsHtml = localStorage.getItem('pubmed_results_html');
+    
+    // 获取当前的检索词框
+    const finalQueryInput = document.getElementById('final-query');
+    const actionBar = document.getElementById('query-action-bar');
+    const retmaxSelect = document.querySelector('select[name="retmax"]');
+    const resultsContainer = document.getElementById('results-section-container');
+    const currentQuery = finalQueryInput ? finalQueryInput.value.trim() : '';
+
+    if (!currentQuery && finalQueryInput && lastQuery) {
+        finalQueryInput.value = lastQuery;
+    }
+    const effectiveQuery = finalQueryInput ? finalQueryInput.value.trim() : '';
+    if (actionBar && (effectiveQuery || lastSurvey || lastResultsHtml)) {
+        actionBar.classList.remove('hidden');
+    }
+    if (retmaxSelect && lastRetmax) {
+        retmaxSelect.value = lastRetmax;
+    }
+    if (!currentQuery && resultsContainer && lastResultsHtml) {
+        resultsContainer.innerHTML = lastResultsHtml;
+    }
+
+    if (lastSurvey && (!currentQuery || currentQuery === lastQuery)) {
+        
+        // 如果输入框是空的，帮用户填上之前的搜索词
+        if (!currentQuery && finalQueryInput) {
+            finalQueryInput.value = lastQuery;
+        }
+        
+        const container = document.getElementById('survey-result-container');
+        const content = document.getElementById('survey-content');
+        
+        // 如果没有 container (比如没传 query 时页面结构不同)，我们需要创建一个或者修改模板
+        if (container && content) {
+            document.getElementById('survey-raw-md').value = lastSurvey;
+            
+            if (lastArticles) {
+                try {
+                    window.surveyArticles = JSON.parse(lastArticles);
+                } catch (e) {
+                    window.surveyArticles = [];
+                }
+            }
+            
+            if (typeof marked !== 'undefined') {
+                content.innerHTML = marked.parse(lastSurvey);
+            } else {
+                content.innerHTML = `<div class="whitespace-pre-wrap">${lastSurvey}</div>`;
+            }
+            
+            // 增加一个恢复提示标识
+            const headerTitle = container.querySelector('h3');
+            if (headerTitle && !headerTitle.innerHTML.includes('已从缓存恢复')) {
+                headerTitle.innerHTML += `<span class="ml-3 text-xs font-normal bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full border border-purple-200">已从缓存恢复</span>`;
+            }
+            
+            container.classList.remove('hidden');
+        }
+    }
+
+    const aiMode = localStorage.getItem('pubmed_ai_mode') || 'natural';
+    const aiInput = localStorage.getItem('pubmed_ai_input') || '';
+    const radios = document.querySelectorAll('input[name="ai_query_mode"]');
+    radios.forEach(r => {
+        r.checked = (r.value === aiMode);
+    });
+    const aiInputEl = document.getElementById('ai-query-input');
+    if (aiInputEl) {
+        aiInputEl.value = aiInput;
+    }
+    if (typeof updateAIInputPlaceholder === 'function') {
+        updateAIInputPlaceholder();
+    }
+});
+
+window.addEventListener('pagehide', () => {
+    if (!window.isSubmittingNewSearch) {
+        cachePubmedPageState();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,659 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="cyber-hero p-6 mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl border border-blue-100">
+                ✨
+            </div>
+            <div>
+                <h1 class="cyber-title text-4xl font-black font-serif">AI Screening Console</h1>
+                <p class="text-sm text-gray-500 mt-2">基于您的研究需求，从文献矩阵中智能筛选最匹配的论文</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 min-w-[300px]">
+            <div class="cyber-stat-card"><div class="text-xs text-gray-500">Sources</div><div class="relative z-10 text-2xl font-black text-cyan-200">{{ sources|length }}</div></div>
+            <div class="cyber-stat-card"><div class="text-xs text-gray-500">Modes</div><div class="relative z-10 text-2xl font-black text-violet-200">2</div></div>
+            <div class="cyber-stat-card"><div class="text-xs text-gray-500">WOS</div><div class="relative z-10 text-2xl font-black text-lime-200">CSV</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="cyber-grid-dashboard mb-8">
+    <div class="cyber-console relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-44 h-44 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div class="relative z-10 mb-5 flex items-center justify-between gap-3 flex-wrap">
+            <div>
+                <div class="text-xs uppercase tracking-[0.3em] text-violet-200/70 mb-1">Prompt Console</div>
+                <div class="text-sm text-gray-500">控制候选来源、分析模式和筛选指令。</div>
+            </div>
+            <span class="cyber-chip">LLM Screening</span>
+        </div>
+        <form id="recommend-form" class="relative z-10" onsubmit="generateRecommendations(event)">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <!-- 期刊/来源选择 -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">限定筛选范围 (期刊/来源)</label>
+                <div class="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-purple-500 outline-none bg-white h-[120px] overflow-y-auto">
+                    <label class="flex items-center space-x-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" id="source-all" name="source" value="" class="rounded text-purple-600 focus:ring-purple-500" checked onchange="toggleAllSources(this)">
+                        <span class="text-sm text-gray-800">所有期刊及来源</span>
+                    </label>
+                    {% for src in sources %}
+                    <label class="flex items-center space-x-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" name="source" value="{{ src }}" class="source-checkbox rounded text-purple-600 focus:ring-purple-500" onchange="toggleSingleSource()">
+                        <span class="text-sm text-gray-800">{{ src }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- 阅读状态选择 -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">阅读状态</label>
+                <div class="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-purple-500 outline-none bg-white h-[120px] flex flex-col justify-center space-y-2">
+                    <label class="flex items-center space-x-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="radio" name="read_status" value="unread" class="text-purple-600 focus:ring-purple-500" checked>
+                        <span class="text-sm text-gray-800">仅未读文献</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="radio" name="read_status" value="read" class="text-purple-600 focus:ring-purple-500">
+                        <span class="text-sm text-gray-800">仅已读文献</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="radio" name="read_status" value="all" class="text-purple-600 focus:ring-purple-500">
+                        <span class="text-sm text-gray-800">所有文献 (已读+未读)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">分析模式</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label class="flex items-start space-x-3 p-3 border border-purple-200 bg-purple-50 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
+                    <input type="radio" name="analysis_mode" value="global" class="mt-1 text-purple-600 focus:ring-purple-500" checked>
+                    <span>
+                        <span class="block text-sm font-medium text-gray-800">全局分析</span>
+                        <span class="block text-xs text-gray-500 mt-1">将当前筛选范围内的文献整体提交给模型统一判断。</span>
+                    </span>
+                </label>
+                <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input type="radio" name="analysis_mode" value="single" class="mt-1 text-purple-600 focus:ring-purple-500">
+                    <span>
+                        <span class="block text-sm font-medium text-gray-800">逐条采样分析</span>
+                        <span class="block text-xs text-gray-500 mt-1">逐篇提交给模型判断，后台并发数固定为 20。</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">输入筛选要求 (Prompt)</label>
+            <textarea name="criteria" rows="3" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow text-sm text-gray-800 placeholder-gray-400" placeholder="例如：请帮我筛选出与强化学习（Reinforcement Learning）和自然语言处理相关的最新论文，尤其是关注大模型微调方向的。">帮我筛选出AI和分子、化学、生物学、医学、药学等领域交叉的文章</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">上传 WOS 导出的文献集 (可选)</label>
+            <div class="flex items-center space-x-4">
+                <input type="file" name="wos_file" accept=".xls,.xlsx,.csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 outline-none cursor-pointer"/>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">支持 xls/csv，包含 Article Title、Abstract、DOI 列。若上传文件，将忽略上方来源与状态筛选，直接分析文件内容。</p>
+        </div>
+        
+        <div class="mt-4 flex justify-end">
+            <button type="submit" id="submit-btn" class="px-6 py-2.5 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 shadow-sm flex items-center transition-colors">
+                <svg id="spinner" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span id="btn-text">开始智能筛选</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<aside class="cyber-scan-panel space-y-4">
+    <div>
+        <div class="text-xs uppercase tracking-[0.3em] text-gray-400 mb-2">Screening Protocol</div>
+        <h3 class="text-xl font-black text-slate-100">筛选策略面板</h3>
+        <p class="text-sm text-gray-500 mt-2">选择来源、阅读状态和分析模式后，系统会把候选文献提交给模型进行相关性判断。</p>
+    </div>
+    <div class="space-y-3">
+        <div class="cyber-step flex gap-3">
+            <span class="cyber-step-index">1</span>
+            <div><div class="font-bold text-cyan-100">限定文献池</div><div class="text-xs text-gray-500 mt-1">按来源、已读状态或 WOS 文件构建候选集。</div></div>
+        </div>
+        <div class="cyber-step flex gap-3">
+            <span class="cyber-step-index">2</span>
+            <div><div class="font-bold text-violet-100">选择推理模式</div><div class="text-xs text-gray-500 mt-1">全局分析适合快速筛选，逐条分析适合减少遗漏。</div></div>
+        </div>
+        <div class="cyber-step flex gap-3">
+            <span class="cyber-step-index">3</span>
+            <div><div class="font-bold text-lime-100">生成结果矩阵</div><div class="text-xs text-gray-500 mt-1">推荐结果会在下方保留分页和导出能力。</div></div>
+        </div>
+    </div>
+</aside>
+</div>
+
+<div class="cyber-scan-panel mb-4 flex items-center justify-between hidden" id="results-header">
+    <h2 class="text-lg font-bold text-gray-800 flex items-center">
+        <span class="mr-2">🎯</span> 推荐结果
+        <span id="stats-badge" class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200 hidden"></span>
+    </h2>
+</div>
+
+<div id="results-container" class="cyber-scan-panel space-y-3">
+    <div class="py-12 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200" id="empty-state">
+        <div class="text-4xl mb-3">🔍</div>
+        <p>在上方输入您的筛选要求并选择范围，让 AI 帮您从文献中发现有价值的内容</p>
+    </div>
+</div>
+
+<script>
+const RECOMMEND_MEMORY_KEY = 'ai_recommend_page_state';
+window.recommendCurrentPage = 1;
+const RECOMMEND_PAGE_SIZE = 50;
+
+function renderRecommendPaginationControls(totalItems) {
+    const container = document.getElementById('results-container');
+    const totalPages = Math.ceil(totalItems / RECOMMEND_PAGE_SIZE);
+    if (totalPages <= 1) return;
+
+    let controlsHtml = `
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-3 pagination-controls">
+        <div class="text-sm text-gray-500">
+            第 <span id="current-page-display">${window.recommendCurrentPage}</span> / ${totalPages} 页，每页 ${RECOMMEND_PAGE_SIZE} 条
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" onclick="goToRecommendPage(${window.recommendCurrentPage - 1})" class="px-3 py-1.5 rounded-lg border text-sm ${window.recommendCurrentPage > 1 ? 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 border-gray-200 pointer-events-none'}">
+                上一页
+            </button>
+            <button type="button" onclick="goToRecommendPage(${window.recommendCurrentPage + 1})" class="px-3 py-1.5 rounded-lg border text-sm ${window.recommendCurrentPage < totalPages ? 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 border-gray-200 pointer-events-none'}">
+                下一页
+            </button>
+        </div>
+    </div>
+    `;
+    
+    const oldControls = container.querySelector('.pagination-controls');
+    if (oldControls) oldControls.remove();
+    container.insertAdjacentHTML('beforeend', controlsHtml);
+}
+
+window.goToRecommendPage = function(page) {
+    const cards = document.querySelectorAll('#results-container > [id^="article-"]');
+    const totalPages = Math.ceil(cards.length / RECOMMEND_PAGE_SIZE);
+    if (page < 1 || page > totalPages) return;
+    
+    window.recommendCurrentPage = page;
+    
+    cards.forEach((card, index) => {
+        if (index >= (page - 1) * RECOMMEND_PAGE_SIZE && index < page * RECOMMEND_PAGE_SIZE) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    renderRecommendPaginationControls(cards.length);
+    
+    // 保存当前分页状态
+    const statsBadge = document.getElementById('stats-badge');
+    saveRecommendPageState({
+        resultsHtml: document.getElementById('results-container').innerHTML,
+        resultsHeaderHidden: false,
+        statsHtml: statsBadge ? statsBadge.innerHTML : '',
+        currentWosCsvData: window.currentWosCsvData,
+        recommendCurrentPage: window.recommendCurrentPage
+    });
+    
+    document.getElementById('results-header').scrollIntoView({ behavior: 'smooth' });
+};
+
+function initRecommendPagination() {
+    window.recommendCurrentPage = 1;
+    const cards = document.querySelectorAll('#results-container > [id^="article-"]');
+    if (cards.length > RECOMMEND_PAGE_SIZE) {
+        window.goToRecommendPage(1);
+    }
+}
+
+function collectFormState(form) {
+    const selectedSources = Array.from(form.querySelectorAll('.source-checkbox:checked')).map(item => item.value);
+    const readStatus = form.querySelector('input[name="read_status"]:checked')?.value || 'unread';
+    const analysisMode = form.querySelector('input[name="analysis_mode"]:checked')?.value || 'global';
+
+    return {
+        criteria: form.criteria.value || '',
+        sourceAllChecked: document.getElementById('source-all').checked,
+        selectedSources: selectedSources,
+        readStatus: readStatus,
+        analysisMode: analysisMode
+    };
+}
+
+function saveRecommendPageState(extraState = {}) {
+    const form = document.getElementById('recommend-form');
+    if (!form) {
+        return;
+    }
+
+    const state = {
+        ...collectFormState(form),
+        ...extraState
+    };
+
+    localStorage.setItem(RECOMMEND_MEMORY_KEY, JSON.stringify(state));
+}
+
+function restoreRecommendPageState() {
+    const savedState = localStorage.getItem(RECOMMEND_MEMORY_KEY);
+    if (!savedState) {
+        return;
+    }
+
+    try {
+        const state = JSON.parse(savedState);
+        const form = document.getElementById('recommend-form');
+        const sourceAllCheckbox = document.getElementById('source-all');
+        const results = document.getElementById('results-container');
+        const resultsHeader = document.getElementById('results-header');
+
+        form.criteria.value = state.criteria || '';
+        sourceAllCheckbox.checked = state.sourceAllChecked !== false;
+
+        document.querySelectorAll('.source-checkbox').forEach(checkbox => {
+            checkbox.checked = (state.selectedSources || []).includes(checkbox.value);
+        });
+
+        const readStatusInput = form.querySelector(`input[name="read_status"][value="${state.readStatus || 'unread'}"]`);
+        if (readStatusInput) {
+            readStatusInput.checked = true;
+        }
+
+        const analysisModeInput = form.querySelector(`input[name="analysis_mode"][value="${state.analysisMode || 'global'}"]`);
+        if (analysisModeInput) {
+            analysisModeInput.checked = true;
+        }
+
+        toggleSingleSource();
+
+        // 恢复上一次推荐结果，避免切换页面后界面被清空
+        if (state.resultsHtml) {
+            results.innerHTML = state.resultsHtml;
+            if (state.resultsHeaderHidden) {
+                resultsHeader.classList.add('hidden');
+            } else {
+                resultsHeader.classList.remove('hidden');
+            }
+        }
+        
+        // 恢复统计徽章
+        if (state.statsHtml && state.statsHtml !== '') {
+            const statsBadge = document.getElementById('stats-badge');
+            if (statsBadge) {
+                statsBadge.innerHTML = state.statsHtml;
+                statsBadge.classList.remove('hidden');
+            }
+        }
+        if (state.currentWosCsvData) {
+            window.currentWosCsvData = state.currentWosCsvData;
+            // 因为 results.innerHTML 恢复时可能丢失 blob URL 导致失效，重新渲染一次下载按钮
+            updateCsvExportButtonInDom();
+        }
+        
+        // 恢复当前分页页码
+        if (state.recommendCurrentPage) {
+            window.recommendCurrentPage = state.recommendCurrentPage;
+        } else {
+            window.recommendCurrentPage = 1;
+        }
+    } catch (error) {
+        console.error('恢复推荐页面状态失败', error);
+    }
+}
+
+function toggleAllSources(checkbox) {
+    const checkboxes = document.querySelectorAll('.source-checkbox');
+    if (checkbox.checked) {
+        checkboxes.forEach(cb => cb.checked = false);
+    }
+    saveRecommendPageState();
+}
+
+function toggleSingleSource() {
+    const allCheckbox = document.getElementById('source-all');
+    const checkboxes = document.querySelectorAll('.source-checkbox');
+    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+    
+    if (anyChecked) {
+        allCheckbox.checked = false;
+    } else {
+        allCheckbox.checked = true;
+    }
+
+    saveRecommendPageState();
+}
+
+// 用于保存全局的 WOS 导出数据，以便翻译后更新
+window.currentWosCsvData = [];
+
+function renderCsvExportButton() {
+    if (!window.currentWosCsvData || window.currentWosCsvData.length === 0) return '';
+    
+    const csvContent = "Article Title,Translated Title,Abstract,DOI\n" + window.currentWosCsvData.map(row => {
+        return `"${(row['Article Title'] || '').replace(/"/g, '""')}","${(row['Translated Title'] || '').replace(/"/g, '""')}","${(row['Abstract'] || '').replace(/"/g, '""')}","${(row['DOI'] || '').replace(/"/g, '""')}"`;
+    }).join("\n");
+    
+    const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    return `
+        <a href="${url}" download="recommended_articles.csv" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 shadow-sm inline-flex items-center transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            导出推荐结果 (CSV)
+        </a>
+    `;
+}
+
+function updateCsvExportButtonInDom() {
+    const container = document.getElementById('action-bar-container');
+    if (container) {
+        // 先移除旧的导出按钮（如果存在）
+        const oldBtn = container.querySelector('a[download]');
+        if (oldBtn) {
+            oldBtn.remove();
+        }
+        
+        // 重新生成并追加
+        const newHtml = renderCsvExportButton();
+        if (newHtml) {
+            container.insertAdjacentHTML('beforeend', newHtml);
+        }
+    }
+}
+
+// 翻译 WOS 标题
+async function translateWosTitle(articleId, titleText, btnElement, isBatch = false) {
+    const originalHtml = btnElement.innerHTML;
+    btnElement.innerHTML = `
+        <svg class="animate-spin h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    `;
+    btnElement.disabled = true;
+
+    try {
+        const formData = new FormData();
+        formData.append('text', titleText);
+        
+        const response = await fetch('/api/translate_text', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const statusEl = document.getElementById(`trans-status-${articleId}`);
+            if (statusEl) {
+                statusEl.innerHTML = '<span class="text-green-500 font-bold" title="翻译已完成">✔️</span>';
+            }
+            
+            const titleEl = document.getElementById(`trans-title-${articleId}`);
+            if (titleEl) {
+                titleEl.innerText = data.translated_text;
+                titleEl.setAttribute('data-text', data.translated_text);
+                titleEl.classList.remove('hidden');
+            }
+            
+            btnElement.remove(); // 翻译完成后移除按钮
+            
+            // 更新全局的 CSV 数据
+            if (window.currentWosCsvData) {
+                const row = window.currentWosCsvData.find(r => r.id === articleId);
+                if (row) {
+                    row['Translated Title'] = data.translated_text;
+                    updateCsvExportButtonInDom();
+                }
+            }
+            
+            // 尝试更新全局存储中的 HTML 状态，使得页面刷新后依然保留翻译结果
+            const results = document.getElementById('results-container');
+            if (results && !isBatch) {
+                saveRecommendPageState({
+                    resultsHtml: results.innerHTML,
+                    resultsHeaderHidden: false
+                });
+            }
+            return true;
+        } else {
+            if (!isBatch) alert(data.message || '翻译失败');
+            btnElement.innerHTML = originalHtml;
+            btnElement.disabled = false;
+            return false;
+        }
+    } catch (error) {
+        console.error('翻译出错:', error);
+        if (!isBatch) alert('翻译请求发生错误，请稍后重试');
+        btnElement.innerHTML = originalHtml;
+        btnElement.disabled = false;
+        return false;
+    }
+}
+
+// 串行一键翻译所有标题
+async function translateAllTitles() {
+    const mainBtn = document.getElementById('translate-all-btn');
+    if (mainBtn) {
+        mainBtn.disabled = true;
+        mainBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            翻译进行中...
+        `;
+        mainBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+        mainBtn.classList.add('bg-indigo-400', 'cursor-not-allowed');
+    }
+
+    // 查找所有翻译按钮 (包括普通表单提交的和WOS的按钮)
+    // 注意：这里只针对那些未被翻译的按钮
+    const translateBtns = document.querySelectorAll('button[onclick^="translateWosTitle"], form.ajax-translate button');
+    
+    for (let btn of translateBtns) {
+        const onclickAttr = btn.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes('translateWosTitle')) {
+            // 解析出参数
+            const match = onclickAttr.match(/translateWosTitle\('([^']+)',\s*'([^']+)'/);
+            if (match) {
+                const articleId = match[1];
+                const titleText = match[2];
+                // 串行调用
+                await translateWosTitle(articleId, titleText, btn, true);
+            }
+        } else {
+            // 普通文章翻译 (触发表单的 ajax 请求)
+            const form = btn.closest('form.ajax-translate');
+            if (form) {
+                try {
+                    // 模拟提交
+                    const event = new Event('submit', { bubbles: true, cancelable: true });
+                    form.dispatchEvent(event);
+                    
+                    // 等待一段时间让请求发出去
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch(e) {
+                    console.error("触发普通文献翻译失败", e);
+                }
+            }
+        }
+        // 每个请求之间增加一点延迟，防止请求频率过高
+        await new Promise(resolve => setTimeout(resolve, 800));
+    }
+
+    if (mainBtn) {
+        mainBtn.innerHTML = `
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            翻译全部完成
+        `;
+        mainBtn.classList.remove('bg-indigo-400');
+        mainBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+        setTimeout(() => {
+            mainBtn.remove();
+        }, 3000);
+    }
+    
+    // 一键翻译结束后统一保存页面状态
+    const results = document.getElementById('results-container');
+    if (results) {
+        saveRecommendPageState({
+            resultsHtml: results.innerHTML,
+            resultsHeaderHidden: false
+        });
+    }
+}
+
+async function generateRecommendations(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = document.getElementById('submit-btn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btn-text');
+    const results = document.getElementById('results-container');
+    const emptyState = document.getElementById('empty-state');
+    const resultsHeader = document.getElementById('results-header');
+    const statsBadge = document.getElementById('stats-badge');
+    
+    const criteria = form.criteria.value.trim();
+    if (!criteria) {
+        alert("请输入筛选要求");
+        return;
+    }
+
+    saveRecommendPageState();
+
+    const selectedMode = form.querySelector('input[name="analysis_mode"]:checked')?.value || 'global';
+    const loadingText = selectedMode === 'single' ? '正在逐条采样分析...' : '正在全局分析...';
+    
+    // UI 状态更新为加载中
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+    spinner.classList.remove('hidden');
+    btnText.textContent = loadingText;
+    
+    resultsHeader.classList.add('hidden');
+    results.innerHTML = `
+        <div class="py-16 flex flex-col items-center justify-center bg-white rounded-xl border border-gray-100 shadow-sm">
+            <div class="relative w-16 h-16 mb-4">
+                <div class="absolute inset-0 rounded-full border-4 border-purple-100"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-purple-600 border-t-transparent animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-xl">🤖</div>
+            </div>
+            <p class="text-gray-600 font-medium">${loadingText}</p>
+            <p class="text-gray-400 text-sm mt-2">这可能需要几十秒的时间，请耐心等待</p>
+        </div>
+    `;
+    
+    try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/recommend', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            resultsHeader.classList.remove('hidden');
+            
+            // 更新统计徽章
+            if (statsBadge) {
+                const statsText = `从 ${data.total_analyzed} 篇中推荐了 ${data.total_found} 篇`;
+                statsBadge.innerHTML = statsText;
+                statsBadge.classList.remove('hidden');
+            }
+            
+            let resultsHtml = data.html;
+            
+            let exportBtnHtml = '';
+            if (data.csv_data && data.csv_data.length > 0) {
+                window.currentWosCsvData = data.csv_data;
+                exportBtnHtml = renderCsvExportButton();
+            }
+
+            // 注入“一键翻译”按钮和导出按钮
+            resultsHtml = `
+                <div class="mb-4 flex flex-wrap justify-end gap-3 items-center" id="action-bar-container">
+                    <button type="button" id="translate-all-btn" onclick="translateAllTitles()" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 shadow-sm inline-flex items-center transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                        一键翻译所有标题
+                    </button>
+                    ${exportBtnHtml}
+                </div>
+            ` + resultsHtml;
+
+            results.innerHTML = resultsHtml;
+            initRecommendPagination(); // 初始化前端分页
+            
+            saveRecommendPageState({
+                resultsHtml: results.innerHTML,
+                resultsHeaderHidden: false,
+                statsHtml: statsBadge ? statsBadge.innerHTML : '',
+                currentWosCsvData: window.currentWosCsvData,
+                recommendCurrentPage: window.recommendCurrentPage
+            });
+        } else {
+            resultsHeader.classList.add('hidden');
+            results.innerHTML = `
+                <div class="py-12 text-center text-red-500 bg-red-50 rounded-xl border border-red-100">
+                    <div class="text-3xl mb-2">⚠️</div>
+                    <p>${data.message}</p>
+                </div>
+            `;
+            saveRecommendPageState({
+                resultsHtml: results.innerHTML,
+                resultsHeaderHidden: true
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        resultsHeader.classList.add('hidden');
+        results.innerHTML = `
+            <div class="py-12 text-center text-red-500 bg-red-50 rounded-xl border border-red-100">
+                <div class="text-3xl mb-2">❌</div>
+                <p>请求发生错误，请检查网络连接或后台服务日志。</p>
+            </div>
+        `;
+        saveRecommendPageState({
+            resultsHtml: results.innerHTML,
+            resultsHeaderHidden: true
+        });
+    } finally {
+        // 恢复按钮状态
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        spinner.classList.add('hidden');
+        btnText.textContent = '重新筛选';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    restoreRecommendPageState();
+
+    const form = document.getElementById('recommend-form');
+    form.criteria.addEventListener('input', () => saveRecommendPageState());
+    form.querySelectorAll('input[name="read_status"], input[name="analysis_mode"]').forEach(input => {
+        input.addEventListener('change', () => saveRecommendPageState());
+    });
+    window.addEventListener('pagehide', () => saveRecommendPageState({
+        resultsHtml: document.getElementById('results-container')?.innerHTML || '',
+        resultsHeaderHidden: document.getElementById('results-header')?.classList.contains('hidden') || false,
+        currentWosCsvData: window.currentWosCsvData
+    }));
+});
+</script>
+{% endblock %}

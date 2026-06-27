@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-8 pb-12">
+    <div class="cyber-hero p-6 mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 relative z-10">
+        <div>
+            <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">Source Control Center</div>
+            <h2 class="cyber-title text-4xl font-black">订阅管理与更新</h2>
+            <p class="text-sm text-gray-500 mt-2">统一管理 RSS、PubMed、OpenAlex、顶会和 arXiv 数据源的抓取策略。</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <span class="cyber-chip">RSS</span>
+            <span class="cyber-chip">PubMed</span>
+            <span class="cyber-chip">OpenAlex</span>
+            <span class="cyber-chip">Conference</span>
+            <span class="cyber-chip">arXiv</span>
+        </div>
+    </div>
+</div>
+    
+    <!-- 添加订阅 -->
+    <div class="cyber-console border rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <span class="cyber-step-index">1</span>
+            <h3 class="text-lg font-bold text-gray-800">添加订阅</h3>
+        </div>
+        <form action="{{ url_for('subscriptions') }}" method="POST" class="flex flex-wrap items-center gap-4">
+            <input type="hidden" name="action" value="add">
+            <select name="sub_type" id="sub_type_select" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-700" onchange="updateSubValuePlaceholder(this)">
+                <option value="rss">RSS</option>
+                <option value="pubmed">PubMed</option>
+                <option value="openalex">OpenAlex</option>
+                <option value="conference">顶会</option>
+                <option value="arxiv">arXiv</option>
+            </select>
+            <input type="text" name="source_name" id="source_name_input" placeholder="名称/备注 (如 Nature)" required class="w-32 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            <input type="text" name="sub_value" id="sub_value_input" placeholder="输入 RSS XML 链接" required class="flex-1 min-w-[200px] border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            <select id="conference_select" class="hidden flex-1 min-w-[200px] border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" onchange="selectConference(this)">
+                <option value="">选择顶会</option>
+                {% for group_name, conferences in conference_groups.items() %}
+                <optgroup label="{{ group_name }}">
+                    {% for conf in conferences %}
+                    <option value="{{ conf.query }}" data-name="{{ conf.name }}">{{ conf.name }}</option>
+                    {% endfor %}
+                </optgroup>
+                {% endfor %}
+            </select>
+            <div class="flex items-center space-x-2">
+                <label class="text-sm text-gray-600">抓取</label>
+                <input type="number" name="fetch_days" value="7" min="1" class="w-16 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-center" title="抓取最近几天的数据">
+                <span class="text-sm text-gray-600">天</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <label class="text-sm text-gray-600">保留</label>
+                <input type="number" name="retention_days" value="30" min="1" class="w-16 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-center" title="收件箱保留几天的数据">
+                <span class="text-sm text-gray-600">天</span>
+            </div>
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm shrink-0">添加</button>
+        </form>
+        <p class="text-sm text-gray-500 mt-3" id="sub_help_text">提示：添加订阅支持 RSS 链接。抓取天数决定每次拉取多旧的文章，保留天数决定待处理列表中文章过期自动清理的时间。</p>
+    </div>
+
+    <!-- 内置期刊库 -->
+    <div class="cyber-console border rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <span class="cyber-step-index">1b</span>
+            <h3 class="text-lg font-bold text-gray-800">内置期刊库 ({{ builtin_journals|length }} 种)</h3>
+        </div>
+        <div class="mb-3">
+            <input type="text" id="journal-search" placeholder="搜索期刊名称..." class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" oninput="filterJournals()">
+        </div>
+
+        <div id="journal-browser" class="max-h-[420px] overflow-y-auto pr-1 space-y-2">
+            {% set publishers = {} %}
+            {% for j in builtin_journals %}
+                {% set _ = publishers.setdefault(j.publisher, []) %}
+                {% set _ = publishers[j.publisher].append(j) %}
+            {% endfor %}
+
+            {% for pub_name, pub_journals in publishers.items() %}
+            <details class="journal-group" open>
+                <summary class="journal-group__title cursor-pointer text-sm font-bold text-gray-700 py-1.5 border-b border-gray-100 flex items-center justify-between">
+                    <span>{{ pub_name }}</span>
+                    <span class="text-xs text-gray-400 font-normal">{{ pub_journals|length }} 种</span>
+                </summary>
+                <div class="journal-group__list grid grid-cols-1 sm:grid-cols-2 gap-0.5 pt-1 pb-2">
+                    {% for j in pub_journals %}
+                    <button type="button"
+                        class="journal-item text-left text-sm px-2 py-1 rounded hover:bg-blue-50 hover:text-blue-700 transition flex items-center justify-between group"
+                        data-name="{{ j.name }}"
+                        data-url="{{ j.url }}"
+                        data-publisher="{{ j.publisher }}"
+                        onclick="selectBuiltinJournal(this)">
+                        <span class="truncate mr-2">{{ j.name }}</span>
+                        <span class="text-[10px] text-gray-300 group-hover:text-blue-400 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">+添加</span>
+                    </button>
+                    {% endfor %}
+                </div>
+            </details>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function updateSubValuePlaceholder(select) {
+            const input = document.getElementById('sub_value_input');
+            const sourceNameInput = document.getElementById('source_name_input');
+            const conferenceSelect = document.getElementById('conference_select');
+            const helpText = document.getElementById('sub_help_text');
+            input.classList.remove('hidden');
+            conferenceSelect.classList.add('hidden');
+            input.required = true;
+            conferenceSelect.required = false;
+            if (select.value === 'rss') {
+                input.placeholder = "输入 RSS XML 链接";
+                helpText.textContent = "提示：添加订阅支持 RSS 链接。抓取天数决定每次拉取多旧的文章，保留天数决定待处理列表中文章过期自动清理的时间。";
+            } else if (select.value === 'pubmed') {
+                input.placeholder = "输入检索词 (如 Cancer, Machine Learning)";
+                helpText.textContent = "提示：输入 PubMed 检索词，系统将定期自动拉取匹配的最新文献。";
+            } else if (select.value === 'openalex') {
+                input.placeholder = "输入期刊名称 (如 Nature, Science)";
+                helpText.textContent = "提示：输入目标期刊的完整名称，系统将通过 OpenAlex 定期拉取最新文献。";
+            } else if (select.value === 'conference') {
+                input.classList.add('hidden');
+                conferenceSelect.classList.remove('hidden');
+                input.required = false;
+                conferenceSelect.required = true;
+                input.placeholder = "选择或输入顶会检索词";
+                if (!sourceNameInput.value) sourceNameInput.placeholder = "顶会名称 (如 NeurIPS)";
+                helpText.textContent = "提示：选择顶会后会作为普通订阅源参与一键更新，并进入收件箱展示。";
+            } else if (select.value === 'arxiv') {
+                input.placeholder = "输入分类 (如 cs.AI)";
+                helpText.textContent = "提示：输入 arXiv 分类代码，系统将定期拉取该分类的最新预印本。";
+            }
+        }
+
+        function selectConference(select) {
+            const selected = select.options[select.selectedIndex];
+            document.getElementById('sub_value_input').value = select.value;
+            document.getElementById('source_name_input').value = selected.dataset.name || '';
+        }
+
+        function selectBuiltinJournal(el) {
+            document.getElementById('sub_type_select').value = 'rss';
+            updateSubValuePlaceholder(document.getElementById('sub_type_select'));
+            document.getElementById('source_name_input').value = el.dataset.name;
+            document.getElementById('sub_value_input').value = el.dataset.url;
+            document.getElementById('sub_value_input').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterJournals() {
+            const q = (document.getElementById('journal-search').value || '').toLowerCase();
+            document.querySelectorAll('.journal-group').forEach(group => {
+                let anyVisible = false;
+                group.querySelectorAll('.journal-item').forEach(item => {
+                    const name = (item.dataset.name || '').toLowerCase();
+                    const pub = (item.dataset.publisher || '').toLowerCase();
+                    const visible = !q || name.includes(q) || pub.includes(q);
+                    item.style.display = visible ? '' : 'none';
+                    if (visible) anyVisible = true;
+                });
+                group.open = anyVisible && !!q;
+                group.style.display = anyVisible || !q ? '' : 'none';
+            });
+        }
+    </script>
+
+    <!-- 订阅列表 -->
+    <div class="cyber-console border rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">我的订阅</h3>
+            <div class="flex items-center space-x-2">
+                <a href="{{ url_for('export_subscriptions', format='txt') }}" class="px-3 py-1.5 bg-white text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition flex items-center gap-1.5 border border-gray-200 shadow-sm" title="导出为纯文本格式">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    TXT
+                </a>
+                <a href="{{ url_for('export_subscriptions', format='opml') }}" class="px-3 py-1.5 bg-white text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition flex items-center gap-1.5 border border-gray-200 shadow-sm" title="导出为 OPML 格式，可导入其他 RSS 阅读器">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    OPML
+                </a>
+            </div>
+        </div>
+        {% if subs %}
+        <ul class="space-y-3">
+            {% for sub in subs %}
+            <li class="flex flex-wrap items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 gap-3">
+                <div class="flex items-center space-x-3 overflow-hidden flex-1 min-w-[250px]">
+                    <span class="px-2 py-1 {% if sub.sub_type == 'pubmed' %}bg-green-100 text-green-700{% elif sub.sub_type == 'arxiv' %}bg-red-100 text-red-700{% elif sub.sub_type == 'openalex' %}bg-purple-100 text-purple-700{% elif sub.sub_type == 'conference' %}bg-indigo-100 text-indigo-700{% else %}bg-orange-100 text-orange-700{% endif %} text-xs font-bold rounded uppercase shrink-0">{{ sub.sub_type }}</span>
+                    <span class="font-bold text-gray-800 shrink-0">{{ sub.source_name }}</span>
+                    <span class="text-gray-500 text-sm truncate" title="{{ sub.sub_value }}">{{ sub.sub_value }}</span>
+                </div>
+                <div class="flex items-center gap-4 shrink-0">
+                    <form action="{{ url_for('subscriptions') }}" method="POST" class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="sub_value" value="{{ sub.sub_value }}">
+                        
+                        <div class="flex items-center w-full md:w-auto mb-2 md:mb-0">
+                            <label class="text-xs text-gray-500 mr-2 whitespace-nowrap">名称</label>
+                            <input type="text" name="source_name" value="{{ sub.source_name }}" required class="flex-1 md:w-32 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="flex items-center w-1/2 md:w-auto pr-1 md:pr-0">
+                            <label class="text-xs text-gray-500 mr-1 whitespace-nowrap">抓取(天)</label>
+                            <input type="number" name="fetch_days" value="{{ sub.fetch_days or 7 }}" min="1" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
+                        </div>
+                        
+                        <div class="flex items-center w-1/2 md:w-auto pl-1 md:pl-0">
+                            <label class="text-xs text-gray-500 mr-1 whitespace-nowrap">保留(天)</label>
+                            <input type="number" name="retention_days" value="{{ sub.retention_days or 30 }}" min="1" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
+                        </div>
+                        
+                        <div class="flex items-center justify-end w-full md:w-auto mt-2 md:mt-0 space-x-2">
+                            <button type="submit" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 rounded hover:bg-blue-50 transition border border-blue-200 shadow-sm">保存</button>
+                        </div>
+                    </form>
+                    <div class="w-px h-6 bg-gray-300 hidden md:block mx-2"></div>
+                    <form action="{{ url_for('subscriptions') }}" method="POST" class="shrink-0 ml-auto md:ml-0 mt-2 md:mt-0" onsubmit="return confirm('确定要删除该订阅及相关待处理文献吗？');">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="sub_value" value="{{ sub.sub_value }}">
+                        <input type="hidden" name="source_name" value="{{ sub.source_name }}">
+                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 rounded hover:bg-red-50 transition border border-red-200 shadow-sm">删除</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-500 text-sm py-4 text-center border border-dashed border-gray-200 rounded-lg">暂无订阅，请在上方添加。</p>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 手动获取 -->
+        <div class="cyber-console">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="cyber-step-index">2</span>
+                <h3 class="text-lg font-bold text-gray-800">手动单篇获取</h3>
+            </div>
+            <form action="{{ url_for('subscriptions') }}" method="POST" class="space-y-4">
+                <input type="hidden" name="action" value="fetch_manual">
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm text-gray-600">arXiv 文献 ID</label>
+                    <input type="text" name="arxiv_id" placeholder="例如: 2106.09685" required class="border border-gray-300 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition font-medium shadow-sm mt-4">定向抓取</button>
+            </form>
+        </div>
+
+        <!-- 导入订阅 -->
+        <div class="cyber-console">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="cyber-step-index">3</span>
+                <h3 class="text-lg font-bold text-gray-800">批量导入订阅</h3>
+            </div>
+            <form action="{{ url_for('import_subscriptions') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm text-gray-600">上传 .txt 或 .opml 文件</label>
+                    <input type="file" name="file" accept=".txt,.opml,.xml" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm mt-4">上传并导入</button>
+            </form>
+            <p class="text-xs text-gray-500 mt-3">支持包含 RSS XML 链接的文件。TXT 格式每行一个链接或"名称:链接"；OPML 格式支持标准阅读器导出文件。</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="h-full flex flex-col overflow-hidden">
+    <div class="flex-1 overflow-y-auto p-6">
+        <div class="cyber-hero p-6 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 relative z-10">
+                <div>
+                    <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">Conference Radar</div>
+                    <h2 class="cyber-title text-4xl font-black">顶会最近论文</h2>
+                    <p class="text-sm text-gray-500 mt-2">选择 AI、CV、NLP、数据挖掘等方向顶会，从 OpenAlex 扫描最近论文并导出 CSV。需要定期更新时，可在 <a href="{{ url_for('subscriptions') }}" class="text-indigo-600 hover:underline">订阅管理</a> 中添加“顶会”订阅。</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="cyber-chip">AI/ML</span>
+                    <span class="cyber-chip">CV</span>
+                    <span class="cyber-chip">NLP</span>
+                    <span class="cyber-chip">Data</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-grid-dashboard mb-6">
+            <div class="cyber-console">
+            <form id="top-conf-form" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
+                        <input type="date" name="start_date" required value="{{ default_start }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">结束日期</label>
+                        <input type="date" name="end_date" required value="{{ default_end }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">拉取上限</label>
+                        <input type="number" name="max_results" value="300" min="1" max="2000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">OpenAlex API Key（可选）</label>
+                        <input type="text" name="api_key" placeholder="提升速率和稳定性" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    {% for group_name, conferences in conference_groups.items() %}
+                    <div>
+                        <div class="text-sm font-bold text-gray-700 mb-2">{{ group_name }}</div>
+                        <div class="flex flex-wrap gap-2">
+                            {% for conf in conferences %}
+                            <label class="inline-flex items-center px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 hover:bg-indigo-50 cursor-pointer text-sm">
+                                <input type="checkbox" name="conference" value="{{ conf.key }}" class="mr-2 text-indigo-600" {% if conf.key in ['neurips', 'icml', 'iclr', 'cvpr', 'acl', 'kdd'] %}checked{% endif %}>
+                                <span>{{ conf.name }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button type="submit" id="btn-fetch-top-conf" class="bg-indigo-600 text-white font-medium py-2 px-5 rounded-lg hover:bg-indigo-700 transition duration-200">拉取顶会论文</button>
+                    <a id="btn-export" href="#" class="hidden bg-green-600 text-white font-medium py-2 px-5 rounded-lg hover:bg-green-700 transition duration-200">导出 CSV</a>
+                </div>
+            </form>
+            </div>
+            <aside class="cyber-scan-panel space-y-4">
+                <div class="text-xs uppercase tracking-[0.3em] text-gray-400">Scan Parameters</div>
+                <div class="cyber-step"><div class="font-bold text-cyan-100">会议矩阵</div><div class="text-xs text-gray-500 mt-1">左侧按领域选择会议，可多选组合扫描。</div></div>
+                <div class="cyber-step"><div class="font-bold text-violet-100">时间窗口</div><div class="text-xs text-gray-500 mt-1">顶会论文适合按年扫描，建议 365-730 天。</div></div>
+                <div class="cyber-step"><div class="font-bold text-lime-100">结果导出</div><div class="text-xs text-gray-500 mt-1">扫描完成后可用同一导出接口生成 CSV。</div></div>
+            </aside>
+        </div>
+
+        <div id="loading-area" class="hidden mb-6 bg-indigo-50 p-4 rounded-xl text-indigo-800 text-sm border border-indigo-100">正在通过 OpenAlex 拉取顶会论文...</div>
+        <div id="error-message" class="hidden mb-6 bg-red-50 p-4 rounded-xl text-red-800 text-sm border border-red-100"></div>
+
+        <div id="results-area" class="hidden space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="cyber-stat-card">
+                    <div class="text-sm text-gray-500">匹配会议源</div>
+                    <div id="stat-conference" class="mt-2 text-sm font-semibold text-gray-800 line-clamp-3">-</div>
+                </div>
+                <div class="cyber-stat-card">
+                    <div class="text-sm text-gray-500">原始拉取</div>
+                    <div id="stat-fetched" class="mt-2 text-2xl font-bold text-indigo-600">-</div>
+                </div>
+                <div class="cyber-stat-card">
+                    <div class="text-sm text-gray-500">去重后论文</div>
+                    <div id="stat-cleaned" class="mt-2 text-2xl font-bold text-green-600">-</div>
+                </div>
+            </div>
+
+            <div class="cyber-data-table">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">标题 / DOI</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">作者</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">会议源</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">年份</th>
+                            </tr>
+                        </thead>
+                        <tbody id="works-table-body" class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('top-conf-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-fetch-top-conf');
+        const loading = document.getElementById('loading-area');
+        const error = document.getElementById('error-message');
+        const results = document.getElementById('results-area');
+        const exportBtn = document.getElementById('btn-export');
+
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+        loading.classList.remove('hidden');
+        error.classList.add('hidden');
+        results.classList.add('hidden');
+        exportBtn.classList.add('hidden');
+
+        try {
+            const response = await fetch("{{ url_for('api_top_conferences_fetch') }}", {
+                method: 'POST',
+                body: new FormData(this)
+            });
+            const data = await response.json();
+
+            if (!data.success) {
+                error.textContent = data.message;
+                error.classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('stat-conference').textContent = data.conference_matched;
+            document.getElementById('stat-fetched').textContent = data.total_fetched;
+            document.getElementById('stat-cleaned').textContent = data.total_cleaned;
+            exportBtn.href = `/api/openalex/export/${data.session_id}`;
+            exportBtn.classList.remove('hidden');
+            renderTable(data.works || []);
+            results.classList.remove('hidden');
+        } catch (err) {
+            error.textContent = '请求失败: ' + err.message;
+            error.classList.remove('hidden');
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-70');
+            loading.classList.add('hidden');
+        }
+    });
+
+    function escapeHtml(value) {
+        return String(value || '').replace(/[&<>'"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[ch]));
+    }
+
+    function renderTable(works) {
+        const tbody = document.getElementById('works-table-body');
+        tbody.innerHTML = '';
+
+        works.forEach(w => {
+            const tr = document.createElement('tr');
+            const title = escapeHtml(w.title);
+            const authors = escapeHtml(w.authors || '-');
+            const journal = escapeHtml(w.journal || '-');
+            const year = escapeHtml(w.publication_year || '-');
+            const doi = w.doi ? `<br><a href="https://doi.org/${escapeHtml(w.doi)}" target="_blank" class="text-blue-500 hover:underline text-xs">${escapeHtml(w.doi)}</a>` : '';
+
+            tr.innerHTML = `
+                <td class="px-6 py-4"><div class="text-sm font-medium text-gray-900 line-clamp-2" title="${title}">${title}</div>${doi}</td>
+                <td class="px-6 py-4"><div class="text-sm text-gray-500 line-clamp-2" title="${authors}">${authors}</div></td>
+                <td class="px-6 py-4"><div class="text-sm text-gray-700 line-clamp-2" title="${journal}">${journal}</div></td>
+                <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${year}</div></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+</script>
+{% endblock %}

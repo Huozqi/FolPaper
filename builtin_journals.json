@@ -1,0 +1,2438 @@
+[
+  {
+    "name": "**PNAS**",
+    "url": "https://www.pnas.org/action/showFeed?type=etoc&feed=rss",
+    "publisher": "其他",
+    "sub": "其他"
+  },
+  {
+    "name": "Nature",
+    "url": "https://www.nature.com/nature.rss",
+    "publisher": "Nature 系列",
+    "sub": "旗舰刊"
+  },
+  {
+    "name": "Nature (旧版)",
+    "url": "https://feeds.nature.com/nature/rss/current",
+    "publisher": "Nature 系列",
+    "sub": "旗舰刊"
+  },
+  {
+    "name": "Nature Chemistry",
+    "url": "https://www.nature.com/nchem.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Materials",
+    "url": "https://www.nature.com/nmat.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Nanotechnology",
+    "url": "https://www.nature.com/nnano.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Catalysis",
+    "url": "https://www.nature.com/natcatal.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Communications",
+    "url": "https://www.nature.com/ncomms.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Physics",
+    "url": "https://www.nature.com/nphys.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Photonics",
+    "url": "https://www.nature.com/nphoton.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Energy",
+    "url": "https://www.nature.com/nenergy.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Sustainability",
+    "url": "https://www.nature.com/natsustain.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Methods",
+    "url": "https://www.nature.com/nmeth.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Biotechnology",
+    "url": "https://www.nature.com/nbt.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Biomedical Engineering",
+    "url": "https://www.nature.com/natbiomedeng.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Electronics",
+    "url": "https://www.nature.com/natelectron.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Machine Intelligence",
+    "url": "https://www.nature.com/natmachintell.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Computational Science",
+    "url": "https://www.nature.com/natcomputsci.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Reviews Chemistry",
+    "url": "https://www.nature.com/natrevchem.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Reviews Materials",
+    "url": "https://www.nature.com/natrevmats.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Synthesis",
+    "url": "https://www.nature.com/natsynth.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Water",
+    "url": "https://www.nature.com/natwater.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Chemical Engineering",
+    "url": "https://www.nature.com/natchemeng.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Chemical Biology",
+    "url": "https://www.nature.com/nchembio.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Scientific Reports",
+    "url": "https://www.nature.com/srep.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Scientific Data",
+    "url": "https://www.nature.com/sdata.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Communications Chemistry",
+    "url": "https://www.nature.com/commschem.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Communications Materials",
+    "url": "https://www.nature.com/commsmat.rss",
+    "publisher": "Nature 系列",
+    "sub": "子刊精选"
+  },
+  {
+    "name": "Nature Medicine",
+    "url": "https://www.nature.com/nm.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Immunology",
+    "url": "https://www.nature.com/ni.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Cell Biology",
+    "url": "https://www.nature.com/ncb.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Structural & Molecular Biology",
+    "url": "https://www.nature.com/nsmb.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Reviews Molecular Cell Biology",
+    "url": "https://www.nature.com/nrm.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Reviews Immunology",
+    "url": "https://www.nature.com/nri.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Reviews Microbiology",
+    "url": "https://www.nature.com/nrmicro.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Reviews Drug Discovery",
+    "url": "https://www.nature.com/nrd.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Nature Protocols",
+    "url": "https://www.nature.com/nprot.rss",
+    "publisher": "Nature 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science Advances",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science Immunology",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciimmunol",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science Translational Medicine",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=stm",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science Robotics",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=scirobotics",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "Science Signaling",
+    "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling",
+    "publisher": "Science 系列",
+    "sub": "生命科学"
+  },
+  {
+    "name": "J. Am. Chem. Soc.",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jacsat",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "Chemical Reviews",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=chreay",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "Accounts of Chemical Research",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=achre4",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "Accounts of Materials Research",
+    "url": "https://pubs.acs.org/rss/accmaterres",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "ACS Central Science",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acscii",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "Chemical & Biomedical Imaging",
+    "url": "https://pubs.acs.org/rss/cbimid",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "Chemistry of Materials",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=cmatex",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "C&EN Latest News",
+    "url": "https://cen.acs.org/rss/latest",
+    "publisher": "ACS 系列",
+    "sub": "🧪 化学综合与核心期刊"
+  },
+  {
+    "name": "J. Agricultural and Food Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jafcau",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS Agricultural Science & Technology",
+    "url": "https://pubs.acs.org/rss/agsct",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS Food Science & Technology",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=afsthl",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS ES&T Air",
+    "url": "https://pubs.acs.org/rss/estair",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS ES&T Engineering",
+    "url": "https://pubs.acs.org/rss/estengg",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS ES&T Toxicology",
+    "url": "https://pubs.acs.org/rss/esttox",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS ES&T Water",
+    "url": "https://pubs.acs.org/rss/estwater",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS Environmental Au",
+    "url": "https://pubs.acs.org/rss/acsenvironau",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "Environmental Science & Technology",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=esthag",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "Environmental Science & Technology Letters",
+    "url": "https://pubs.acs.org/rss/estlett",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "Environmental Health Perspectives",
+    "url": "https://ehp.niehs.nih.gov/rss/",
+    "publisher": "ACS 系列",
+    "sub": "🌱 农业、食品与环境"
+  },
+  {
+    "name": "ACS Applied Materials & Interfaces",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aamick",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Applied Nano Materials",
+    "url": "https://pubs.acs.org/rss/acsanm",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Applied Energy Materials",
+    "url": "https://pubs.acs.org/rss/acsaelm",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Applied Catalysis",
+    "url": "https://pubs.acs.org/rss/acsapcat",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Applied Engineering Materials",
+    "url": "https://pubs.acs.org/rss/acsapem",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Applied Polymer Materials",
+    "url": "https://pubs.acs.org/rss/acsapm",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Engineering Au",
+    "url": "https://pubs.acs.org/rss/acsenau",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Energy Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aelccp",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Photonics",
+    "url": "https://pubs.acs.org/rss/acsphotonics",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Sensors",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ascefj",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Sustainable Chemistry & Engineering",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ascecg",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Catalysis",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=accacs",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Materials Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amlcef",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Nano",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ancac3",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Nano Medicine",
+    "url": "https://pubs.acs.org/rss/acsnanomed",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "ACS Nanoscience Au",
+    "url": "https://pubs.acs.org/rss/acsnsau",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Nano Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=nalefd",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Crystal Growth & Design",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=cgdefu",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Langmuir",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=langd5",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Macromolecules",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=mamobx",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Industrial & Engineering Chemistry Research",
+    "url": "https://pubs.acs.org/rss/iecr",
+    "publisher": "ACS 系列",
+    "sub": "⚡ 能源、应用与工程"
+  },
+  {
+    "name": "Biochemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bichaw",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Bioconjugate Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bcches",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Biomacromolecules",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bomaf6",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Bio & Med Chem Au",
+    "url": "https://pubs.acs.org/rss/acsbiomedchemau",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Biomaterials Science & Engineering",
+    "url": "https://pubs.acs.org/rss/acsbiomater",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Chemical Biology",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acbcct",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Chemical Health & Safety",
+    "url": "https://pubs.acs.org/rss/chemsafety",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Chemical Neuroscience",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acncdm",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Earth and Space Chemistry",
+    "url": "https://pubs.acs.org/rss/acsesci",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Infectious Diseases",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aidcbc",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Medicinal Chemistry Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amclct",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Pharmacology & Translational Science",
+    "url": "https://pubs.acs.org/rss/acsptsci",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "ACS Synthetic Biology",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=asbcd6",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Chemical Research in Toxicology",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=crtoec",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "J. Medicinal Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jmcmar",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "J. Natural Products",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jnprdf",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "J. Proteome Research",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jprobs",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Molecular Pharmaceutics",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=mpohbp",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Organic Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=orlef7",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "The Journal of Organic Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=joceah",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Organic Process Research & Development",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=oprdfk",
+    "publisher": "ACS 系列",
+    "sub": "🧬 生物、医药与健康"
+  },
+  {
+    "name": "Analytical Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ancham",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "ACS Measurement Science Au",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amachv",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Artificial Photosynthesis",
+    "url": "https://pubs.acs.org/rss/acsap",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Chemical Physics Au",
+    "url": "https://pubs.acs.org/rss/acscpa",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Energy & Fuels",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=enfuem",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Inorganic Chemistry",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=inocaj",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Organometallics",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=orgnd7",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Chemical & Engineering Data",
+    "url": "https://pubs.acs.org/rss/jced",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Chemical Education",
+    "url": "https://pubs.acs.org/rss/jchemeduc",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Chemical Information and Modeling",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jcisd8",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Chemical Theory and Computation",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jctcce",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Physical Chemistry A",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpcafh",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Physical Chemistry B",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpcbfk",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Physical Chemistry C",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpccck",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "J. Physical Chemistry Letters",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpclcd",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "JACS Au",
+    "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jaaucr",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Photon Science",
+    "url": "https://pubs.acs.org/rss/acsps",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "Precision Chemistry",
+    "url": "https://pubs.acs.org/rss/precision",
+    "publisher": "ACS 系列",
+    "sub": "⚛️ 物理、理论与分析化学"
+  },
+  {
+    "name": "ACS Materials Au",
+    "url": "https://pubs.acs.org/rss/acsmat",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ACS Omega",
+    "url": "https://pubs.acs.org/rss/acsomega",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ACS Organic & Inorganic Au",
+    "url": "https://pubs.acs.org/rss/acsorgau",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ACS Physical Chemistry Au",
+    "url": "https://pubs.acs.org/rss/acsphysau",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ACS Polymers Au",
+    "url": "https://pubs.acs.org/rss/acspsau",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ACS Sustainable Resource Management",
+    "url": "https://pubs.acs.org/rss/acsrm",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chem & Bio Engineering",
+    "url": "https://pubs.acs.org/rss/cbie",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Digital Medical Engineering",
+    "url": "https://pubs.acs.org/rss/dime",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Polymer Science & Technology",
+    "url": "https://pubs.acs.org/rss/acspt",
+    "publisher": "ACS 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemical Science",
+    "url": "http://feeds.rsc.org/rss/sc",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemical Society Reviews",
+    "url": "http://feeds.rsc.org/rss/cs",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemical Communications",
+    "url": "http://feeds.rsc.org/rss/cc",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Energy & Environmental Science",
+    "url": "http://feeds.rsc.org/rss/ee",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Journal of Materials Chemistry A",
+    "url": "http://feeds.rsc.org/rss/ta",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Journal of Materials Chemistry B",
+    "url": "http://feeds.rsc.org/rss/tb",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Journal of Materials Chemistry C",
+    "url": "http://feeds.rsc.org/rss/tc",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Materials Horizons",
+    "url": "http://feeds.rsc.org/rss/mh",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Nanoscale",
+    "url": "http://feeds.rsc.org/rss/nr",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Nanoscale Horizons",
+    "url": "http://feeds.rsc.org/rss/nh",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Nanoscale Advances",
+    "url": "http://feeds.rsc.org/rss/na",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Physical Chemistry Chemical Physics",
+    "url": "http://feeds.rsc.org/rss/cp",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Green Chemistry",
+    "url": "http://feeds.rsc.org/rss/gc",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Polymer Chemistry",
+    "url": "http://feeds.rsc.org/rss/py",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Organic Chemistry Frontiers",
+    "url": "http://feeds.rsc.org/rss/qo",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Organic & Biomolecular Chemistry",
+    "url": "http://feeds.rsc.org/rss/ob",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Inorganic Chemistry Frontiers",
+    "url": "http://feeds.rsc.org/rss/qi",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "New Journal of Chemistry",
+    "url": "http://feeds.rsc.org/rss/nj",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Natural Product Reports",
+    "url": "http://feeds.rsc.org/rss/np",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Analyst",
+    "url": "http://feeds.rsc.org/rss/an",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Analytical Methods",
+    "url": "http://feeds.rsc.org/rss/ay",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Analytical Atomic Spectrometry",
+    "url": "http://feeds.rsc.org/rss/ja",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Catalysis Science & Technology",
+    "url": "http://feeds.rsc.org/rss/cy",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "CrystEngComm",
+    "url": "http://feeds.rsc.org/rss/ce",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Dalton Transactions",
+    "url": "http://feeds.rsc.org/rss/dt",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Faraday Discussions",
+    "url": "http://feeds.rsc.org/rss/fd",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Soft Matter",
+    "url": "http://feeds.rsc.org/rss/sm",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Lab on a Chip",
+    "url": "http://feeds.rsc.org/rss/lc",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Reaction Chemistry & Engineering",
+    "url": "http://feeds.rsc.org/rss/re",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Environmental Science: Nano",
+    "url": "http://feeds.rsc.org/rss/en",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Environmental Science: Processes & Impacts",
+    "url": "http://feeds.rsc.org/rss/em",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Environmental Science: Water Research & Technology",
+    "url": "http://feeds.rsc.org/rss/ew",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Environmental Science: Advances",
+    "url": "http://feeds.rsc.org/rss/va",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Environmental Science: Atmospheres",
+    "url": "http://feeds.rsc.org/rss/ea",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Food & Function",
+    "url": "http://feeds.rsc.org/rss/fo",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Materials Chemistry Frontiers",
+    "url": "http://feeds.rsc.org/rss/qm",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Materials Advances",
+    "url": "http://feeds.rsc.org/rss/ma",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Molecular Systems Design & Engineering",
+    "url": "http://feeds.rsc.org/rss/me",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Advances",
+    "url": "http://feeds.rsc.org/rss/ra",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Chemical Biology",
+    "url": "http://feeds.rsc.org/rss/cb",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Medicinal Chemistry",
+    "url": "http://feeds.rsc.org/rss/md",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Mechanochemistry",
+    "url": "http://feeds.rsc.org/rss/mr",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Pharmaceutics",
+    "url": "http://feeds.rsc.org/rss/pm",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Applied Polymers",
+    "url": "http://feeds.rsc.org/rss/lp",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Applied Interfaces",
+    "url": "http://feeds.rsc.org/rss/lf",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "RSC Sustainability",
+    "url": "http://feeds.rsc.org/rss/su",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Sustainable Energy & Fuels",
+    "url": "http://feeds.rsc.org/rss/se",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Sustainable Food Technology",
+    "url": "http://feeds.rsc.org/rss/fb",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Energy Advances",
+    "url": "http://feeds.rsc.org/rss/ya",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "EES Batteries",
+    "url": "http://feeds.rsc.org/rss/eb",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "EES Catalysis",
+    "url": "http://feeds.rsc.org/rss/ey",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "EES Solar",
+    "url": "http://feeds.rsc.org/rss/el",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Sensors & Diagnostics",
+    "url": "http://feeds.rsc.org/rss/sd",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Digital Discovery",
+    "url": "http://feeds.rsc.org/rss/dd",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Industrial Chemistry & Materials",
+    "url": "http://feeds.rsc.org/rss/im",
+    "publisher": "RSC 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Angewandte Chemie Int. Ed.",
+    "url": "https://onlinelibrary.wiley.com/feed/15213773/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Advanced Materials",
+    "url": "https://onlinelibrary.wiley.com/feed/15214095/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Advanced Functional Materials",
+    "url": "https://onlinelibrary.wiley.com/feed/16163028/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemistry - A European Journal",
+    "url": "https://onlinelibrary.wiley.com/feed/15213765/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "European J. Organic Chemistry",
+    "url": "https://onlinelibrary.wiley.com/feed/10990690/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Macromolecular Rapid Communications",
+    "url": "https://onlinelibrary.wiley.com/feed/15213927/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Small",
+    "url": "https://onlinelibrary.wiley.com/feed/16136829/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Advanced Energy Materials",
+    "url": "https://onlinelibrary.wiley.com/feed/16146840/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Advanced Science",
+    "url": "https://onlinelibrary.wiley.com/feed/21983844/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ChemSusChem",
+    "url": "https://onlinelibrary.wiley.com/feed/1864564X/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ChemCatChem",
+    "url": "https://onlinelibrary.wiley.com/feed/18673899/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemistry - An Asian Journal",
+    "url": "https://onlinelibrary.wiley.com/feed/1861471X/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "InfoMat",
+    "url": "https://onlinelibrary.wiley.com/feed/25673165/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Medicinal Research Reviews",
+    "url": "https://onlinelibrary.wiley.com/feed/10981128/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Drug Development Research",
+    "url": "https://onlinelibrary.wiley.com/feed/10982299/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Archiv der Pharmazie",
+    "url": "https://onlinelibrary.wiley.com/feed/15214184/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "ChemMedChem",
+    "url": "https://chemistry-europe.onlinelibrary.wiley.com/feed/18607187/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Advanced Synthesis & Catalysis",
+    "url": "https://advanced.onlinelibrary.wiley.com/feed/16154169/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Asian J. Organic Chemistry",
+    "url": "https://aces.onlinelibrary.wiley.com/feed/21935815/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chinese J. Chemistry",
+    "url": "https://onlinelibrary.wiley.com/feed/16147065/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Helvetica Chimica Acta",
+    "url": "https://onlinelibrary.wiley.com/feed/15222675/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Heterocyclic Chemistry",
+    "url": "https://onlinelibrary.wiley.com/feed/19435193/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Clinical Pharmacology & Therapeutics",
+    "url": "https://ascpt.onlinelibrary.wiley.com/feed/15326535/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "British J. Clinical Pharmacology",
+    "url": "https://bpspubs.onlinelibrary.wiley.com/feed/13652125/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Biopharmaceutics & Drug Disposition",
+    "url": "https://onlinelibrary.wiley.com/feed/1099081X/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Molecular Nutrition & Food Research",
+    "url": "https://onlinelibrary.wiley.com/feed/16134133/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Food Science",
+    "url": "https://onlinelibrary.wiley.com/feed/17503841/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Comprehensive Reviews in Food Science and Food Safety",
+    "url": "https://onlinelibrary.wiley.com/feed/15414337/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "International J. Food Science & Technology",
+    "url": "https://onlinelibrary.wiley.com/feed/13652621/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Science of Food and Agriculture",
+    "url": "https://onlinelibrary.wiley.com/feed/10970010/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Electroanalysis",
+    "url": "https://onlinelibrary.wiley.com/feed/15214109/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Electrophoresis",
+    "url": "https://onlinelibrary.wiley.com/feed/15222683/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Mass Spectrometry Reviews",
+    "url": "https://onlinelibrary.wiley.com/feed/10982787/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Mass Spectrometry",
+    "url": "https://onlinelibrary.wiley.com/feed/10969888/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Rapid Comm. Mass Spectrometry",
+    "url": "https://onlinelibrary.wiley.com/feed/10970231/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Computational Chemistry",
+    "url": "https://onlinelibrary.wiley.com/feed/1096987X/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Molecular Informatics",
+    "url": "https://onlinelibrary.wiley.com/feed/18681751/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Proteomics",
+    "url": "https://onlinelibrary.wiley.com/feed/16159861/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Biotechnology and Bioengineering",
+    "url": "https://onlinelibrary.wiley.com/feed/10970290/most-recent",
+    "publisher": "Wiley 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Tetrahedron",
+    "url": "https://rss.sciencedirect.com/publication/science/00404020",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Tetrahedron Letters",
+    "url": "https://rss.sciencedirect.com/publication/science/00404039",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Carbohydrate Polymers",
+    "url": "https://rss.sciencedirect.com/publication/science/01448617",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Carbohydrate Research",
+    "url": "https://rss.sciencedirect.com/publication/science/00086215",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "J. Organometallic Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/0022328X",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Sensors and Actuators A",
+    "url": "https://rss.sciencedirect.com/publication/science/09244247",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Sensors and Actuators B",
+    "url": "https://rss.sciencedirect.com/publication/science/09254005",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Chemical Engineering Journal",
+    "url": "https://rss.sciencedirect.com/publication/science/13858947",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Journal of Hazardous Materials",
+    "url": "https://rss.sciencedirect.com/publication/science/03043894",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Carbon",
+    "url": "https://rss.sciencedirect.com/publication/science/00086223",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Applied Surface Science",
+    "url": "https://rss.sciencedirect.com/publication/science/01694332",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Coordination Chemistry Reviews",
+    "url": "https://rss.sciencedirect.com/publication/science/00108545",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Progress in Materials Science",
+    "url": "https://rss.sciencedirect.com/publication/science/00796425",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Materials Today",
+    "url": "https://rss.sciencedirect.com/publication/science/13697021",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Biomaterials",
+    "url": "https://rss.sciencedirect.com/publication/science/01429612",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Water Research",
+    "url": "https://rss.sciencedirect.com/publication/science/00431354",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Applied Catalysis B: Environmental",
+    "url": "https://rss.sciencedirect.com/publication/science/09263373",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Energy Storage Materials",
+    "url": "https://rss.sciencedirect.com/publication/science/24058297",
+    "publisher": "Elsevier 系列",
+    "sub": "🧩 其他学科与新刊"
+  },
+  {
+    "name": "Bioorganic & Medicinal Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/09680896",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Bioorganic & Medicinal Chemistry Letters",
+    "url": "https://rss.sciencedirect.com/publication/science/0960894X",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "European J. Medicinal Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/02235234",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Phytochemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/00319422",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Phytochemistry Letters",
+    "url": "https://rss.sciencedirect.com/publication/science/18743900",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Phytomedicine",
+    "url": "https://rss.sciencedirect.com/publication/science/09447113",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Biochemical Systematics and Ecology",
+    "url": "https://rss.sciencedirect.com/publication/science/03051978",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Current Opinion in Structural Biology",
+    "url": "https://rss.sciencedirect.com/publication/science/0959440X",
+    "publisher": "Elsevier 系列",
+    "sub": "有机化学 & 天然产物"
+  },
+  {
+    "name": "Drug Discovery Today",
+    "url": "https://rss.sciencedirect.com/publication/science/13596446",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "J. Pharmaceutical Sciences",
+    "url": "https://rss.sciencedirect.com/publication/science/00223549",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "European J. Pharmaceutics and Biopharmaceutics",
+    "url": "https://rss.sciencedirect.com/publication/science/09396411",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Int. J. Pharmaceutics",
+    "url": "https://rss.sciencedirect.com/publication/science/03785173",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "European J. Pharmaceutical Sciences",
+    "url": "https://rss.sciencedirect.com/publication/science/09280987",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Biochemical Pharmacology",
+    "url": "https://rss.sciencedirect.com/publication/science/00062952",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "J. Controlled Release",
+    "url": "https://rss.sciencedirect.com/publication/science/01683659",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Pharmacology & Therapeutics",
+    "url": "https://rss.sciencedirect.com/publication/science/01637258",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Toxicology and Applied Pharmacology",
+    "url": "https://rss.sciencedirect.com/publication/science/0041008X",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "J. Ethnopharmacology",
+    "url": "https://rss.sciencedirect.com/publication/science/03788741",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Fitoterapia",
+    "url": "https://rss.sciencedirect.com/publication/science/0367326X",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Biomedicine & Pharmacotherapy",
+    "url": "https://rss.sciencedirect.com/publication/science/07533322",
+    "publisher": "Elsevier 系列",
+    "sub": "药学"
+  },
+  {
+    "name": "Food Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/03088146",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Food Research International",
+    "url": "https://rss.sciencedirect.com/publication/science/09639969",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Food Hydrocolloids",
+    "url": "https://rss.sciencedirect.com/publication/science/0268005X",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Food Control",
+    "url": "https://rss.sciencedirect.com/publication/science/09567135",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Food and Chemical Toxicology",
+    "url": "https://rss.sciencedirect.com/publication/science/02786915",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "LWT - Food Science and Technology",
+    "url": "https://rss.sciencedirect.com/publication/science/00236438",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "J. Food Composition and Analysis",
+    "url": "https://rss.sciencedirect.com/publication/science/08891575",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Food Bioscience",
+    "url": "https://rss.sciencedirect.com/publication/science/22124292",
+    "publisher": "Elsevier 系列",
+    "sub": "食品科学"
+  },
+  {
+    "name": "Analytica Chimica Acta",
+    "url": "https://rss.sciencedirect.com/publication/science/00032670",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Talanta",
+    "url": "https://rss.sciencedirect.com/publication/science/00399140",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "J. Chromatography A",
+    "url": "https://rss.sciencedirect.com/publication/science/00219673",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "J. Chromatography B",
+    "url": "https://rss.sciencedirect.com/publication/science/15700232",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "TrAC - Trends in Analytical Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/01659936",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Microchemical J.",
+    "url": "https://rss.sciencedirect.com/publication/science/0026265X",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Biosensors and Bioelectronics",
+    "url": "https://rss.sciencedirect.com/publication/science/09565663",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "J. Electroanalytical Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/15726657",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Spectrochimica Acta A",
+    "url": "https://rss.sciencedirect.com/publication/science/13861425",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Spectrochimica Acta B",
+    "url": "https://rss.sciencedirect.com/publication/science/05848547",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "J. Pharmaceutical and Biomedical Analysis",
+    "url": "https://rss.sciencedirect.com/publication/science/07317085",
+    "publisher": "Elsevier 系列",
+    "sub": "分析化学"
+  },
+  {
+    "name": "Artificial Intelligence in Medicine",
+    "url": "https://rss.sciencedirect.com/publication/science/09333657",
+    "publisher": "Elsevier 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Computers in Biology and Medicine",
+    "url": "https://rss.sciencedirect.com/publication/science/00104825",
+    "publisher": "Elsevier 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "J. Biomedical Informatics",
+    "url": "https://rss.sciencedirect.com/publication/science/15320464",
+    "publisher": "Elsevier 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Chemometrics and Intelligent Laboratory Systems",
+    "url": "https://rss.sciencedirect.com/publication/science/01697439",
+    "publisher": "Elsevier 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Computational Biology and Chemistry",
+    "url": "https://rss.sciencedirect.com/publication/science/14769271",
+    "publisher": "Elsevier 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Letters",
+    "url": "https://feeds.aps.org/rss/recent/prl.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review X",
+    "url": "https://feeds.aps.org/rss/recent/prx.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review A",
+    "url": "https://feeds.aps.org/rss/recent/pra.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review B",
+    "url": "https://feeds.aps.org/rss/recent/prb.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review C",
+    "url": "https://feeds.aps.org/rss/recent/prc.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review D",
+    "url": "https://feeds.aps.org/rss/recent/prd.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review E",
+    "url": "https://feeds.aps.org/rss/recent/pre.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Applied",
+    "url": "https://feeds.aps.org/rss/recent/prapplied.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Materials",
+    "url": "https://feeds.aps.org/rss/recent/prmaterials.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Fluids",
+    "url": "https://feeds.aps.org/rss/recent/prfluids.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Research",
+    "url": "https://feeds.aps.org/rss/recent/prresearch.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Accelerators and Beams",
+    "url": "https://feeds.aps.org/rss/recent/prstab.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physical Review Physics Education Research",
+    "url": "https://feeds.aps.org/rss/recent/prstper.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "PRX Energy",
+    "url": "https://feeds.aps.org/rss/recent/prxenergy.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "PRX Life",
+    "url": "https://feeds.aps.org/rss/recent/prxlife.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "PRX Quantum",
+    "url": "https://feeds.aps.org/rss/recent/prxquantum.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Reviews of Modern Physics",
+    "url": "https://feeds.aps.org/rss/recent/rmp.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Physics Magazine",
+    "url": "https://feeds.aps.org/rss/recent/physics.xml",
+    "publisher": "APS 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell",
+    "url": "https://www.cell.com/cell/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Chem",
+    "url": "https://www.cell.com/chem/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Joule",
+    "url": "https://www.cell.com/joule/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Matter",
+    "url": "https://www.cell.com/matter/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Reports",
+    "url": "https://www.cell.com/cell-reports/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Reports Physical Science",
+    "url": "https://www.cell.com/cell-reports-physical-science/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Reports Medicine",
+    "url": "https://www.cell.com/cell-reports-medicine/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Patterns",
+    "url": "https://www.cell.com/patterns/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "iScience",
+    "url": "https://www.cell.com/iscience/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Molecular Cell",
+    "url": "https://www.cell.com/molecular-cell/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cancer Cell",
+    "url": "https://www.cell.com/cancer-cell/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Neuron",
+    "url": "https://www.cell.com/neuron/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Immunity",
+    "url": "https://www.cell.com/immunity/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Genomics",
+    "url": "https://www.cell.com/cell-genomics/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Current Biology",
+    "url": "https://www.cell.com/current-biology/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Chemical Biology",
+    "url": "https://www.cell.com/cell-chemical-biology/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Host & Microbe",
+    "url": "https://www.cell.com/cell-host-microbe/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Cell Systems",
+    "url": "https://www.cell.com/cell-systems/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Stem Cell Reports",
+    "url": "https://www.cell.com/stem-cell-reports/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Biophysical Journal",
+    "url": "https://www.cell.com/biophysj/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Molecular Plant",
+    "url": "https://www.cell.com/molecular-plant/current.rss",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Structure",
+    "url": "http://rss.sciencedirect.com/publication/science/09692126",
+    "publisher": "Cell Press & 顶刊",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Synlett",
+    "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000083.xml",
+    "publisher": "Thieme 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Synthesis",
+    "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000084.xml",
+    "publisher": "Thieme 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Synfacts",
+    "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000085.xml",
+    "publisher": "Thieme 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Organic Materials",
+    "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000146.xml",
+    "publisher": "Thieme 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "Planta Medica",
+    "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000056.xml",
+    "publisher": "Thieme 系列",
+    "sub": "计算化学 & 生物信息学"
+  },
+  {
+    "name": "eLife",
+    "url": "https://elifesciences.org/rss/ahead.xml",
+    "publisher": "生命科学综合",
+    "sub": "eLife"
+  },
+  {
+    "name": "PLOS Biology",
+    "url": "https://journals.plos.org/plosbiology/feed/atom",
+    "publisher": "生命科学综合",
+    "sub": "PLOS (Public Library of Science)"
+  },
+  {
+    "name": "PLOS ONE",
+    "url": "https://journals.plos.org/plosone/feed/atom",
+    "publisher": "生命科学综合",
+    "sub": "PLOS (Public Library of Science)"
+  },
+  {
+    "name": "PLOS Genetics",
+    "url": "https://journals.plos.org/plosgenetics/feed/atom",
+    "publisher": "生命科学综合",
+    "sub": "PLOS (Public Library of Science)"
+  },
+  {
+    "name": "PLOS Pathogens",
+    "url": "https://journals.plos.org/plospathogens/feed/atom",
+    "publisher": "生命科学综合",
+    "sub": "PLOS (Public Library of Science)"
+  },
+  {
+    "name": "PLOS Computational Biology",
+    "url": "https://journals.plos.org/ploscompbiol/feed/atom",
+    "publisher": "生命科学综合",
+    "sub": "PLOS (Public Library of Science)"
+  },
+  {
+    "name": "Pharmaceutical Research",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11095",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "J. Computer-Aided Molecular Design",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=10822",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "J. Pharmaceutical & Biomedical Analysis",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12365",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "AAPS PharmSciTech",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12249",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Clinical Pharmacokinetics",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=40262",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "J. Natural Medicines",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11418",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "European Food Research and Technology",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=217",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Phytochemistry Reviews",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11101",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Natural Products and Bioprospecting",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=13659",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Analytical and Bioanalytical Chemistry",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=216",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Analytical Sciences",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=44211",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "Chromatographia",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=373",
+    "publisher": "生命科学综合",
+    "sub": "Springer 药学"
+  },
+  {
+    "name": "J. Cheminformatics",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=13321",
+    "publisher": "生命科学综合",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "BMC Bioinformatics",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12859",
+    "publisher": "生命科学综合",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "BMC Medical Informatics and Decision Making",
+    "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12911",
+    "publisher": "生命科学综合",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Bioinformatics",
+    "url": "https://academic.oup.com/rss/site_5139/3001.xml",
+    "publisher": "Oxford Academic",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Briefings in Bioinformatics",
+    "url": "https://academic.oup.com/rss/site_5143/3005.xml",
+    "publisher": "Oxford Academic",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "AI",
+    "url": "https://www.mdpi.com/ai/rss",
+    "publisher": "MDPI",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "AI Chemistry",
+    "url": "https://www.mdpi.com/aichem/rss",
+    "publisher": "MDPI",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Expert Opinion on Drug Delivery",
+    "url": "https://www.tandfonline.com/feed/rss/iedd20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Drug Metabolism Reviews",
+    "url": "https://www.tandfonline.com/feed/rss/idmr20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "J. Asian Natural Products Research",
+    "url": "https://www.tandfonline.com/feed/rss/ganp20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Critical Reviews in Food Science and Nutrition",
+    "url": "https://www.tandfonline.com/feed/rss/bfsn20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Analytical Letters",
+    "url": "https://www.tandfonline.com/feed/rss/lanl20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Critical Reviews in Analytical Chemistry",
+    "url": "https://www.tandfonline.com/feed/rss/batc20",
+    "publisher": "Taylor & Francis",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "Drug Metabolism & Disposition",
+    "url": "https://dmd.aspetjournals.org/action/showFeed?type=etoc&feed=rss&jc=dmd",
+    "publisher": "ASPET",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "J. Pharmacology & Experimental Therapeutics",
+    "url": "https://jpet.aspetjournals.org/action/showFeed?type=etoc&feed=rss&jc=jpet",
+    "publisher": "ASPET",
+    "sub": "计算 & 生物信息"
+  },
+  {
+    "name": "cs.AI",
+    "url": "https://rss.arxiv.org/rss/cs.AI",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cs.LG",
+    "url": "https://rss.arxiv.org/rss/cs.LG",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cs.CV",
+    "url": "https://rss.arxiv.org/rss/cs.CV",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cs.CL",
+    "url": "https://rss.arxiv.org/rss/cs.CL",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cs.NE",
+    "url": "https://rss.arxiv.org/rss/cs.NE",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cs.RO",
+    "url": "https://rss.arxiv.org/rss/cs.RO",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "stat.ML",
+    "url": "https://rss.arxiv.org/rss/stat.ML",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "physics.chem-ph",
+    "url": "https://rss.arxiv.org/rss/physics.chem-ph",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "physics.comp-ph",
+    "url": "https://rss.arxiv.org/rss/physics.comp-ph",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "physics.app-ph",
+    "url": "https://rss.arxiv.org/rss/physics.app-ph",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cond-mat.mtrl-sci",
+    "url": "https://rss.arxiv.org/rss/cond-mat.mtrl-sci",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "cond-mat.soft",
+    "url": "https://rss.arxiv.org/rss/cond-mat.soft",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "q-bio.QM",
+    "url": "https://rss.arxiv.org/rss/q-bio.QM",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "q-bio.BM",
+    "url": "https://rss.arxiv.org/rss/q-bio.BM",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "eess.IV",
+    "url": "https://rss.arxiv.org/rss/eess.IV",
+    "publisher": "预印本",
+    "sub": "arXiv"
+  },
+  {
+    "name": "All",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Biochemistry",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Bioinformatics",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Biophysics",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Cell Biology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Genomics",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Synthetic Biology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Systems Biology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Neuroscience",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Immunology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Molecular Biology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Pharmacology and Toxicology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology_and_toxicology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Plant Biology",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "Genetics",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "组合示例(Genomics+Bioinformatics)",
+    "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genomics+bioinformatics",
+    "publisher": "预印本",
+    "sub": "bioRxiv"
+  },
+  {
+    "name": "All",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Epidemiology",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=epidemiology",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Infectious Diseases",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=infectious_diseases",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Oncology",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=oncology",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Public and Global Health",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=public_and_global_health",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Health Informatics",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=health_informatics",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Cardiovascular Medicine",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=cardiovascular_medicine",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Neurology",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=neurology",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Psychiatry and Clinical Psychology",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=psychiatry_and_clinical_psychology",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Radiology and Imaging",
+    "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=radiology_and_imaging",
+    "publisher": "预印本",
+    "sub": "medRxiv"
+  },
+  {
+    "name": "Latest",
+    "url": "https://chemrxiv.org/action/showFeed?type=latest&format=rss",
+    "publisher": "预印本",
+    "sub": "chemRxiv"
+  }
+]
