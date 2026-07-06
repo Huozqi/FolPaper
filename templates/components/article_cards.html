@@ -2,7 +2,7 @@
 <div id="article-{{ article.id }}" class="workbench-card block rounded-2xl border p-6 md:p-7 mb-5 transition duration-200 group relative overflow-hidden
     {% if view_type == 'pending' and article.is_read == 0 %}ring-1 ring-blue-100
     {% elif view_type == 'saved' %}
-        {% if article.is_followed %}ring-1 ring-green-100{% else %}ring-1 ring-slate-200{% endif %}
+        {% if article.is_followed %}bg-green-50 ring-2 ring-green-200{% else %}ring-1 ring-slate-200{% endif %}
     {% endif %}">
     <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent opacity-80"></div>
     <div class="absolute right-6 bottom-5 text-[10px] tracking-[0.32em] uppercase text-gray-400/60 pointer-events-none">Paper {{ loop.index }}</div>
@@ -17,7 +17,7 @@
                     <span class="meta-chip shrink-0">{{ article.published | format_date }}</span>
                     <span class="meta-chip shrink-0">{{ article.source }}</span>
                     {% if view_type == 'pending' and article.status == 'saved' %}
-                    <span class="meta-chip shrink-0">已入库</span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-200 shrink-0">已入库</span>
                     {% endif %}
                 </div>
                 <h3 class="text-2xl md:text-3xl font-black font-serif text-gray-900 leading-tight group-hover:text-blue-700 transition-colors max-w-5xl">{{ article.title }}</h3>
@@ -92,6 +92,12 @@
             </button>
         </form>
         {% endif %}
+
+        <button type="button" onclick="downloadPaper({{ article.id }}, this)"
+           class="w-full px-3 py-1.5 bg-violet-50 text-violet-700 text-xs font-medium rounded-lg border border-violet-100 hover:bg-violet-100 shadow-sm text-center"
+           title="通过 DOI 自动检索并下载 PDF">
+            📥 下载
+        </button>
 
         {% if view_type == 'pending' %}
             {% if article.status == 'pending' %}

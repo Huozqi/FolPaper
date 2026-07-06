@@ -1,2438 +1,5293 @@
 [
   {
-    "name": "**PNAS**",
-    "url": "https://www.pnas.org/action/showFeed?type=etoc&feed=rss",
-    "publisher": "其他",
-    "sub": "其他"
-  },
-  {
     "name": "Nature",
+    "full_name": "Nature",
+    "openalex_query": "Nature",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nature.rss",
     "publisher": "Nature 系列",
-    "sub": "旗舰刊"
+    "sub": "旗舰刊",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature (旧版)",
+    "full_name": "Nature (旧版)",
+    "openalex_query": "Nature (旧版)",
+    "openalex_source_id": "",
     "url": "https://feeds.nature.com/nature/rss/current",
     "publisher": "Nature 系列",
-    "sub": "旗舰刊"
+    "sub": "旗舰刊",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Chemistry",
+    "full_name": "Nature Chemistry",
+    "openalex_query": "Nature Chemistry",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nchem.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Materials",
+    "full_name": "Nature Materials",
+    "openalex_query": "Nature Materials",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nmat.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Nanotechnology",
+    "full_name": "Nature Nanotechnology",
+    "openalex_query": "Nature Nanotechnology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nnano.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Catalysis",
+    "full_name": "Nature Catalysis",
+    "openalex_query": "Nature Catalysis",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natcatal.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Communications",
+    "full_name": "Nature Communications",
+    "openalex_query": "Nature Communications",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/ncomms.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Physics",
+    "full_name": "Nature Physics",
+    "openalex_query": "Nature Physics",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nphys.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Photonics",
+    "full_name": "Nature Photonics",
+    "openalex_query": "Nature Photonics",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nphoton.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Energy",
+    "full_name": "Nature Energy",
+    "openalex_query": "Nature Energy",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nenergy.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Sustainability",
+    "full_name": "Nature Sustainability",
+    "openalex_query": "Nature Sustainability",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natsustain.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Methods",
+    "full_name": "Nature Methods",
+    "openalex_query": "Nature Methods",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nmeth.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Biotechnology",
+    "full_name": "Nature Biotechnology",
+    "openalex_query": "Nature Biotechnology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nbt.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Biomedical Engineering",
+    "full_name": "Nature Biomedical Engineering",
+    "openalex_query": "Nature Biomedical Engineering",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natbiomedeng.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Electronics",
+    "full_name": "Nature Electronics",
+    "openalex_query": "Nature Electronics",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natelectron.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Machine Intelligence",
+    "full_name": "Nature Machine Intelligence",
+    "openalex_query": "Nature Machine Intelligence",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natmachintell.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Computational Science",
+    "full_name": "Nature Computational Science",
+    "openalex_query": "Nature Computational Science",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natcomputsci.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Chemistry",
+    "full_name": "Nature Reviews Chemistry",
+    "openalex_query": "Nature Reviews Chemistry",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natrevchem.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Materials",
+    "full_name": "Nature Reviews Materials",
+    "openalex_query": "Nature Reviews Materials",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natrevmats.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Synthesis",
+    "full_name": "Nature Synthesis",
+    "openalex_query": "Nature Synthesis",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natsynth.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Water",
+    "full_name": "Nature Water",
+    "openalex_query": "Nature Water",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natwater.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Chemical Engineering",
+    "full_name": "Nature Chemical Engineering",
+    "openalex_query": "Nature Chemical Engineering",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/natchemeng.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Chemical Biology",
+    "full_name": "Nature Chemical Biology",
+    "openalex_query": "Nature Chemical Biology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nchembio.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Scientific Reports",
+    "full_name": "Scientific Reports",
+    "openalex_query": "Scientific Reports",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/srep.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Scientific Data",
+    "full_name": "Scientific Data",
+    "openalex_query": "Scientific Data",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/sdata.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Communications Chemistry",
+    "full_name": "Communications Chemistry",
+    "openalex_query": "Communications Chemistry",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/commschem.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Communications Materials",
+    "full_name": "Communications Materials",
+    "openalex_query": "Communications Materials",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/commsmat.rss",
     "publisher": "Nature 系列",
-    "sub": "子刊精选"
+    "sub": "子刊精选",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Medicine",
+    "full_name": "Nature Medicine",
+    "openalex_query": "Nature Medicine",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nm.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Immunology",
+    "full_name": "Nature Immunology",
+    "openalex_query": "Nature Immunology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/ni.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Cell Biology",
+    "full_name": "Nature Cell Biology",
+    "openalex_query": "Nature Cell Biology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/ncb.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Structural & Molecular Biology",
+    "full_name": "Nature Structural & Molecular Biology",
+    "openalex_query": "Nature Structural & Molecular Biology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nsmb.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Molecular Cell Biology",
+    "full_name": "Nature Reviews Molecular Cell Biology",
+    "openalex_query": "Nature Reviews Molecular Cell Biology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nrm.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Immunology",
+    "full_name": "Nature Reviews Immunology",
+    "openalex_query": "Nature Reviews Immunology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nri.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Microbiology",
+    "full_name": "Nature Reviews Microbiology",
+    "openalex_query": "Nature Reviews Microbiology",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nrmicro.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Reviews Drug Discovery",
+    "full_name": "Nature Reviews Drug Discovery",
+    "openalex_query": "Nature Reviews Drug Discovery",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nrd.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Nature Protocols",
+    "full_name": "Nature Protocols",
+    "openalex_query": "Nature Protocols",
+    "openalex_source_id": "",
     "url": "https://www.nature.com/nprot.rss",
     "publisher": "Nature 系列",
-    "sub": "生命科学"
+    "sub": "生命科学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1038",
+    "source_type": "journal"
   },
   {
     "name": "Science",
+    "full_name": "Science",
+    "openalex_query": "Science",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "Science Advances",
+    "full_name": "Science Advances",
+    "openalex_query": "Science Advances",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "Science Immunology",
+    "full_name": "Science Immunology",
+    "openalex_query": "Science Immunology",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciimmunol",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "Science Translational Medicine",
+    "full_name": "Science Translational Medicine",
+    "openalex_query": "Science Translational Medicine",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=stm",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "Science Robotics",
+    "full_name": "Science Robotics",
+    "openalex_query": "Science Robotics",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=scirobotics",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "Science Signaling",
+    "full_name": "Science Signaling",
+    "openalex_query": "Science Signaling",
+    "openalex_source_id": "",
     "url": "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=signaling",
     "publisher": "Science 系列",
-    "sub": "生命科学"
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1126",
+    "source_type": "journal"
   },
   {
     "name": "J. Am. Chem. Soc.",
+    "full_name": "Journal of the American Chemical Society",
+    "openalex_query": "Journal of the American Chemical Society",
+    "openalex_source_id": "S111155417",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jacsat",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "0002-7863",
+    "code": "jacsat",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Reviews",
+    "full_name": "Chemical Reviews",
+    "openalex_query": "Chemical Reviews",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=chreay",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "chreay",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Accounts of Chemical Research",
+    "full_name": "Accounts of Chemical Research",
+    "openalex_query": "Accounts of Chemical Research",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=achre4",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "achre4",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Accounts of Materials Research",
+    "full_name": "Accounts of Materials Research",
+    "openalex_query": "Accounts of Materials Research",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/accmaterres",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "accmaterres",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Central Science",
+    "full_name": "ACS Central Science",
+    "openalex_query": "ACS Central Science",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acscii",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "acscii",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemical & Biomedical Imaging",
+    "full_name": "Chemical & Biomedical Imaging",
+    "openalex_query": "Chemical & Biomedical Imaging",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/cbimid",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "cbimid",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemistry of Materials",
+    "full_name": "Chemistry of Materials",
+    "openalex_query": "Chemistry of Materials",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=cmatex",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "cmatex",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "C&EN Latest News",
+    "full_name": "Chemical & Engineering News",
+    "openalex_query": "Chemical & Engineering News",
+    "openalex_source_id": "",
     "url": "https://cen.acs.org/rss/latest",
     "publisher": "ACS 系列",
-    "sub": "🧪 化学综合与核心期刊"
+    "sub": "化学综合与核心期刊",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Agricultural and Food Chemistry",
+    "full_name": "Journal of Agricultural and Food Chemistry",
+    "openalex_query": "Journal of Agricultural and Food Chemistry",
+    "openalex_source_id": "S134644764",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jafcau",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "0021-8561",
+    "code": "jafcau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Agricultural Science & Technology",
+    "full_name": "ACS Agricultural Science & Technology",
+    "openalex_query": "ACS Agricultural Science & Technology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/agsct",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "agsct",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Food Science & Technology",
+    "full_name": "ACS Food Science & Technology",
+    "openalex_query": "ACS Food Science & Technology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=afsthl",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "afsthl",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS ES&T Air",
+    "full_name": "ACS ES&T Air",
+    "openalex_query": "ACS ES&T Air",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/estair",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "estair",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS ES&T Engineering",
+    "full_name": "ACS ES&T Engineering",
+    "openalex_query": "ACS ES&T Engineering",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/estengg",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "estengg",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS ES&T Toxicology",
+    "full_name": "ACS ES&T Toxicology",
+    "openalex_query": "ACS ES&T Toxicology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/esttox",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "esttox",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS ES&T Water",
+    "full_name": "ACS ES&T Water",
+    "openalex_query": "ACS ES&T Water",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/estwater",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "estwater",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Environmental Au",
+    "full_name": "ACS Environmental Au",
+    "openalex_query": "ACS Environmental Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsenvironau",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "acsenvironau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science & Technology",
+    "full_name": "Environmental Science & Technology",
+    "openalex_query": "Environmental Science & Technology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=esthag",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "esthag",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science & Technology Letters",
+    "full_name": "Environmental Science & Technology Letters",
+    "openalex_query": "Environmental Science & Technology Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/estlett",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "estlett",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Health Perspectives",
+    "full_name": "Environmental Health Perspectives",
+    "openalex_query": "Environmental Health Perspectives",
+    "openalex_source_id": "",
     "url": "https://ehp.niehs.nih.gov/rss/",
     "publisher": "ACS 系列",
-    "sub": "🌱 农业、食品与环境"
+    "sub": "农业、食品与环境",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Materials & Interfaces",
+    "full_name": "ACS Applied Materials & Interfaces",
+    "openalex_query": "ACS Applied Materials & Interfaces",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aamick",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "aamick",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Nano Materials",
+    "full_name": "ACS Applied Nano Materials",
+    "openalex_query": "ACS Applied Nano Materials",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsanm",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsanm",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Energy Materials",
+    "full_name": "ACS Applied Energy Materials",
+    "openalex_query": "ACS Applied Energy Materials",
+    "openalex_source_id": "",
+    "url": "https://pubs.acs.org/rss/acsaem",
+    "publisher": "ACS 系列",
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsaem",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
+  },
+  {
+    "name": "ACS Applied Electronic Materials",
+    "full_name": "ACS Applied Electronic Materials",
+    "openalex_query": "ACS Applied Electronic Materials",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsaelm",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsaelm",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Catalysis",
+    "full_name": "ACS Applied Catalysis",
+    "openalex_query": "ACS Applied Catalysis",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsapcat",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsapcat",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Engineering Materials",
+    "full_name": "ACS Applied Engineering Materials",
+    "openalex_query": "ACS Applied Engineering Materials",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsapem",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsapem",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Applied Polymer Materials",
+    "full_name": "ACS Applied Polymer Materials",
+    "openalex_query": "ACS Applied Polymer Materials",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsapm",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsapm",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Engineering Au",
+    "full_name": "ACS Engineering Au",
+    "openalex_query": "ACS Engineering Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsenau",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsenau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Energy Letters",
+    "full_name": "ACS Energy Letters",
+    "openalex_query": "ACS Energy Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aelccp",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "aelccp",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Photonics",
+    "full_name": "ACS Photonics",
+    "openalex_query": "ACS Photonics",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsphotonics",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsphotonics",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Sensors",
+    "full_name": "ACS Sensors",
+    "openalex_query": "ACS Sensors",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ascefj",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "ascefj",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Sustainable Chemistry & Engineering",
+    "full_name": "ACS Sustainable Chemistry & Engineering",
+    "openalex_query": "ACS Sustainable Chemistry & Engineering",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ascecg",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "ascecg",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Catalysis",
+    "full_name": "ACS Catalysis",
+    "openalex_query": "ACS Catalysis",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=accacs",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "accacs",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Materials Letters",
+    "full_name": "ACS Materials Letters",
+    "openalex_query": "ACS Materials Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amlcef",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "amlcef",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Nano",
+    "full_name": "ACS Nano",
+    "openalex_query": "ACS Nano",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ancac3",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "ancac3",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Nano Medicine",
+    "full_name": "ACS Nano Medicine",
+    "openalex_query": "ACS Nano Medicine",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsnanomed",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsnanomed",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Nanoscience Au",
+    "full_name": "ACS Nanoscience Au",
+    "openalex_query": "ACS Nanoscience Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsnsau",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "acsnsau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Nano Letters",
+    "full_name": "Nano Letters",
+    "openalex_query": "Nano Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=nalefd",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "nalefd",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Crystal Growth & Design",
+    "full_name": "Crystal Growth & Design",
+    "openalex_query": "Crystal Growth & Design",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=cgdefu",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "cgdefu",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Langmuir",
+    "full_name": "Langmuir",
+    "openalex_query": "Langmuir",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=langd5",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "langd5",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Macromolecules",
+    "full_name": "Macromolecules",
+    "openalex_query": "Macromolecules",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=mamobx",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "mamobx",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Industrial & Engineering Chemistry Research",
+    "full_name": "Industrial & Engineering Chemistry Research",
+    "openalex_query": "Industrial & Engineering Chemistry Research",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/iecr",
     "publisher": "ACS 系列",
-    "sub": "⚡ 能源、应用与工程"
+    "sub": "能源、应用与工程",
+    "issn": "",
+    "code": "iecr",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Biochemistry",
+    "full_name": "Biochemistry",
+    "openalex_query": "Biochemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bichaw",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "bichaw",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Bioconjugate Chemistry",
+    "full_name": "Bioconjugate Chemistry",
+    "openalex_query": "Bioconjugate Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bcches",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "bcches",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Biomacromolecules",
+    "full_name": "Biomacromolecules",
+    "openalex_query": "Biomacromolecules",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=bomaf6",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "bomaf6",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Bio & Med Chem Au",
+    "full_name": "ACS Bio & Med Chem Au",
+    "openalex_query": "ACS Bio & Med Chem Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsbiomedchemau",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acsbiomedchemau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Biomaterials Science & Engineering",
+    "full_name": "ACS Biomaterials Science & Engineering",
+    "openalex_query": "ACS Biomaterials Science & Engineering",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsbiomater",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acsbiomater",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Chemical Biology",
+    "full_name": "ACS Chemical Biology",
+    "openalex_query": "ACS Chemical Biology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acbcct",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acbcct",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Chemical Health & Safety",
+    "full_name": "ACS Chemical Health & Safety",
+    "openalex_query": "ACS Chemical Health & Safety",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/chemsafety",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "chemsafety",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Chemical Neuroscience",
+    "full_name": "ACS Chemical Neuroscience",
+    "openalex_query": "ACS Chemical Neuroscience",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=acncdm",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acncdm",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Earth and Space Chemistry",
+    "full_name": "ACS Earth and Space Chemistry",
+    "openalex_query": "ACS Earth and Space Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsesci",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acsesci",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Infectious Diseases",
+    "full_name": "ACS Infectious Diseases",
+    "openalex_query": "ACS Infectious Diseases",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aidcbc",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "aidcbc",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Medicinal Chemistry Letters",
+    "full_name": "ACS Medicinal Chemistry Letters",
+    "openalex_query": "ACS Medicinal Chemistry Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amclct",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "amclct",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Pharmacology & Translational Science",
+    "full_name": "ACS Pharmacology & Translational Science",
+    "openalex_query": "ACS Pharmacology & Translational Science",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsptsci",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "acsptsci",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Synthetic Biology",
+    "full_name": "ACS Synthetic Biology",
+    "openalex_query": "ACS Synthetic Biology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=asbcd6",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "asbcd6",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Research in Toxicology",
+    "full_name": "Chemical Research in Toxicology",
+    "openalex_query": "Chemical Research in Toxicology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=crtoec",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "crtoec",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Medicinal Chemistry",
+    "full_name": "Journal of Medicinal Chemistry",
+    "openalex_query": "Journal of Medicinal Chemistry",
+    "openalex_source_id": "S162030435",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jmcmar",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "0022-2623",
+    "code": "jmcmar",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Natural Products",
+    "full_name": "Journal of Natural Products",
+    "openalex_query": "Journal of Natural Products",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jnprdf",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "0163-3864",
+    "code": "jnprdf",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Proteome Research",
+    "full_name": "Journal of Proteome Research",
+    "openalex_query": "Journal of Proteome Research",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jprobs",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "1535-3893",
+    "code": "jprobs",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Pharmaceutics",
+    "full_name": "Molecular Pharmaceutics",
+    "openalex_query": "Molecular Pharmaceutics",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=mpohbp",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "mpohbp",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Organic Letters",
+    "full_name": "Organic Letters",
+    "openalex_query": "Organic Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=orlef7",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "orlef7",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "The Journal of Organic Chemistry",
+    "full_name": "The Journal of Organic Chemistry",
+    "openalex_query": "The Journal of Organic Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=joceah",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "joceah",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Organic Process Research & Development",
+    "full_name": "Organic Process Research & Development",
+    "openalex_query": "Organic Process Research & Development",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=oprdfk",
     "publisher": "ACS 系列",
-    "sub": "🧬 生物、医药与健康"
+    "sub": "生物、医药与健康",
+    "issn": "",
+    "code": "oprdfk",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Analytical Chemistry",
+    "full_name": "Analytical Chemistry",
+    "openalex_query": "Analytical Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ancham",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "ancham",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Measurement Science Au",
+    "full_name": "ACS Measurement Science Au",
+    "openalex_query": "ACS Measurement Science Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=amachv",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "amachv",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Artificial Photosynthesis",
+    "full_name": "Artificial Photosynthesis",
+    "openalex_query": "Artificial Photosynthesis",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsap",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "acsap",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Physics Au",
+    "full_name": "Chemical Physics Au",
+    "openalex_query": "Chemical Physics Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acscpa",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "acscpa",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Energy & Fuels",
+    "full_name": "Energy & Fuels",
+    "openalex_query": "Energy & Fuels",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=enfuem",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "enfuem",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Inorganic Chemistry",
+    "full_name": "Inorganic Chemistry",
+    "openalex_query": "Inorganic Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=inocaj",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "inocaj",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Organometallics",
+    "full_name": "Organometallics",
+    "openalex_query": "Organometallics",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=orgnd7",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "orgnd7",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Chemical & Engineering Data",
+    "full_name": "Journal of Chemical & Engineering Data",
+    "openalex_query": "Journal of Chemical & Engineering Data",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/jced",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "0021-9568",
+    "code": "jced",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Chemical Education",
+    "full_name": "Journal of Chemical Education",
+    "openalex_query": "Journal of Chemical Education",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/jchemeduc",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "0021-9584",
+    "code": "jchemeduc",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Chemical Information and Modeling",
+    "full_name": "Journal of Chemical Information and Modeling",
+    "openalex_query": "Journal of Chemical Information and Modeling",
+    "openalex_source_id": "S167262187",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jcisd8",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1549-9596",
+    "code": "jcisd8",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Chemical Theory and Computation",
+    "full_name": "Journal of Chemical Theory and Computation",
+    "openalex_query": "Journal of Chemical Theory and Computation",
+    "openalex_source_id": "S189701308",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jctcce",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1549-9618",
+    "code": "jctcce",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Physical Chemistry A",
+    "full_name": "Journal of Physical Chemistry A",
+    "openalex_query": "Journal of Physical Chemistry A",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpcafh",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1089-5639",
+    "code": "jpcafh",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Physical Chemistry B",
+    "full_name": "Journal of Physical Chemistry B",
+    "openalex_query": "Journal of Physical Chemistry B",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpcbfk",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1520-6106",
+    "code": "jpcbfk",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Physical Chemistry C",
+    "full_name": "Journal of Physical Chemistry C",
+    "openalex_query": "Journal of Physical Chemistry C",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpccck",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1932-7447",
+    "code": "jpccck",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "J. Physical Chemistry Letters",
+    "full_name": "Journal of Physical Chemistry Letters",
+    "openalex_query": "Journal of Physical Chemistry Letters",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jpclcd",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "1948-7185",
+    "code": "jpclcd",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "JACS Au",
+    "full_name": "JACS Au",
+    "openalex_query": "JACS Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=jaaucr",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "jaaucr",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Photon Science",
+    "full_name": "Photon Science",
+    "openalex_query": "Photon Science",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsps",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "acsps",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Precision Chemistry",
+    "full_name": "Precision Chemistry",
+    "openalex_query": "Precision Chemistry",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/precision",
     "publisher": "ACS 系列",
-    "sub": "⚛️ 物理、理论与分析化学"
+    "sub": "物理、理论与分析化学",
+    "issn": "",
+    "code": "precision",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Materials Au",
+    "full_name": "ACS Materials Au",
+    "openalex_query": "ACS Materials Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsmat",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acsmat",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Omega",
+    "full_name": "ACS Omega",
+    "openalex_query": "ACS Omega",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsomega",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acsomega",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Organic & Inorganic Au",
+    "full_name": "ACS Organic & Inorganic Au",
+    "openalex_query": "ACS Organic & Inorganic Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsorgau",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acsorgau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Physical Chemistry Au",
+    "full_name": "ACS Physical Chemistry Au",
+    "openalex_query": "ACS Physical Chemistry Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsphysau",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acsphysau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Polymers Au",
+    "full_name": "ACS Polymers Au",
+    "openalex_query": "ACS Polymers Au",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acspsau",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acspsau",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "ACS Sustainable Resource Management",
+    "full_name": "ACS Sustainable Resource Management",
+    "openalex_query": "ACS Sustainable Resource Management",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acsrm",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acsrm",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chem & Bio Engineering",
+    "full_name": "Chem & Bio Engineering",
+    "openalex_query": "Chem & Bio Engineering",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/cbie",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "cbie",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Digital Medical Engineering",
+    "full_name": "Digital Medical Engineering",
+    "openalex_query": "Digital Medical Engineering",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/dime",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "dime",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Polymer Science & Technology",
+    "full_name": "Polymer Science & Technology",
+    "openalex_query": "Polymer Science & Technology",
+    "openalex_source_id": "",
     "url": "https://pubs.acs.org/rss/acspt",
     "publisher": "ACS 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他学科与新刊",
+    "issn": "",
+    "code": "acspt",
+    "doi_prefix": "10.1021",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Science",
+    "full_name": "Chemical Science",
+    "openalex_query": "Chemical Science",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/sc",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "sc",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Society Reviews",
+    "full_name": "Chemical Society Reviews",
+    "openalex_query": "Chemical Society Reviews",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/cs",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "cs",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Communications",
+    "full_name": "Chemical Communications",
+    "openalex_query": "Chemical Communications",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/cc",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "cc",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Energy & Environmental Science",
+    "full_name": "Energy & Environmental Science",
+    "openalex_query": "Energy & Environmental Science",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ee",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ee",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Journal of Materials Chemistry A",
+    "full_name": "Journal of Materials Chemistry A",
+    "openalex_query": "Journal of Materials Chemistry A",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ta",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ta",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Journal of Materials Chemistry B",
+    "full_name": "Journal of Materials Chemistry B",
+    "openalex_query": "Journal of Materials Chemistry B",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/tb",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "tb",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Journal of Materials Chemistry C",
+    "full_name": "Journal of Materials Chemistry C",
+    "openalex_query": "Journal of Materials Chemistry C",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/tc",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "tc",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Materials Horizons",
+    "full_name": "Materials Horizons",
+    "openalex_query": "Materials Horizons",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/mh",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "mh",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Nanoscale",
+    "full_name": "Nanoscale",
+    "openalex_query": "Nanoscale",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/nr",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "nr",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Nanoscale Horizons",
+    "full_name": "Nanoscale Horizons",
+    "openalex_query": "Nanoscale Horizons",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/nh",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "nh",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Nanoscale Advances",
+    "full_name": "Nanoscale Advances",
+    "openalex_query": "Nanoscale Advances",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/na",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "na",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Physical Chemistry Chemical Physics",
+    "full_name": "Physical Chemistry Chemical Physics",
+    "openalex_query": "Physical Chemistry Chemical Physics",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/cp",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "cp",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Green Chemistry",
+    "full_name": "Green Chemistry",
+    "openalex_query": "Green Chemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/gc",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "gc",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Polymer Chemistry",
+    "full_name": "Polymer Chemistry",
+    "openalex_query": "Polymer Chemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/py",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "py",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Organic Chemistry Frontiers",
+    "full_name": "Organic Chemistry Frontiers",
+    "openalex_query": "Organic Chemistry Frontiers",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/qo",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "qo",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Organic & Biomolecular Chemistry",
+    "full_name": "Organic & Biomolecular Chemistry",
+    "openalex_query": "Organic & Biomolecular Chemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ob",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ob",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Inorganic Chemistry Frontiers",
+    "full_name": "Inorganic Chemistry Frontiers",
+    "openalex_query": "Inorganic Chemistry Frontiers",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/qi",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "qi",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "New Journal of Chemistry",
+    "full_name": "New Journal of Chemistry",
+    "openalex_query": "New Journal of Chemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/nj",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "nj",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Natural Product Reports",
+    "full_name": "Natural Product Reports",
+    "openalex_query": "Natural Product Reports",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/np",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "np",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Analyst",
+    "full_name": "Analyst",
+    "openalex_query": "Analyst",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/an",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "an",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Analytical Methods",
+    "full_name": "Analytical Methods",
+    "openalex_query": "Analytical Methods",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ay",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ay",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "J. Analytical Atomic Spectrometry",
+    "full_name": "Journal of Analytical Atomic Spectrometry",
+    "openalex_query": "Journal of Analytical Atomic Spectrometry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ja",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ja",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Catalysis Science & Technology",
+    "full_name": "Catalysis Science & Technology",
+    "openalex_query": "Catalysis Science & Technology",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/cy",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "cy",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "CrystEngComm",
+    "full_name": "CrystEngComm",
+    "openalex_query": "CrystEngComm",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ce",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ce",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Dalton Transactions",
+    "full_name": "Dalton Transactions",
+    "openalex_query": "Dalton Transactions",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/dt",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "dt",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Faraday Discussions",
+    "full_name": "Faraday Discussions",
+    "openalex_query": "Faraday Discussions",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/fd",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "fd",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Soft Matter",
+    "full_name": "Soft Matter",
+    "openalex_query": "Soft Matter",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/sm",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "sm",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Lab on a Chip",
+    "full_name": "Lab on a Chip",
+    "openalex_query": "Lab on a Chip",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/lc",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "lc",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Reaction Chemistry & Engineering",
+    "full_name": "Reaction Chemistry & Engineering",
+    "openalex_query": "Reaction Chemistry & Engineering",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/re",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "re",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science: Nano",
+    "full_name": "Environmental Science: Nano",
+    "openalex_query": "Environmental Science: Nano",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/en",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "en",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science: Processes & Impacts",
+    "full_name": "Environmental Science: Processes & Impacts",
+    "openalex_query": "Environmental Science: Processes & Impacts",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/em",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "em",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science: Water Research & Technology",
+    "full_name": "Environmental Science: Water Research & Technology",
+    "openalex_query": "Environmental Science: Water Research & Technology",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ew",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ew",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science: Advances",
+    "full_name": "Environmental Science: Advances",
+    "openalex_query": "Environmental Science: Advances",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/va",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "va",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Environmental Science: Atmospheres",
+    "full_name": "Environmental Science: Atmospheres",
+    "openalex_query": "Environmental Science: Atmospheres",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ea",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ea",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Food & Function",
+    "full_name": "Food & Function",
+    "openalex_query": "Food & Function",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/fo",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "fo",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Materials Chemistry Frontiers",
+    "full_name": "Materials Chemistry Frontiers",
+    "openalex_query": "Materials Chemistry Frontiers",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/qm",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "qm",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Materials Advances",
+    "full_name": "Materials Advances",
+    "openalex_query": "Materials Advances",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ma",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ma",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Systems Design & Engineering",
+    "full_name": "Molecular Systems Design & Engineering",
+    "openalex_query": "Molecular Systems Design & Engineering",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/me",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "me",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Advances",
+    "full_name": "RSC Advances",
+    "openalex_query": "RSC Advances",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ra",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ra",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Chemical Biology",
+    "full_name": "RSC Chemical Biology",
+    "openalex_query": "RSC Chemical Biology",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/cb",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "cb",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Medicinal Chemistry",
+    "full_name": "RSC Medicinal Chemistry",
+    "openalex_query": "RSC Medicinal Chemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/md",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "md",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Mechanochemistry",
+    "full_name": "RSC Mechanochemistry",
+    "openalex_query": "RSC Mechanochemistry",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/mr",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "mr",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Pharmaceutics",
+    "full_name": "RSC Pharmaceutics",
+    "openalex_query": "RSC Pharmaceutics",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/pm",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "pm",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Applied Polymers",
+    "full_name": "RSC Applied Polymers",
+    "openalex_query": "RSC Applied Polymers",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/lp",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "lp",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Applied Interfaces",
+    "full_name": "RSC Applied Interfaces",
+    "openalex_query": "RSC Applied Interfaces",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/lf",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "lf",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "RSC Sustainability",
+    "full_name": "RSC Sustainability",
+    "openalex_query": "RSC Sustainability",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/su",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "su",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Sustainable Energy & Fuels",
+    "full_name": "Sustainable Energy & Fuels",
+    "openalex_query": "Sustainable Energy & Fuels",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/se",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "se",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Sustainable Food Technology",
+    "full_name": "Sustainable Food Technology",
+    "openalex_query": "Sustainable Food Technology",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/fb",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "fb",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Energy Advances",
+    "full_name": "Energy Advances",
+    "openalex_query": "Energy Advances",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ya",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ya",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "EES Batteries",
+    "full_name": "EES Batteries",
+    "openalex_query": "EES Batteries",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/eb",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "eb",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "EES Catalysis",
+    "full_name": "EES Catalysis",
+    "openalex_query": "EES Catalysis",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/ey",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "ey",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "EES Solar",
+    "full_name": "EES Solar",
+    "openalex_query": "EES Solar",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/el",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "el",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Sensors & Diagnostics",
+    "full_name": "Sensors & Diagnostics",
+    "openalex_query": "Sensors & Diagnostics",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/sd",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "sd",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Digital Discovery",
+    "full_name": "Digital Discovery",
+    "openalex_query": "Digital Discovery",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/dd",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "dd",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Industrial Chemistry & Materials",
+    "full_name": "Industrial Chemistry & Materials",
+    "openalex_query": "Industrial Chemistry & Materials",
+    "openalex_source_id": "",
     "url": "http://feeds.rsc.org/rss/im",
     "publisher": "RSC 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "",
+    "code": "im",
+    "doi_prefix": "10.1039",
+    "source_type": "journal"
   },
   {
     "name": "Angewandte Chemie Int. Ed.",
+    "full_name": "Angewandte Chemie International Edition",
+    "openalex_query": "Angewandte Chemie International Edition",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15213773/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-3773",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Advanced Materials",
+    "full_name": "Advanced Materials",
+    "openalex_query": "Advanced Materials",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15214095/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-4095",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Advanced Functional Materials",
+    "full_name": "Advanced Functional Materials",
+    "openalex_query": "Advanced Functional Materials",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16163028/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1616-3028",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Chemistry - A European Journal",
+    "full_name": "Chemistry - A European Journal",
+    "openalex_query": "Chemistry - A European Journal",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15213765/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-3765",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "European J. Organic Chemistry",
+    "full_name": "European Journal of Organic Chemistry",
+    "openalex_query": "European Journal of Organic Chemistry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10990690/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1099-0690",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Macromolecular Rapid Communications",
+    "full_name": "Macromolecular Rapid Communications",
+    "openalex_query": "Macromolecular Rapid Communications",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15213927/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-3927",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Small",
+    "full_name": "Small",
+    "openalex_query": "Small",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16136829/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1613-6829",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Advanced Energy Materials",
+    "full_name": "Advanced Energy Materials",
+    "openalex_query": "Advanced Energy Materials",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16146840/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1614-6840",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Advanced Science",
+    "full_name": "Advanced Science",
+    "openalex_query": "Advanced Science",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/21983844/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "2198-3844",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "ChemSusChem",
+    "full_name": "ChemSusChem",
+    "openalex_query": "ChemSusChem",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/1864564X/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1864-564X",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "ChemCatChem",
+    "full_name": "ChemCatChem",
+    "openalex_query": "ChemCatChem",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/18673899/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1867-3899",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Chemistry - An Asian Journal",
+    "full_name": "Chemistry - An Asian Journal",
+    "openalex_query": "Chemistry - An Asian Journal",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/1861471X/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1861-471X",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "InfoMat",
+    "full_name": "InfoMat",
+    "openalex_query": "InfoMat",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/25673165/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "2567-3165",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Medicinal Research Reviews",
+    "full_name": "Medicinal Research Reviews",
+    "openalex_query": "Medicinal Research Reviews",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10981128/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1098-1128",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Drug Development Research",
+    "full_name": "Drug Development Research",
+    "openalex_query": "Drug Development Research",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10982299/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1098-2299",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Archiv der Pharmazie",
+    "full_name": "Archiv der Pharmazie",
+    "openalex_query": "Archiv der Pharmazie",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15214184/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-4184",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "ChemMedChem",
+    "full_name": "ChemMedChem",
+    "openalex_query": "ChemMedChem",
+    "openalex_source_id": "",
     "url": "https://chemistry-europe.onlinelibrary.wiley.com/feed/18607187/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1860-7179",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Advanced Synthesis & Catalysis",
+    "full_name": "Advanced Synthesis & Catalysis",
+    "openalex_query": "Advanced Synthesis & Catalysis",
+    "openalex_source_id": "",
     "url": "https://advanced.onlinelibrary.wiley.com/feed/16154169/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1615-4169",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Asian J. Organic Chemistry",
+    "full_name": "Asian Journal of Organic Chemistry",
+    "openalex_query": "Asian Journal of Organic Chemistry",
+    "openalex_source_id": "",
     "url": "https://aces.onlinelibrary.wiley.com/feed/21935815/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "2193-5815",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Chinese J. Chemistry",
+    "full_name": "Chinese Journal of Chemistry",
+    "openalex_query": "Chinese Journal of Chemistry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16147065/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1614-7065",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Helvetica Chimica Acta",
+    "full_name": "Helvetica Chimica Acta",
+    "openalex_query": "Helvetica Chimica Acta",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15222675/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1522-2675",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "J. Heterocyclic Chemistry",
+    "full_name": "Journal of Heterocyclic Chemistry",
+    "openalex_query": "Journal of Heterocyclic Chemistry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/19435193/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1943-5193",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Clinical Pharmacology & Therapeutics",
+    "full_name": "Clinical Pharmacology & Therapeutics",
+    "openalex_query": "Clinical Pharmacology & Therapeutics",
+    "openalex_source_id": "",
     "url": "https://ascpt.onlinelibrary.wiley.com/feed/15326535/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1532-6535",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "British J. Clinical Pharmacology",
+    "full_name": "British Journal of Clinical Pharmacology",
+    "openalex_query": "British Journal of Clinical Pharmacology",
+    "openalex_source_id": "",
     "url": "https://bpspubs.onlinelibrary.wiley.com/feed/13652125/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1365-2125",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Biopharmaceutics & Drug Disposition",
+    "full_name": "Biopharmaceutics & Drug Disposition",
+    "openalex_query": "Biopharmaceutics & Drug Disposition",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/1099081X/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1099-081X",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Nutrition & Food Research",
+    "full_name": "Molecular Nutrition & Food Research",
+    "openalex_query": "Molecular Nutrition & Food Research",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16134133/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1613-4133",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "J. Food Science",
+    "full_name": "Journal of Food Science",
+    "openalex_query": "Journal of Food Science",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/17503841/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1750-3841",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Comprehensive Reviews in Food Science and Food Safety",
+    "full_name": "Comprehensive Reviews in Food Science and Food Safety",
+    "openalex_query": "Comprehensive Reviews in Food Science and Food Safety",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15414337/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1541-4337",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "International J. Food Science & Technology",
+    "full_name": "International J. Food Science & Technology",
+    "openalex_query": "International J. Food Science & Technology",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/13652621/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1365-2621",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "J. Science of Food and Agriculture",
+    "full_name": "Journal of the Science of Food and Agriculture",
+    "openalex_query": "Journal of the Science of Food and Agriculture",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10970010/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1097-0010",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Electroanalysis",
+    "full_name": "Electroanalysis",
+    "openalex_query": "Electroanalysis",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15214109/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1521-4109",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Electrophoresis",
+    "full_name": "Electrophoresis",
+    "openalex_query": "Electrophoresis",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/15222683/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1522-2683",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Mass Spectrometry Reviews",
+    "full_name": "Mass Spectrometry Reviews",
+    "openalex_query": "Mass Spectrometry Reviews",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10982787/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1098-2787",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "J. Mass Spectrometry",
+    "full_name": "Journal of Mass Spectrometry",
+    "openalex_query": "Journal of Mass Spectrometry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10969888/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1096-9888",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Rapid Comm. Mass Spectrometry",
+    "full_name": "Rapid Communications in Mass Spectrometry",
+    "openalex_query": "Rapid Communications in Mass Spectrometry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10970231/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1097-0231",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "J. Computational Chemistry",
+    "full_name": "Journal of Computational Chemistry",
+    "openalex_query": "Journal of Computational Chemistry",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/1096987X/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1096-987X",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Informatics",
+    "full_name": "Molecular Informatics",
+    "openalex_query": "Molecular Informatics",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/18681751/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1868-1751",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Proteomics",
+    "full_name": "Proteomics",
+    "openalex_query": "Proteomics",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/16159861/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1615-9861",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Biotechnology and Bioengineering",
+    "full_name": "Biotechnology and Bioengineering",
+    "openalex_query": "Biotechnology and Bioengineering",
+    "openalex_source_id": "",
     "url": "https://onlinelibrary.wiley.com/feed/10970290/most-recent",
     "publisher": "Wiley 系列",
-    "sub": "🧩 其他学科与新刊"
+    "sub": "其他",
+    "issn": "1097-0290",
+    "code": "",
+    "doi_prefix": "10.1002",
+    "source_type": "journal"
   },
   {
     "name": "Tetrahedron",
+    "full_name": "Tetrahedron",
+    "openalex_query": "Tetrahedron",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00404020",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0040-4020",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Tetrahedron Letters",
+    "full_name": "Tetrahedron Letters",
+    "openalex_query": "Tetrahedron Letters",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00404039",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0040-4039",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Carbohydrate Polymers",
+    "full_name": "Carbohydrate Polymers",
+    "openalex_query": "Carbohydrate Polymers",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01448617",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0144-8617",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Carbohydrate Research",
+    "full_name": "Carbohydrate Research",
+    "openalex_query": "Carbohydrate Research",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00086215",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0008-6215",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Organometallic Chemistry",
+    "full_name": "Journal of Organometallic Chemistry",
+    "openalex_query": "Journal of Organometallic Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0022328X",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0022-328X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Sensors and Actuators A",
+    "full_name": "Sensors and Actuators A",
+    "openalex_query": "Sensors and Actuators A",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09244247",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0924-4247",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Sensors and Actuators B",
+    "full_name": "Sensors and Actuators B",
+    "openalex_query": "Sensors and Actuators B",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09254005",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0925-4005",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Chemical Engineering Journal",
+    "full_name": "Chemical Engineering Journal",
+    "openalex_query": "Chemical Engineering Journal",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/13858947",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "1385-8947",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Journal of Hazardous Materials",
+    "full_name": "Journal of Hazardous Materials",
+    "openalex_query": "Journal of Hazardous Materials",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/03043894",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0304-3894",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Carbon",
+    "full_name": "Carbon",
+    "openalex_query": "Carbon",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00086223",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0008-6223",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Applied Surface Science",
+    "full_name": "Applied Surface Science",
+    "openalex_query": "Applied Surface Science",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01694332",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0169-4332",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Coordination Chemistry Reviews",
+    "full_name": "Coordination Chemistry Reviews",
+    "openalex_query": "Coordination Chemistry Reviews",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00108545",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0010-8545",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Progress in Materials Science",
+    "full_name": "Progress in Materials Science",
+    "openalex_query": "Progress in Materials Science",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00796425",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0079-6425",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Materials Today",
+    "full_name": "Materials Today",
+    "openalex_query": "Materials Today",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/13697021",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "1369-7021",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biomaterials",
+    "full_name": "Biomaterials",
+    "openalex_query": "Biomaterials",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01429612",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0142-9612",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Water Research",
+    "full_name": "Water Research",
+    "openalex_query": "Water Research",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00431354",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0043-1354",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Applied Catalysis B: Environmental",
+    "full_name": "Applied Catalysis B: Environmental",
+    "openalex_query": "Applied Catalysis B: Environmental",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09263373",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "0926-3373",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Energy Storage Materials",
+    "full_name": "Energy Storage Materials",
+    "openalex_query": "Energy Storage Materials",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/24058297",
-    "publisher": "Elsevier 系列",
-    "sub": "🧩 其他学科与新刊"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "其他",
+    "issn": "2405-8297",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Bioorganic & Medicinal Chemistry",
+    "full_name": "Bioorganic & Medicinal Chemistry",
+    "openalex_query": "Bioorganic & Medicinal Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09680896",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0968-0896",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Bioorganic & Medicinal Chemistry Letters",
+    "full_name": "Bioorganic & Medicinal Chemistry Letters",
+    "openalex_query": "Bioorganic & Medicinal Chemistry Letters",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0960894X",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0960-894X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "European J. Medicinal Chemistry",
+    "full_name": "European Journal of Medicinal Chemistry",
+    "openalex_query": "European Journal of Medicinal Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/02235234",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0223-5234",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Phytochemistry",
+    "full_name": "Phytochemistry",
+    "openalex_query": "Phytochemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00319422",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0031-9422",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Phytochemistry Letters",
+    "full_name": "Phytochemistry Letters",
+    "openalex_query": "Phytochemistry Letters",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/18743900",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "1874-3900",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Phytomedicine",
+    "full_name": "Phytomedicine",
+    "openalex_query": "Phytomedicine",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09447113",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0944-7113",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biochemical Systematics and Ecology",
+    "full_name": "Biochemical Systematics and Ecology",
+    "openalex_query": "Biochemical Systematics and Ecology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/03051978",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0305-1978",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Current Opinion in Structural Biology",
+    "full_name": "Current Opinion in Structural Biology",
+    "openalex_query": "Current Opinion in Structural Biology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0959440X",
-    "publisher": "Elsevier 系列",
-    "sub": "有机化学 & 天然产物"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "有机化学 & 天然产物",
+    "issn": "0959-440X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Drug Discovery Today",
+    "full_name": "Drug Discovery Today",
+    "openalex_query": "Drug Discovery Today",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/13596446",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "1359-6446",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Pharmaceutical Sciences",
+    "full_name": "Journal of Pharmaceutical Sciences",
+    "openalex_query": "Journal of Pharmaceutical Sciences",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00223549",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0022-3549",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "European J. Pharmaceutics and Biopharmaceutics",
+    "full_name": "European Journal of Pharmaceutics and Biopharmaceutics",
+    "openalex_query": "European Journal of Pharmaceutics and Biopharmaceutics",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09396411",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0939-6411",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Int. J. Pharmaceutics",
+    "full_name": "International Journal of Pharmaceutics",
+    "openalex_query": "International Journal of Pharmaceutics",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/03785173",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0378-5173",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "European J. Pharmaceutical Sciences",
+    "full_name": "European Journal of Pharmaceutical Sciences",
+    "openalex_query": "European Journal of Pharmaceutical Sciences",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09280987",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0928-0987",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biochemical Pharmacology",
+    "full_name": "Biochemical Pharmacology",
+    "openalex_query": "Biochemical Pharmacology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00062952",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0006-2952",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Controlled Release",
+    "full_name": "Journal of Controlled Release",
+    "openalex_query": "Journal of Controlled Release",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01683659",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0168-3659",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Pharmacology & Therapeutics",
+    "full_name": "Pharmacology & Therapeutics",
+    "openalex_query": "Pharmacology & Therapeutics",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01637258",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0163-7258",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Toxicology and Applied Pharmacology",
+    "full_name": "Toxicology and Applied Pharmacology",
+    "openalex_query": "Toxicology and Applied Pharmacology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0041008X",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0041-008X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Ethnopharmacology",
+    "full_name": "Journal of Ethnopharmacology",
+    "openalex_query": "Journal of Ethnopharmacology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/03788741",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0378-8741",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Fitoterapia",
+    "full_name": "Fitoterapia",
+    "openalex_query": "Fitoterapia",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0367326X",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0367-326X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biomedicine & Pharmacotherapy",
+    "full_name": "Biomedicine & Pharmacotherapy",
+    "openalex_query": "Biomedicine & Pharmacotherapy",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/07533322",
-    "publisher": "Elsevier 系列",
-    "sub": "药学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "药学",
+    "issn": "0753-3322",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food Chemistry",
+    "full_name": "Food Chemistry",
+    "openalex_query": "Food Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/03088146",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0308-8146",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food Research International",
+    "full_name": "Food Research International",
+    "openalex_query": "Food Research International",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09639969",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0963-9969",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food Hydrocolloids",
+    "full_name": "Food Hydrocolloids",
+    "openalex_query": "Food Hydrocolloids",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0268005X",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0268-005X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food Control",
+    "full_name": "Food Control",
+    "openalex_query": "Food Control",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09567135",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0956-7135",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food and Chemical Toxicology",
+    "full_name": "Food and Chemical Toxicology",
+    "openalex_query": "Food and Chemical Toxicology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/02786915",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0278-6915",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "LWT - Food Science and Technology",
+    "full_name": "LWT - Food Science and Technology",
+    "openalex_query": "LWT - Food Science and Technology",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00236438",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0023-6438",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Food Composition and Analysis",
+    "full_name": "Journal of Food Composition and Analysis",
+    "openalex_query": "Journal of Food Composition and Analysis",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/08891575",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "0889-1575",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Food Bioscience",
+    "full_name": "Food Bioscience",
+    "openalex_query": "Food Bioscience",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/22124292",
-    "publisher": "Elsevier 系列",
-    "sub": "食品科学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "食品科学",
+    "issn": "2212-4292",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Analytica Chimica Acta",
+    "full_name": "Analytica Chimica Acta",
+    "openalex_query": "Analytica Chimica Acta",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00032670",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0003-2670",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Talanta",
+    "full_name": "Talanta",
+    "openalex_query": "Talanta",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00399140",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0039-9140",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Chromatography A",
+    "full_name": "Journal of Chromatography A",
+    "openalex_query": "Journal of Chromatography A",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00219673",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0021-9673",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Chromatography B",
+    "full_name": "Journal of Chromatography B",
+    "openalex_query": "Journal of Chromatography B",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/15700232",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "1570-0232",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "TrAC - Trends in Analytical Chemistry",
+    "full_name": "TrAC - Trends in Analytical Chemistry",
+    "openalex_query": "TrAC - Trends in Analytical Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01659936",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0165-9936",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Microchemical J.",
+    "full_name": "Microchemical J.",
+    "openalex_query": "Microchemical J.",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/0026265X",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0026-265X",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biosensors and Bioelectronics",
+    "full_name": "Biosensors and Bioelectronics",
+    "openalex_query": "Biosensors and Bioelectronics",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09565663",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0956-5663",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Electroanalytical Chemistry",
+    "full_name": "Journal of Electroanalytical Chemistry",
+    "openalex_query": "Journal of Electroanalytical Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/15726657",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "1572-6657",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Spectrochimica Acta A",
+    "full_name": "Spectrochimica Acta A",
+    "openalex_query": "Spectrochimica Acta A",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/13861425",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "1386-1425",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Spectrochimica Acta B",
+    "full_name": "Spectrochimica Acta B",
+    "openalex_query": "Spectrochimica Acta B",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/05848547",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0584-8547",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Pharmaceutical and Biomedical Analysis",
+    "full_name": "Journal of Pharmaceutical and Biomedical Analysis",
+    "openalex_query": "Journal of Pharmaceutical and Biomedical Analysis",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/07317085",
-    "publisher": "Elsevier 系列",
-    "sub": "分析化学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "分析化学",
+    "issn": "0731-7085",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Artificial Intelligence in Medicine",
+    "full_name": "Artificial Intelligence in Medicine",
+    "openalex_query": "Artificial Intelligence in Medicine",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/09333657",
-    "publisher": "Elsevier 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "计算化学 & 生物信息学",
+    "issn": "0933-3657",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Computers in Biology and Medicine",
+    "full_name": "Computers in Biology and Medicine",
+    "openalex_query": "Computers in Biology and Medicine",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/00104825",
-    "publisher": "Elsevier 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "计算化学 & 生物信息学",
+    "issn": "0010-4825",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "J. Biomedical Informatics",
+    "full_name": "Journal of Biomedical Informatics",
+    "openalex_query": "Journal of Biomedical Informatics",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/15320464",
-    "publisher": "Elsevier 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "计算化学 & 生物信息学",
+    "issn": "1532-0464",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Chemometrics and Intelligent Laboratory Systems",
+    "full_name": "Chemometrics and Intelligent Laboratory Systems",
+    "openalex_query": "Chemometrics and Intelligent Laboratory Systems",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/01697439",
-    "publisher": "Elsevier 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "计算化学 & 生物信息学",
+    "issn": "0169-7439",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Computational Biology and Chemistry",
+    "full_name": "Computational Biology and Chemistry",
+    "openalex_query": "Computational Biology and Chemistry",
+    "openalex_source_id": "",
     "url": "https://rss.sciencedirect.com/publication/science/14769271",
-    "publisher": "Elsevier 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Elsevier / ScienceDirect 系列",
+    "sub": "计算化学 & 生物信息学",
+    "issn": "1476-9271",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Letters",
+    "full_name": "Physical Review Letters",
+    "openalex_query": "Physical Review Letters",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prl.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prl",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review X",
+    "full_name": "Physical Review X",
+    "openalex_query": "Physical Review X",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prx.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prx",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review A",
+    "full_name": "Physical Review A",
+    "openalex_query": "Physical Review A",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/pra.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "pra",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review B",
+    "full_name": "Physical Review B",
+    "openalex_query": "Physical Review B",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prb.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prb",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review C",
+    "full_name": "Physical Review C",
+    "openalex_query": "Physical Review C",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prc.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prc",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review D",
+    "full_name": "Physical Review D",
+    "openalex_query": "Physical Review D",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prd.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prd",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review E",
+    "full_name": "Physical Review E",
+    "openalex_query": "Physical Review E",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/pre.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "pre",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Applied",
+    "full_name": "Physical Review Applied",
+    "openalex_query": "Physical Review Applied",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prapplied.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prapplied",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Materials",
+    "full_name": "Physical Review Materials",
+    "openalex_query": "Physical Review Materials",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prmaterials.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prmaterials",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Fluids",
+    "full_name": "Physical Review Fluids",
+    "openalex_query": "Physical Review Fluids",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prfluids.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prfluids",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Research",
+    "full_name": "Physical Review Research",
+    "openalex_query": "Physical Review Research",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prresearch.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prresearch",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Accelerators and Beams",
+    "full_name": "Physical Review Accelerators and Beams",
+    "openalex_query": "Physical Review Accelerators and Beams",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prstab.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prstab",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physical Review Physics Education Research",
+    "full_name": "Physical Review Physics Education Research",
+    "openalex_query": "Physical Review Physics Education Research",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prstper.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prstper",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "PRX Energy",
+    "full_name": "PRX Energy",
+    "openalex_query": "PRX Energy",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prxenergy.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prxenergy",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "PRX Life",
+    "full_name": "PRX Life",
+    "openalex_query": "PRX Life",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prxlife.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prxlife",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "PRX Quantum",
+    "full_name": "PRX Quantum",
+    "openalex_query": "PRX Quantum",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/prxquantum.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "prxquantum",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Reviews of Modern Physics",
+    "full_name": "Reviews of Modern Physics",
+    "openalex_query": "Reviews of Modern Physics",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/rmp.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "rmp",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Physics Magazine",
+    "full_name": "Physics Magazine",
+    "openalex_query": "Physics Magazine",
+    "openalex_source_id": "",
     "url": "https://feeds.aps.org/rss/recent/physics.xml",
-    "publisher": "APS 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "APS (American Physical Society)",
+    "sub": "其他",
+    "issn": "",
+    "code": "physics",
+    "doi_prefix": "10.1103",
+    "source_type": "journal"
   },
   {
     "name": "Cell",
+    "full_name": "Cell",
+    "openalex_query": "Cell",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Chem",
+    "full_name": "Chem",
+    "openalex_query": "Chem",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/chem/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Joule",
+    "full_name": "Joule",
+    "openalex_query": "Joule",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/joule/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Matter",
+    "full_name": "Matter",
+    "openalex_query": "Matter",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/matter/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Reports",
+    "full_name": "Cell Reports",
+    "openalex_query": "Cell Reports",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-reports/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Reports Physical Science",
+    "full_name": "Cell Reports Physical Science",
+    "openalex_query": "Cell Reports Physical Science",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-reports-physical-science/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Reports Medicine",
+    "full_name": "Cell Reports Medicine",
+    "openalex_query": "Cell Reports Medicine",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-reports-medicine/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Patterns",
+    "full_name": "Patterns",
+    "openalex_query": "Patterns",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/patterns/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "iScience",
+    "full_name": "iScience",
+    "openalex_query": "iScience",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/iscience/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Cell",
+    "full_name": "Molecular Cell",
+    "openalex_query": "Molecular Cell",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/molecular-cell/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cancer Cell",
+    "full_name": "Cancer Cell",
+    "openalex_query": "Cancer Cell",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cancer-cell/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Neuron",
+    "full_name": "Neuron",
+    "openalex_query": "Neuron",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/neuron/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Immunity",
+    "full_name": "Immunity",
+    "openalex_query": "Immunity",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/immunity/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Genomics",
+    "full_name": "Cell Genomics",
+    "openalex_query": "Cell Genomics",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-genomics/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
+  },
+  {
+    "name": "PNAS",
+    "full_name": "PNAS",
+    "openalex_query": "PNAS",
+    "openalex_source_id": "",
+    "url": "https://www.pnas.org/action/showFeed?type=etoc&feed=rss",
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1073",
+    "source_type": "journal"
   },
   {
     "name": "Current Biology",
+    "full_name": "Current Biology",
+    "openalex_query": "Current Biology",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/current-biology/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Chemical Biology",
+    "full_name": "Cell Chemical Biology",
+    "openalex_query": "Cell Chemical Biology",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-chemical-biology/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Host & Microbe",
+    "full_name": "Cell Host & Microbe",
+    "openalex_query": "Cell Host & Microbe",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-host-microbe/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Cell Systems",
+    "full_name": "Cell Systems",
+    "openalex_query": "Cell Systems",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/cell-systems/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Stem Cell Reports",
+    "full_name": "Stem Cell Reports",
+    "openalex_query": "Stem Cell Reports",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/stem-cell-reports/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Biophysical Journal",
+    "full_name": "Biophysical Journal",
+    "openalex_query": "Biophysical Journal",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/biophysj/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Molecular Plant",
+    "full_name": "Molecular Plant",
+    "openalex_query": "Molecular Plant",
+    "openalex_source_id": "",
     "url": "https://www.cell.com/molecular-plant/current.rss",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Structure",
+    "full_name": "Structure",
+    "openalex_query": "Structure",
+    "openalex_source_id": "",
     "url": "http://rss.sciencedirect.com/publication/science/09692126",
-    "publisher": "Cell Press & 顶刊",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Cell Press & 其他顶刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1016",
+    "source_type": "journal"
   },
   {
     "name": "Synlett",
+    "full_name": "Synlett",
+    "openalex_query": "Synlett",
+    "openalex_source_id": "",
     "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000083.xml",
-    "publisher": "Thieme 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Thieme 化学期刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1055",
+    "source_type": "journal"
   },
   {
     "name": "Synthesis",
+    "full_name": "Synthesis",
+    "openalex_query": "Synthesis",
+    "openalex_source_id": "",
     "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000084.xml",
-    "publisher": "Thieme 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Thieme 化学期刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1055",
+    "source_type": "journal"
   },
   {
     "name": "Synfacts",
+    "full_name": "Synfacts",
+    "openalex_query": "Synfacts",
+    "openalex_source_id": "",
     "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000085.xml",
-    "publisher": "Thieme 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Thieme 化学期刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1055",
+    "source_type": "journal"
   },
   {
     "name": "Organic Materials",
+    "full_name": "Organic Materials",
+    "openalex_query": "Organic Materials",
+    "openalex_source_id": "",
     "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000146.xml",
-    "publisher": "Thieme 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Thieme 化学期刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1055",
+    "source_type": "journal"
   },
   {
     "name": "Planta Medica",
+    "full_name": "Planta Medica",
+    "openalex_query": "Planta Medica",
+    "openalex_source_id": "",
     "url": "https://www.thieme-connect.de/rss/thieme/en/10.1055-s-00000056.xml",
-    "publisher": "Thieme 系列",
-    "sub": "计算化学 & 生物信息学"
+    "publisher": "Thieme 化学期刊",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1055",
+    "source_type": "journal"
   },
   {
     "name": "eLife",
+    "full_name": "eLife",
+    "openalex_query": "eLife",
+    "openalex_source_id": "",
     "url": "https://elifesciences.org/rss/ahead.xml",
     "publisher": "生命科学综合",
-    "sub": "eLife"
+    "sub": "eLife",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.7554",
+    "source_type": "journal"
   },
   {
     "name": "PLOS Biology",
+    "full_name": "PLOS Biology",
+    "openalex_query": "PLOS Biology",
+    "openalex_source_id": "",
     "url": "https://journals.plos.org/plosbiology/feed/atom",
     "publisher": "生命科学综合",
-    "sub": "PLOS (Public Library of Science)"
+    "sub": "PLOS (Public Library of Science)",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1371",
+    "source_type": "journal"
   },
   {
     "name": "PLOS ONE",
+    "full_name": "PLOS ONE",
+    "openalex_query": "PLOS ONE",
+    "openalex_source_id": "",
     "url": "https://journals.plos.org/plosone/feed/atom",
     "publisher": "生命科学综合",
-    "sub": "PLOS (Public Library of Science)"
+    "sub": "PLOS (Public Library of Science)",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1371",
+    "source_type": "journal"
   },
   {
     "name": "PLOS Genetics",
+    "full_name": "PLOS Genetics",
+    "openalex_query": "PLOS Genetics",
+    "openalex_source_id": "",
     "url": "https://journals.plos.org/plosgenetics/feed/atom",
     "publisher": "生命科学综合",
-    "sub": "PLOS (Public Library of Science)"
+    "sub": "PLOS (Public Library of Science)",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1371",
+    "source_type": "journal"
   },
   {
     "name": "PLOS Pathogens",
+    "full_name": "PLOS Pathogens",
+    "openalex_query": "PLOS Pathogens",
+    "openalex_source_id": "",
     "url": "https://journals.plos.org/plospathogens/feed/atom",
     "publisher": "生命科学综合",
-    "sub": "PLOS (Public Library of Science)"
+    "sub": "PLOS (Public Library of Science)",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1371",
+    "source_type": "journal"
   },
   {
     "name": "PLOS Computational Biology",
+    "full_name": "PLOS Computational Biology",
+    "openalex_query": "PLOS Computational Biology",
+    "openalex_source_id": "",
     "url": "https://journals.plos.org/ploscompbiol/feed/atom",
     "publisher": "生命科学综合",
-    "sub": "PLOS (Public Library of Science)"
+    "sub": "PLOS (Public Library of Science)",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1371",
+    "source_type": "journal"
   },
   {
     "name": "Pharmaceutical Research",
+    "full_name": "Pharmaceutical Research",
+    "openalex_query": "Pharmaceutical Research",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11095",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "J. Computer-Aided Molecular Design",
+    "full_name": "Journal of Computer-Aided Molecular Design",
+    "openalex_query": "Journal of Computer-Aided Molecular Design",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=10822",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "J. Pharmaceutical & Biomedical Analysis",
+    "full_name": "Journal of Pharmaceutical and Biomedical Analysis",
+    "openalex_query": "Journal of Pharmaceutical and Biomedical Analysis",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12365",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "AAPS PharmSciTech",
+    "full_name": "AAPS PharmSciTech",
+    "openalex_query": "AAPS PharmSciTech",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12249",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Clinical Pharmacokinetics",
+    "full_name": "Clinical Pharmacokinetics",
+    "openalex_query": "Clinical Pharmacokinetics",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=40262",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "J. Natural Medicines",
+    "full_name": "Journal of Natural Medicines",
+    "openalex_query": "Journal of Natural Medicines",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11418",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "European Food Research and Technology",
+    "full_name": "European Food Research and Technology",
+    "openalex_query": "European Food Research and Technology",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=217",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Phytochemistry Reviews",
+    "full_name": "Phytochemistry Reviews",
+    "openalex_query": "Phytochemistry Reviews",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=11101",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Natural Products and Bioprospecting",
+    "full_name": "Natural Products and Bioprospecting",
+    "openalex_query": "Natural Products and Bioprospecting",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=13659",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Analytical and Bioanalytical Chemistry",
+    "full_name": "Analytical and Bioanalytical Chemistry",
+    "openalex_query": "Analytical and Bioanalytical Chemistry",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=216",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Analytical Sciences",
+    "full_name": "Analytical Sciences",
+    "openalex_query": "Analytical Sciences",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=44211",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Chromatographia",
+    "full_name": "Chromatographia",
+    "openalex_query": "Chromatographia",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=373",
     "publisher": "生命科学综合",
-    "sub": "Springer 药学"
+    "sub": "Springer 药学",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "J. Cheminformatics",
+    "full_name": "Journal of Cheminformatics",
+    "openalex_query": "Journal of Cheminformatics",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=13321",
     "publisher": "生命科学综合",
-    "sub": "计算 & 生物信息"
+    "sub": "计算 & 生物信息",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "BMC Bioinformatics",
+    "full_name": "BMC Bioinformatics",
+    "openalex_query": "BMC Bioinformatics",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12859",
     "publisher": "生命科学综合",
-    "sub": "计算 & 生物信息"
+    "sub": "计算 & 生物信息",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "BMC Medical Informatics and Decision Making",
+    "full_name": "BMC Medical Informatics and Decision Making",
+    "openalex_query": "BMC Medical Informatics and Decision Making",
+    "openalex_source_id": "",
     "url": "https://link.springer.com/search.rss?search-within=Journal&facet-journal-id=12911",
     "publisher": "生命科学综合",
-    "sub": "计算 & 生物信息"
+    "sub": "计算 & 生物信息",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "Bioinformatics",
+    "full_name": "Bioinformatics",
+    "openalex_query": "Bioinformatics",
+    "openalex_source_id": "",
     "url": "https://academic.oup.com/rss/site_5139/3001.xml",
-    "publisher": "Oxford Academic",
-    "sub": "计算 & 生物信息"
+    "publisher": "Oxford Academic (OUP)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1093",
+    "source_type": "journal"
   },
   {
     "name": "Briefings in Bioinformatics",
+    "full_name": "Briefings in Bioinformatics",
+    "openalex_query": "Briefings in Bioinformatics",
+    "openalex_source_id": "",
     "url": "https://academic.oup.com/rss/site_5143/3005.xml",
-    "publisher": "Oxford Academic",
-    "sub": "计算 & 生物信息"
+    "publisher": "Oxford Academic (OUP)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1093",
+    "source_type": "journal"
   },
   {
     "name": "AI",
+    "full_name": "AI",
+    "openalex_query": "AI",
+    "openalex_source_id": "",
     "url": "https://www.mdpi.com/ai/rss",
-    "publisher": "MDPI",
-    "sub": "计算 & 生物信息"
+    "publisher": "MDPI (Multidisciplinary Digital Publishing Institute)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.3390",
+    "source_type": "journal"
   },
   {
     "name": "AI Chemistry",
+    "full_name": "AI Chemistry",
+    "openalex_query": "AI Chemistry",
+    "openalex_source_id": "",
     "url": "https://www.mdpi.com/aichem/rss",
-    "publisher": "MDPI",
-    "sub": "计算 & 生物信息"
+    "publisher": "MDPI (Multidisciplinary Digital Publishing Institute)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.3390",
+    "source_type": "journal"
   },
   {
     "name": "Expert Opinion on Drug Delivery",
+    "full_name": "Expert Opinion on Drug Delivery",
+    "openalex_query": "Expert Opinion on Drug Delivery",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/iedd20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "Drug Metabolism Reviews",
+    "full_name": "Drug Metabolism Reviews",
+    "openalex_query": "Drug Metabolism Reviews",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/idmr20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "J. Asian Natural Products Research",
+    "full_name": "Journal of Asian Natural Products Research",
+    "openalex_query": "Journal of Asian Natural Products Research",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/ganp20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "Critical Reviews in Food Science and Nutrition",
+    "full_name": "Critical Reviews in Food Science and Nutrition",
+    "openalex_query": "Critical Reviews in Food Science and Nutrition",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/bfsn20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "Analytical Letters",
+    "full_name": "Analytical Letters",
+    "openalex_query": "Analytical Letters",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/lanl20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "Critical Reviews in Analytical Chemistry",
+    "full_name": "Critical Reviews in Analytical Chemistry",
+    "openalex_query": "Critical Reviews in Analytical Chemistry",
+    "openalex_source_id": "",
     "url": "https://www.tandfonline.com/feed/rss/batc20",
-    "publisher": "Taylor & Francis",
-    "sub": "计算 & 生物信息"
+    "publisher": "Taylor & Francis 药学",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "10.1080",
+    "source_type": "journal"
   },
   {
     "name": "Drug Metabolism & Disposition",
+    "full_name": "Drug Metabolism & Disposition",
+    "openalex_query": "Drug Metabolism & Disposition",
+    "openalex_source_id": "",
     "url": "https://dmd.aspetjournals.org/action/showFeed?type=etoc&feed=rss&jc=dmd",
-    "publisher": "ASPET",
-    "sub": "计算 & 生物信息"
+    "publisher": "ASPET (American Society for Pharmacology and Experimental Therapeutics)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "J. Pharmacology & Experimental Therapeutics",
+    "full_name": "Journal of Pharmacology and Experimental Therapeutics",
+    "openalex_query": "Journal of Pharmacology and Experimental Therapeutics",
+    "openalex_source_id": "",
     "url": "https://jpet.aspetjournals.org/action/showFeed?type=etoc&feed=rss&jc=jpet",
-    "publisher": "ASPET",
-    "sub": "计算 & 生物信息"
+    "publisher": "ASPET (American Society for Pharmacology and Experimental Therapeutics)",
+    "sub": "其他",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "journal"
   },
   {
     "name": "cs.AI",
+    "full_name": "cs.AI",
+    "openalex_query": "cs.AI",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.AI",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cs.LG",
+    "full_name": "cs.LG",
+    "openalex_query": "cs.LG",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.LG",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cs.CV",
+    "full_name": "cs.CV",
+    "openalex_query": "cs.CV",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.CV",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cs.CL",
+    "full_name": "cs.CL",
+    "openalex_query": "cs.CL",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.CL",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cs.NE",
+    "full_name": "cs.NE",
+    "openalex_query": "cs.NE",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.NE",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cs.RO",
+    "full_name": "cs.RO",
+    "openalex_query": "cs.RO",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cs.RO",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "stat.ML",
+    "full_name": "stat.ML",
+    "openalex_query": "stat.ML",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/stat.ML",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "physics.chem-ph",
+    "full_name": "physics.chem-ph",
+    "openalex_query": "physics.chem-ph",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/physics.chem-ph",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "physics.comp-ph",
+    "full_name": "physics.comp-ph",
+    "openalex_query": "physics.comp-ph",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/physics.comp-ph",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "physics.app-ph",
+    "full_name": "physics.app-ph",
+    "openalex_query": "physics.app-ph",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/physics.app-ph",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cond-mat.mtrl-sci",
+    "full_name": "cond-mat.mtrl-sci",
+    "openalex_query": "cond-mat.mtrl-sci",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cond-mat.mtrl-sci",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "cond-mat.soft",
+    "full_name": "cond-mat.soft",
+    "openalex_query": "cond-mat.soft",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/cond-mat.soft",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "q-bio.QM",
+    "full_name": "q-bio.QM",
+    "openalex_query": "q-bio.QM",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/q-bio.QM",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "q-bio.BM",
+    "full_name": "q-bio.BM",
+    "openalex_query": "q-bio.BM",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/q-bio.BM",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "eess.IV",
+    "full_name": "eess.IV",
+    "openalex_query": "eess.IV",
+    "openalex_source_id": "",
     "url": "https://rss.arxiv.org/rss/eess.IV",
     "publisher": "预印本",
-    "sub": "arXiv"
+    "sub": "arXiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "All",
+    "full_name": "All",
+    "openalex_query": "All",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Biochemistry",
+    "full_name": "Biochemistry",
+    "openalex_query": "Biochemistry",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Bioinformatics",
+    "full_name": "Bioinformatics",
+    "openalex_query": "Bioinformatics",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Biophysics",
+    "full_name": "Biophysics",
+    "openalex_query": "Biophysics",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Cell Biology",
+    "full_name": "Cell Biology",
+    "openalex_query": "Cell Biology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Genomics",
+    "full_name": "Genomics",
+    "openalex_query": "Genomics",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Synthetic Biology",
+    "full_name": "Synthetic Biology",
+    "openalex_query": "Synthetic Biology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Systems Biology",
+    "full_name": "Systems Biology",
+    "openalex_query": "Systems Biology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Neuroscience",
+    "full_name": "Neuroscience",
+    "openalex_query": "Neuroscience",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Immunology",
+    "full_name": "Immunology",
+    "openalex_query": "Immunology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Molecular Biology",
+    "full_name": "Molecular Biology",
+    "openalex_query": "Molecular Biology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Pharmacology and Toxicology",
+    "full_name": "Pharmacology and Toxicology",
+    "openalex_query": "Pharmacology and Toxicology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology_and_toxicology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Plant Biology",
+    "full_name": "Plant Biology",
+    "openalex_query": "Plant Biology",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Genetics",
+    "full_name": "Genetics",
+    "openalex_query": "Genetics",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "组合示例(Genomics+Bioinformatics)",
+    "full_name": "组合示例(Genomics+Bioinformatics)",
+    "openalex_query": "组合示例(Genomics+Bioinformatics)",
+    "openalex_source_id": "",
     "url": "https://connect.biorxiv.org/biorxiv_xml.php?subject=genomics+bioinformatics",
     "publisher": "预印本",
-    "sub": "bioRxiv"
+    "sub": "bioRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "All",
+    "full_name": "All",
+    "openalex_query": "All",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Epidemiology",
+    "full_name": "Epidemiology",
+    "openalex_query": "Epidemiology",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=epidemiology",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Infectious Diseases",
+    "full_name": "Infectious Diseases",
+    "openalex_query": "Infectious Diseases",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=infectious_diseases",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Oncology",
+    "full_name": "Oncology",
+    "openalex_query": "Oncology",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=oncology",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Public and Global Health",
+    "full_name": "Public and Global Health",
+    "openalex_query": "Public and Global Health",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=public_and_global_health",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Health Informatics",
+    "full_name": "Health Informatics",
+    "openalex_query": "Health Informatics",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=health_informatics",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Cardiovascular Medicine",
+    "full_name": "Cardiovascular Medicine",
+    "openalex_query": "Cardiovascular Medicine",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=cardiovascular_medicine",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Neurology",
+    "full_name": "Neurology",
+    "openalex_query": "Neurology",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=neurology",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Psychiatry and Clinical Psychology",
+    "full_name": "Psychiatry and Clinical Psychology",
+    "openalex_query": "Psychiatry and Clinical Psychology",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=psychiatry_and_clinical_psychology",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Radiology and Imaging",
+    "full_name": "Radiology and Imaging",
+    "openalex_query": "Radiology and Imaging",
+    "openalex_source_id": "",
     "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=radiology_and_imaging",
     "publisher": "预印本",
-    "sub": "medRxiv"
+    "sub": "medRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   },
   {
     "name": "Latest",
+    "full_name": "Latest",
+    "openalex_query": "Latest",
+    "openalex_source_id": "",
     "url": "https://chemrxiv.org/action/showFeed?type=latest&format=rss",
     "publisher": "预印本",
-    "sub": "chemRxiv"
+    "sub": "chemRxiv",
+    "issn": "",
+    "code": "",
+    "doi_prefix": "",
+    "source_type": "preprint"
   }
 ]

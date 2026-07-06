@@ -40,7 +40,7 @@
 
     <!-- KPI Row -->
     <section class="kpi-row anim-up" id="kpi-row">
-        <div class="kpi-card" id="kpi-today"><span class="kpi-card__label">今日新增</span><span class="kpi-card__value">--</span></div>
+        <div class="kpi-card" id="kpi-today"><span class="kpi-card__label">最近新增</span><span class="kpi-card__value">--</span></div>
         <div class="kpi-card" id="kpi-unread"><span class="kpi-card__label">待处理</span><span class="kpi-card__value">--</span></div>
         <div class="kpi-card" id="kpi-sources"><span class="kpi-card__label">活跃来源</span><span class="kpi-card__value">--</span></div>
         <div class="kpi-card" id="kpi-week"><span class="kpi-card__label">本周累计</span><span class="kpi-card__value">--</span></div>
@@ -49,7 +49,7 @@
     <!-- Waterfall -->
     <section class="wf-section anim-up" id="wf-section" style="display:none">
         <div class="wf-head">
-            <h3 class="wf-title">今日最新</h3>
+            <h3 class="wf-title">最近新增</h3>
             <div class="wf-arrows"><button class="wf-arrow" onclick="slideWF(-1)">&larr;</button><button class="wf-arrow" onclick="slideWF(1)">&rarr;</button></div>
         </div>
         <div class="wf-track" id="wf-track"></div>
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <div id="dash-empty" class="dash-empty" style="display:none"><p>今日暂无新文献</p><p class="dash-empty__sub">文献将在抓取后自动出现在此看板</p></div>
+        <div id="dash-empty" class="dash-empty" style="display:none"><p>暂无待处理文献</p><p class="dash-empty__sub">文献将在抓取后自动出现在此看板</p></div>
     </section>
 
     <div class="ticker" id="ticker-bar" style="display:none"><div class="ticker__track" id="ticker-track"></div></div>

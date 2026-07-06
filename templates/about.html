@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <p class="text-sm text-gray-500 mt-6 max-w-2xl leading-7">
-                    FolPaper 连接 RSS、PubMed、arXiv、OpenAlex 等来源，并结合大语言模型能力，帮助您完成文献追踪、主题筛选、阅读整理与长期归档。
+                    FolPaper 聚合 RSS、PubMed、arXiv、OpenAlex、Crossref 五大数据源，集成 Patchright 引擎绕过 Cloudflare 反爬，配合三级 API 补源链与 AI 大语言模型，实现文献抓取、翻译、推荐、归档全流程自动化。
                 </p>
             </div>
             <div class="grid grid-cols-2 gap-3 min-w-[280px]">
@@ -24,16 +24,16 @@
                     <div class="relative z-10 mt-2 text-2xl font-black text-blue-600">5+</div>
                 </div>
                 <div class="cyber-stat-card">
-                    <div class="text-xs text-gray-500">AI Workflows</div>
-                    <div class="relative z-10 mt-2 text-2xl font-black text-indigo-600">3</div>
-                </div>
-                <div class="cyber-stat-card">
-                    <div class="text-xs text-gray-500">Inbox + Library</div>
-                    <div class="relative z-10 mt-2 text-2xl font-black text-slate-700">1</div>
-                </div>
-                <div class="cyber-stat-card">
-                    <div class="text-xs text-gray-500">Archive Ready</div>
+                    <div class="text-xs text-gray-500">CF Bypass</div>
                     <div class="relative z-10 mt-2 text-2xl font-black text-green-600">Yes</div>
+                </div>
+                <div class="cyber-stat-card">
+                    <div class="text-xs text-gray-500">Desktop App</div>
+                    <div class="relative z-10 mt-2 text-2xl font-black text-indigo-600">Yes</div>
+                </div>
+                <div class="cyber-stat-card">
+                    <div class="text-xs text-gray-500">Smart Supplement</div>
+                    <div class="relative z-10 mt-2 text-2xl font-black text-amber-600">3-tier</div>
                 </div>
             </div>
         </div>
@@ -41,24 +41,24 @@
 
     <section class="cyber-console p-8">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">✨</span>
-            平台特点
+            <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">&#x1F680;</span>
+            核心能力
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                <div class="text-xl mb-2">🔄</div>
-                <h3 class="font-bold text-gray-800 mb-2">多源追踪</h3>
-                <p class="text-sm text-gray-500 leading-6">支持 RSS、PubMed、arXiv、OpenAlex 与顶会来源，适合日常巡检和专题跟踪。</p>
+                <div class="text-xl mb-2">&#x1F6E1;</div>
+                <h3 class="font-bold text-gray-800 mb-2">智能抓取引擎</h3>
+                <p class="text-sm text-gray-500 leading-6">直连 → Cookie 预取 → Patchright 反检测浏览器三级级联，绕过 Cloudflare/Akamai 安全验证。被拦截时自动启动 Crossref → PubMed → OpenAlex 三级 API 补源，文献零丢失。</p>
             </div>
             <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                <div class="text-xl mb-2">🧠</div>
+                <div class="text-xl mb-2">&#x1F9E0;</div>
                 <h3 class="font-bold text-gray-800 mb-2">AI 辅助分析</h3>
-                <p class="text-sm text-gray-500 leading-6">提供标题翻译、摘要翻译、自然语言筛选和背景调研，减少手工筛文负担。</p>
+                <p class="text-sm text-gray-500 leading-6">标题与摘要翻译、自然语言智能筛选、AI 背景调研报告生成，支持 OpenAI 兼容 API，可接入任意大语言模型。</p>
             </div>
             <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                <div class="text-xl mb-2">🗂️</div>
-                <h3 class="font-bold text-gray-800 mb-2">阅读与归档</h3>
-                <p class="text-sm text-gray-500 leading-6">收件箱、我的文库、历史归档三层结构，让新增处理与长期沉淀分离得更清晰。</p>
+                <div class="text-xl mb-2">&#x1F4E6;</div>
+                <h3 class="font-bold text-gray-800 mb-2">桌面应用体验</h3>
+                <p class="text-sm text-gray-500 leading-6">基于 pywebview 的原生桌面窗口。双击启动，无浏览器依赖。同时支持 Web 模式便于远程访问和开发调试。</p>
             </div>
         </div>
     </section>
@@ -74,36 +74,36 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl border border-blue-100">📥</div>
+                <div class="w-14 h-14 shrink-0 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl border border-blue-100">&#x1F4E5;</div>
                 <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">所有订阅</h3>
-                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">集中查看新增文献，支持来源切换、标题翻译、快速入库和已读清理，适合每日处理新到内容。</p>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">收件箱</h3>
+                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">集中浏览所有订阅的新增文献，支持来源筛选、标题翻译、快速入库和已读标记。</p>
                     <div class="flex flex-wrap gap-1.5">
+                        <span class="cyber-chip">多源聚合</span>
                         <span class="cyber-chip">未读提示</span>
-                        <span class="cyber-chip">分类浏览</span>
-                        <span class="cyber-chip">标题翻译</span>
+                        <span class="cyber-chip">一键翻译</span>
                     </div>
                 </div>
             </div>
 
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-2xl border border-green-100">📚</div>
+                <div class="w-14 h-14 shrink-0 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-2xl border border-green-100">&#x1F4DA;</div>
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-2">我的文库</h3>
-                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">管理已收藏文献，支持关注全文、查看详情、翻译摘要和持续整理，适合沉淀真正值得跟进的论文。</p>
+                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">管理已收藏文献，支持关注、详情查看、摘要翻译，适合沉淀真正值得跟进的论文。</p>
                     <div class="flex flex-wrap gap-1.5">
                         <span class="cyber-chip">关注标记</span>
-                        <span class="cyber-chip">未读置顶</span>
+                        <span class="cyber-chip">分类浏览</span>
                         <span class="cyber-chip">长期保存</span>
                     </div>
                 </div>
             </div>
 
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl border border-indigo-100">✨</div>
+                <div class="w-14 h-14 shrink-0 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl border border-indigo-100">&#x2728;</div>
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-2">AI 智能推荐</h3>
-                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">用自然语言描述筛选目标，系统会对候选文献进行批量判断，并保留分页、导出与后续标题翻译能力。</p>
+                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">用自然语言描述筛选目标，系统对候选文献批量判断，支持分页与结果导出。</p>
                     <div class="flex flex-wrap gap-1.5">
                         <span class="cyber-chip">自然语言筛选</span>
                         <span class="cyber-chip">分页展示</span>
@@ -113,54 +113,71 @@
             </div>
 
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center text-2xl border border-violet-100">🧬</div>
+                <div class="w-14 h-14 shrink-0 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center text-2xl border border-violet-100">&#x1F9EC;</div>
                 <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">PubMed 检索</h3>
-                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">支持检索式构建、AI 辅助生成查询、背景调研与结果入库，也可把检索式直接加入订阅继续追踪。</p>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">PubMed / OpenAlex 检索</h3>
+                    <p class="text-gray-600 mb-3 leading-relaxed text-sm">检索式构建、AI 辅助生成查询、背景调研与结果入库，检索式可直接加入订阅持续追踪。</p>
                     <div class="flex flex-wrap gap-1.5">
                         <span class="cyber-chip">检索式辅助</span>
-                        <span class="cyber-chip">信息整理</span>
-                        <span class="cyber-chip">来源信息</span>
+                        <span class="cyber-chip">结果入库</span>
+                        <span class="cyber-chip">背景调研</span>
                     </div>
                 </div>
             </div>
 
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl border border-amber-100">🌐</div>
+                <div class="w-14 h-14 shrink-0 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl border border-amber-100">&#x1F310;</div>
                 <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">期刊与顶会拉取</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm">可按期刊、ISSN 或顶会范围从 OpenAlex 拉取论文，完成去重、统计与导出，适合专题批量扫描。</p>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">顶会追踪</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">支持 NeurIPS/ICML/AAAI/CVPR/ACL/KDD 等十余个顶会，按年份批量拉取论文，完成去重、统计与导出。</p>
                 </div>
             </div>
 
             <div class="cyber-scan-panel flex flex-col md:flex-row gap-5">
-                <div class="w-14 h-14 shrink-0 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center text-2xl border border-slate-200">⚙️</div>
+                <div class="w-14 h-14 shrink-0 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center text-2xl border border-slate-200">&#x2699;</div>
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-2">订阅与系统设置</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm">统一管理数据源的抓取和保留策略，并配置语言模型接口、网关地址和默认模型参数。</p>
+                    <p class="text-gray-600 leading-relaxed text-sm">管理 RSS/PubMed/OpenAlex/arXiv 订阅源，配置抓取周期与保留天数，设置 LLM API 及 Patchright 引擎。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cyber-console flex flex-col md:flex-row items-center gap-8 relative overflow-hidden p-8">
-        <div class="flex-shrink-0 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
-            <img src="{{ url_for('static', filename='img/qrcode.png') }}" alt="公众号二维码" class="w-36 h-36 object-cover rounded-lg" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEycHgiIGZpbGw9IiM5Y2FzYTMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7kuoznu7TnoIE8L3RleHQ+PC9zdmc+'">
+    <section class="cyber-console p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">技术栈</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div class="font-bold text-gray-800">Flask + pywebview</div>
+                <div class="text-gray-500 mt-1">Web 框架 + 桌面窗口</div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div class="font-bold text-gray-800">Patchright</div>
+                <div class="text-gray-500 mt-1">CF 反爬浏览器引擎</div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div class="font-bold text-gray-800">SQLite</div>
+                <div class="text-gray-500 mt-1">本地数据库，无需部署</div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div class="font-bold text-gray-800">OpenAI 兼容 API</div>
+                <div class="text-gray-500 mt-1">可接入任意 LLM</div>
+            </div>
         </div>
+    </section>
+
+    <section class="cyber-console flex flex-col md:flex-row items-center gap-8 relative overflow-hidden p-8">
         <div class="flex-1 text-center md:text-left">
-            <div class="workbench-kicker">Support</div>
-            <h2 class="text-2xl font-bold text-gray-800 mt-2 mb-3">联系与支持</h2>
+            <div class="workbench-kicker">Open Source</div>
+            <h2 class="text-2xl font-bold text-gray-800 mt-2 mb-3">FolPaper</h2>
             <p class="text-gray-600 mb-6 leading-relaxed">
-                扫描左侧二维码关注公众号“离辞连类”，获取更新动态、使用技巧以及更多学术信息整理内容。
+                基于 GPLv3 协议开源。聚合多源文献、AI 辅助分析、桌面级体验。
             </p>
             <div class="flex flex-col sm:flex-row items-center gap-4">
                 <a href="https://github.com/Huozqi/FolPaper" target="_blank" class="inline-flex items-center px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-800 transition-colors shadow-sm">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                    </svg>
-                    访问 GitHub 仓库
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
+                    GitHub
                 </a>
-                <span class="text-sm text-gray-500">如果这个工具对您有帮助，欢迎给项目点个 ⭐。</span>
+                <span class="text-sm text-gray-500">如果这个工具对您有帮助，欢迎给项目点个 &#x2B50;。</span>
             </div>
         </div>
     </section>

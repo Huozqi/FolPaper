@@ -802,6 +802,7 @@
             <a href="{{ url_for('library') }}" class="nav-pill {% if request.endpoint == 'library' or request.endpoint == 'article_detail' %}nav-pill--on{% endif %}">研究文库</a>
             <a href="{{ url_for('top_conferences_page') }}" class="nav-pill {% if request.endpoint == 'top_conferences_page' %}nav-pill--on{% endif %}">学术前沿</a>
             <a href="{{ url_for('archive') }}" class="nav-pill {% if request.endpoint == 'archive' %}nav-pill--on{% endif %}">时间档案</a>
+            <a href="{{ url_for('search_page') }}" class="nav-pill {% if request.endpoint == 'search_page' %}nav-pill--on{% endif %}" title="全文搜索">⌕</a>
         </nav>
     </header>
     {% endif %}
@@ -834,6 +835,8 @@
                 <div class="w-full bg-blue-200 rounded-full h-2.5 mb-1 relative z-10">
                     <div id="task-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
+                <div id="task-detail-list" class="mt-3 space-y-1 text-xs text-cyan-100/80 relative z-10"></div>
+                <div id="task-error-list" class="mt-3 space-y-1 text-xs text-rose-200 relative z-10"></div>
             </div>
             
             {% block content %}{% endblock %}
@@ -849,9 +852,11 @@
                     const msgEl = document.getElementById('task-message');
                     const barEl = document.getElementById('task-progress-bar');
                     const pctEl = document.getElementById('task-percentage');
+                    const detailEl = document.getElementById('task-detail-list');
+                    const errorEl = document.getElementById('task-error-list');
                     const spinner = container.querySelector('svg');
                     
-                    if (data.is_running || (data.message && data.message.includes('抓取完成'))) {
+                    if (data.is_running || data.message) {
                         if (data.is_running) {
                             sessionStorage.removeItem('task_reloaded');
                         }
@@ -867,6 +872,20 @@
                         
                         barEl.style.width = percent + '%';
                         pctEl.textContent = percent + '%';
+                        if (detailEl) {
+                            detailEl.replaceChildren(...(data.details || []).map(item => {
+                                const node = document.createElement('div');
+                                node.textContent = item;
+                                return node;
+                            }));
+                        }
+                        if (errorEl) {
+                            errorEl.replaceChildren(...(data.errors || []).map(item => {
+                                const node = document.createElement('div');
+                                node.textContent = `失败: ${item}`;
+                                return node;
+                            }));
+                        }
                         
                         if (data.message && data.message.includes('完成') && !data.is_running) {
                             // 完成后，去除旋转动画
@@ -1107,6 +1126,54 @@
                 }
             }
         });
+
+        async function downloadPaper(articleId, btn) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '⏳';
+            btn.disabled = true;
+            const MAX_POLL = 90; // 最多轮询 90 次（3 分钟）
+            try {
+                const resp = await fetch('/api/download/' + articleId);
+                const data = await resp.json();
+                if (!data.success || !data.task_id) {
+                    btn.innerHTML = '❌';
+                    alert('下载启动失败: ' + (data.message || '未知错误'));
+                    setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
+                    return;
+                }
+                // 轮询下载状态
+                let attempts = 0;
+                while (attempts < MAX_POLL) {
+                    await new Promise(r => setTimeout(r, 2000));
+                    const sr = await fetch('/api/download/status/' + data.task_id);
+                    const sd = await sr.json();
+                    if (!sd.success) {
+                        btn.innerHTML = '❌';
+                        alert('状态查询失败: ' + (sd.message || ''));
+                        break;
+                    }
+                    if (sd.status === 'success') {
+                        btn.innerHTML = '✅';
+                        alert(sd.message || '下载完成');
+                        break;
+                    }
+                    if (sd.status === 'failed') {
+                        btn.innerHTML = '❌';
+                        alert('下载失败: ' + (sd.message || ''));
+                        break;
+                    }
+                    attempts++;
+                }
+                if (attempts >= MAX_POLL) {
+                    btn.innerHTML = '❌';
+                    alert('下载超时，请稍后重试');
+                }
+            } catch (e) {
+                btn.innerHTML = '❌';
+                alert('网络错误: ' + e.message);
+            }
+            setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
+        }
     </script>
 </body>
 </html>

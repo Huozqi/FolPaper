@@ -3,13 +3,43 @@ import urllib.parse
 import json
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+import time
 
 class PubMedService:
     BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
+    # NCBI E-utilities: 无 API key 时限 3 req/s，留余量 2 req/s
+    _MIN_INTERVAL = 0.5
+    _last_request = 0
 
-    def __init__(self, tool_name="TraeApp", email="developer@example.com"):
+    def __init__(self, tool_name="FolPaper", email="researcher@example.com"):
         self.tool_name = tool_name
         self.email = email
+
+    def _rate_limit(self):
+        elapsed = time.time() - self._last_request
+        if elapsed < self._MIN_INTERVAL:
+            time.sleep(self._MIN_INTERVAL - elapsed)
+        self._last_request = time.time()
+
+    def search_journal(self, journal_name='', issn='', retmax=200, start_date=None, end_date=None):
+        terms = []
+        if issn:
+            terms.append(f'{issn}[ISSN]')
+        if journal_name:
+            terms.append(f'"{journal_name}"[Journal]')
+        if not terms:
+            return []
+        term = ' OR '.join(terms)
+        if len(terms) > 1:
+            term = f'({term})'
+        return self.search(term, retmax=retmax, start_date=start_date, end_date=end_date, sort="pub+date")
+
+    def search_by_doi(self, doi):
+        doi = (doi or '').strip()
+        if not doi:
+            return None
+        results = self.search(f'{doi}[AID]', retmax=1, sort='relevance')
+        return results[0] if results else None
 
     def search(self, term, retmax=20, start_date=None, end_date=None, sort="pub+date"):
         # 严格依从 E-utilities 规范：
@@ -39,7 +69,7 @@ class PubMedService:
             
         # 1. esearch
         search_url = f"{self.BASE_URL}esearch.fcgi?db=pubmed&term={query}&retmode=json&retmax={retmax}&sort={sort}&tool={self.tool_name}&email={self.email}"
-        
+        self._rate_limit()
         try:
             req = urllib.request.Request(search_url)
             with urllib.request.urlopen(req, timeout=30) as response:
@@ -59,7 +89,7 @@ class PubMedService:
         for i in range(0, len(id_list), batch_size):
             batch_ids = id_list[i:i + batch_size]
             ids = ",".join(batch_ids)
-            
+
             summary_params = {
                 'db': 'pubmed',
                 'id': ids,
@@ -67,7 +97,8 @@ class PubMedService:
                 'tool': self.tool_name,
                 'email': self.email
             }
-            
+
+            self._rate_limit()
             try:
                 data_encoded = urllib.parse.urlencode(summary_params).encode('utf-8')
                 req2 = urllib.request.Request(f"{self.BASE_URL}esummary.fcgi", data=data_encoded)

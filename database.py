@@ -2,7 +2,21 @@ import sqlite3
 import os
 import sys
 import time
+import threading
+import re
 from datetime import datetime, timedelta
+
+
+def normalize_doi(value):
+    if not value:
+        return None
+    doi = str(value).strip().lower()
+    doi = doi.replace('https://doi.org/', '').replace('http://doi.org/', '').replace('http://dx.doi.org/', '')
+    if doi.startswith('doi:'):
+        doi = doi[4:]
+    doi = re.sub(r'\s+', '', doi)
+    doi = re.sub(r'[\.\;\,\:]$', '', doi)
+    return doi or None
 
 def get_base_path():
     if getattr(sys, 'frozen', False):
@@ -14,11 +28,29 @@ class DatabaseManager:
         if db_path is None:
             db_path = os.path.join(get_base_path(), "articles.db")
         self.db_path = db_path
+        self._write_lock = threading.RLock()
         self._init_db()
-        # 主表只保留近 30 天数据，启动时先做一次清理，避免旧数据长期堆积
         self.prune_old_articles(days=30)
-        # 根据订阅配置保留时限清理数据
         self.prune_articles_by_subscription_retention()
+
+    from contextlib import contextmanager
+    @contextmanager
+    def _conn(self, write=False):
+        """上下文管理器，保证连接异常安全关闭，写操作自动加锁+提交。"""
+        if write:
+            self._write_lock.acquire()
+        try:
+            conn = sqlite3.connect(self.db_path, timeout=30)
+            conn.row_factory = sqlite3.Row
+            try:
+                yield conn
+                if write:
+                    conn.commit()
+            finally:
+                conn.close()
+        finally:
+            if write:
+                self._write_lock.release()
 
     def _init_db(self):
         # 初始化数据库，创建表
@@ -81,6 +113,11 @@ class DatabaseManager:
             
         try:
             cursor.execute("ALTER TABLE subscriptions ADD COLUMN retention_days INTEGER DEFAULT 30")
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute("ALTER TABLE subscriptions ADD COLUMN openalex_query TEXT DEFAULT ''")
         except sqlite3.OperationalError:
             pass
             
@@ -146,15 +183,63 @@ class DatabaseManager:
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_articles_trans_status ON articles(trans_status)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_archive_source_published ON archive_articles(source, published DESC)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_archive_published ON archive_articles(published DESC)')
-        
+
+        # FTS5 全文搜索：索引标题、摘要、作者、翻译标题
+        cursor.execute('''
+            CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(
+                title, authors, summary, translated_title,
+                content='articles', content_rowid='id'
+            )
+        ''')
+        # 触发器：articles 增删改时自动同步 FTS 索引
+        cursor.execute('''
+            CREATE TRIGGER IF NOT EXISTS articles_fts_insert AFTER INSERT ON articles BEGIN
+                INSERT INTO articles_fts(rowid, title, authors, summary, translated_title)
+                VALUES (new.id, new.title, new.authors, new.summary, new.translated_title);
+            END
+        ''')
+        cursor.execute('''
+            CREATE TRIGGER IF NOT EXISTS articles_fts_delete AFTER DELETE ON articles BEGIN
+                INSERT INTO articles_fts(articles_fts, rowid, title, authors, summary, translated_title)
+                VALUES ('delete', old.id, old.title, old.authors, old.summary, old.translated_title);
+            END
+        ''')
+        cursor.execute('''
+            CREATE TRIGGER IF NOT EXISTS articles_fts_update AFTER UPDATE ON articles BEGIN
+                INSERT INTO articles_fts(articles_fts, rowid, title, authors, summary, translated_title)
+                VALUES ('delete', old.id, old.title, old.authors, old.summary, old.translated_title);
+                INSERT INTO articles_fts(rowid, title, authors, summary, translated_title)
+                VALUES (new.id, new.title, new.authors, new.summary, new.translated_title);
+            END
+        ''')
+
+        # 将存量文章导入 FTS 索引（首次/重建时）
+        cursor.execute("INSERT INTO articles_fts(articles_fts) VALUES('rebuild')")
+
         conn.commit()
         conn.close()
 
-    def add_subscription(self, sub_type, sub_value, source_name="", fetch_days=7, retention_days=30):
+    def search_articles(self, query, limit=50, status='pending'):
+        """全文搜索标题、摘要、作者、翻译标题。使用 FTS5 引擎。"""
+        # 转义 FTS5 特殊字符，将查询包装为安全的 token 短语
+        tokens = re.findall(r'[\w一-鿿]+', query.lower())
+        if not tokens:
+            return []
+        safe_query = ' AND '.join(f'"{t}"' for t in tokens)
+        with self._conn() as conn:
+            rows = conn.execute('''
+                SELECT a.* FROM articles a
+                JOIN articles_fts fts ON a.id = fts.rowid
+                WHERE articles_fts MATCH ? AND a.status = ?
+                ORDER BY rank LIMIT ?
+            ''', (safe_query, status, limit)).fetchall()
+        return [dict(row) for row in rows]
+
+    def add_subscription(self, sub_type, sub_value, source_name="", fetch_days=7, retention_days=30, openalex_query=""):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         try:
-            cursor.execute('INSERT INTO subscriptions (sub_type, sub_value, source_name, fetch_days, retention_days) VALUES (?, ?, ?, ?, ?)', (sub_type, sub_value, source_name, fetch_days, retention_days))
+            cursor.execute('INSERT INTO subscriptions (sub_type, sub_value, source_name, fetch_days, retention_days, openalex_query) VALUES (?, ?, ?, ?, ?, ?)', (sub_type, sub_value, source_name, fetch_days, retention_days, openalex_query))
             conn.commit()
             return True
         except sqlite3.IntegrityError:
@@ -169,7 +254,7 @@ class DatabaseManager:
         conn.commit()
         conn.close()
 
-    def update_subscription(self, sub_value, source_name, fetch_days, retention_days):
+    def update_subscription(self, sub_value, source_name, fetch_days, retention_days, openalex_query=""):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         # 允许用户修改 source_name，由于文章是按 source 字段关联的，同步更新已有文章的 source
@@ -183,9 +268,9 @@ class DatabaseManager:
         # 更新订阅表
         cursor.execute('''
             UPDATE subscriptions 
-            SET source_name = ?, fetch_days = ?, retention_days = ? 
+            SET source_name = ?, fetch_days = ?, retention_days = ?, openalex_query = ?
             WHERE sub_value = ?
-        ''', (source_name, fetch_days, retention_days, sub_value))
+        ''', (source_name, fetch_days, retention_days, openalex_query, sub_value))
         
         # 如果 source_name 发生了变化，同步更新关联的 articles 表和 archive_articles 表
         if old_source_name and old_source_name != source_name:
@@ -203,59 +288,54 @@ class DatabaseManager:
         conn.close()
 
     def get_subscriptions(self):
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM subscriptions')
-        rows = cursor.fetchall()
-        conn.close()
+        with self._conn() as conn:
+            rows = conn.execute('SELECT * FROM subscriptions').fetchall()
         return [dict(row) for row in rows]
 
-    def add_article(self, article_data):
-        # 增量添加文献数据，如果article_id已存在则忽略
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        
-        added_to_main = False
-        try:
-            cursor.execute('''
-                INSERT INTO articles (article_id, title, authors, summary, link, published, source, doi, journal)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                article_data.get('article_id'),
-                article_data.get('title'),
-                article_data.get('authors'),
-                article_data.get('summary'),
-                article_data.get('link'),
-                article_data.get('published'),
-                article_data.get('source'),
-                article_data.get('doi'),
-                article_data.get('journal')
-            ))
-            added_to_main = True
-        except sqlite3.IntegrityError:
-            pass # 主表已存在
+    def add_article(self, article_data, return_status=False):
+        article_id = article_data.get('article_id')
+        doi = normalize_doi(article_data.get('doi'))
+        if doi:
+            article_data['doi'] = doi
 
-        # 如果来源是指定的几个预印本（文献量太大容易卡顿），则不将其加入归档表
-        source = article_data.get('source')
-        if source not in ['arXiv AI', 'arXiv LG', 'arXiv sML']:
-            # 无论主表是否插入成功，都尝试插入归档表，实现去重历史记录
+        with self._conn(write=True) as conn:
+            cursor = conn.cursor()
+            if doi:
+                cursor.execute('SELECT 1 FROM articles WHERE lower(doi) = lower(?) LIMIT 1', (doi,))
+                if cursor.fetchone():
+                    return 'duplicate_doi' if return_status else False
+            elif article_id:
+                cursor.execute('SELECT 1 FROM articles WHERE article_id = ? LIMIT 1', (article_id,))
+                if cursor.fetchone():
+                    return 'duplicate_article_id' if return_status else False
+
+            added_to_main = False
+            duplicate_reason = None
             try:
                 cursor.execute('''
-                    INSERT INTO archive_articles (article_id, title, doi, source, published)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (
-                    article_data.get('article_id'),
-                    article_data.get('title'),
-                    article_data.get('doi'), # 提取出来的 DOI
-                    source,
-                    article_data.get('published')
-                ))
+                    INSERT INTO articles (article_id, title, authors, summary, link, published, source, doi, journal)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (article_id, article_data.get('title'), article_data.get('authors'),
+                      article_data.get('summary'), article_data.get('link'),
+                      article_data.get('published'), article_data.get('source'),
+                      doi, article_data.get('journal')))
+                added_to_main = True
             except sqlite3.IntegrityError:
-                pass # 归档表已存在
-            
-        conn.commit()
-        conn.close()
+                duplicate_reason = 'duplicate_article_id'
+
+            source = article_data.get('source')
+            if source not in ['arXiv AI', 'arXiv LG', 'arXiv sML']:
+                try:
+                    cursor.execute('''
+                        INSERT INTO archive_articles (article_id, title, doi, source, published)
+                        VALUES (?, ?, ?, ?, ?)
+                    ''', (article_id, article_data.get('title'), doi, source, article_data.get('published')))
+                except sqlite3.IntegrityError:
+                    if not duplicate_reason:
+                        duplicate_reason = 'duplicate_article_id'
+
+        if return_status:
+            return 'inserted' if added_to_main else (duplicate_reason or 'duplicate')
         return added_to_main
 
     def get_archive_articles_paginated(self, source=None, page=1, page_size=50):
@@ -716,28 +796,15 @@ class DatabaseManager:
         return [dict(row) for row in rows]
 
     def set_config(self, key, value):
-        # 保存或更新配置
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            INSERT INTO config (key, value)
-            VALUES (?, ?)
-            ON CONFLICT(key) DO UPDATE SET value=excluded.value
-        ''', (key, value))
-        
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('''
+                INSERT INTO config (key, value) VALUES (?, ?)
+                ON CONFLICT(key) DO UPDATE SET value=excluded.value
+            ''', (key, value))
 
     def get_config(self, key, default=None):
-        # 获取配置
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-
-        cursor.execute('SELECT value FROM config WHERE key = ?', (key,))
-        row = cursor.fetchone()
-
-        conn.close()
+        with self._conn() as conn:
+            row = conn.execute('SELECT value FROM config WHERE key = ?', (key,)).fetchone()
         return row[0] if row else default
 
     def get_today_articles(self, limit=200):
@@ -777,6 +844,34 @@ class DatabaseManager:
         total = cursor.fetchone()['total']
         conn.close()
         return {'total': total, 'by_source': by_source, 'by_category': by_category}
+
+    def get_recent_dashboard(self, limit=200):
+        """获取最近入库的待处理文献，用于首页展示刚抓取的内容。"""
+        conn = sqlite3.connect(self.db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id, title, summary, source, published, category, translated_title FROM articles WHERE status='pending' ORDER BY id DESC LIMIT ?",
+            (limit,)
+        )
+        articles = [dict(r) for r in cursor.fetchall()]
+        cursor.execute(
+            "SELECT source, COUNT(*) as cnt FROM (SELECT source FROM articles WHERE status='pending' ORDER BY id DESC LIMIT ?) GROUP BY source ORDER BY cnt DESC",
+            (limit,)
+        )
+        by_source = [dict(r) for r in cursor.fetchall()]
+        cursor.execute(
+            "SELECT category, COUNT(*) as cnt FROM (SELECT category FROM articles WHERE status='pending' AND category != '' ORDER BY id DESC LIMIT ?) GROUP BY category ORDER BY cnt DESC",
+            (limit,)
+        )
+        by_category = [dict(r) for r in cursor.fetchall()]
+        conn.close()
+        return {
+            'total': len(articles),
+            'by_source': by_source,
+            'by_category': by_category,
+            'articles': articles,
+        }
 
     def set_article_category(self, article_id, category):
         """设置文献分类"""

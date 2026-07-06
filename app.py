@@ -38,15 +38,65 @@ if getattr(sys, 'frozen', False):
 else:
     app = Flask(__name__)
 
-app.secret_key = 'supersecretkey_dayup'
+app.secret_key = os.environ.get('FOLPAPER_SECRET', os.urandom(32).hex())
 
 # 全局任务状态字典，用于跟踪后台抓取进度
 task_status = {
     'is_running': False,
     'message': '',
     'progress': 0,
-    'total': 0
+    'total': 0,
+    'details': [],
+    'errors': []
 }
+task_status_lock = threading.Lock()
+
+# 补源状态追踪：记录哪些期刊因安全验证被拦截，用于判断是否继续补源
+SUPPLEMENT_STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'supplement_state.json')
+_supplement_state_lock = threading.Lock()
+
+def _load_supplement_state():
+    """加载补源追踪状态。返回 {rss_url: {last_status, last_check, consecutive_blocks}}"""
+    try:
+        if os.path.exists(SUPPLEMENT_STATE_FILE):
+            with open(SUPPLEMENT_STATE_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+def _save_supplement_state(state):
+    with open(SUPPLEMENT_STATE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+def _update_supplement_tracking(sub_value, is_blocked):
+    """更新单个期刊的补源追踪状态。is_blocked=True 表示本次被安全拦截。"""
+    with _supplement_state_lock:
+        state = _load_supplement_state()
+        now = datetime.now().isoformat()
+        entry = state.get(sub_value, {})
+        if is_blocked:
+            entry['last_status'] = 'blocked'
+            entry['last_check'] = now
+            entry['consecutive_blocks'] = entry.get('consecutive_blocks', 0) + 1
+        else:
+            # RSS 恢复正常，清除追踪记录
+            if entry.get('last_status') == 'blocked':
+                state.pop(sub_value, None)
+                _save_supplement_state(state)
+                return 'restored'
+            entry['last_status'] = 'ok'
+            entry['last_check'] = now
+            entry['consecutive_blocks'] = 0
+        state[sub_value] = entry
+        _save_supplement_state(state)
+        return entry['last_status']
+
+def _was_previously_blocked(sub_value):
+    """检查该期刊上次是否被安全拦截。"""
+    state = _load_supplement_state()
+    entry = state.get(sub_value, {})
+    return entry.get('last_status') == 'blocked'
 
 # 初始化全局后台组件
 db = DatabaseManager()
@@ -58,6 +108,8 @@ translator = Translator(db)
 ONE_DAY_ARXIV_CATEGORIES = ['cs.AI', 'cs.LG', 'stat.ML']
 
 openalex_sessions = {}
+download_tasks = {}
+FETCH_RESULT_TTL_SECONDS = 60
 
 # 加载内置期刊库
 BUILTIN_JOURNALS = []
@@ -136,6 +188,77 @@ def format_cleanup_details(details, include_retention=False):
         parts.append(f"其余 {len(details) - 5} 个来源")
     return "；".join(parts)
 
+def summarize_fetch_result(result):
+    supplements = result.get('supplements') or []
+    supplement_text = ''
+    if supplements:
+        parts = [
+            f"{item['source']} {item['inserted']}/{item['fetched']} 篇"
+            for item in supplements
+        ]
+        supplement_text = f"；补源 {'，'.join(parts)}"
+    security_text = ''
+    if result.get('security_blocked'):
+        security_text = '；[安全拦截]'
+    error_text = ''
+    if result.get('errors'):
+        error_text = f"；错误 {len(result['errors'])} 条"
+    return (
+        f"{result.get('source')}: RSS/API 读取 {result.get('fetched', 0)} 篇，"
+        f"新增 {result.get('inserted', 0)} 篇，重复 {result.get('duplicates', 0)} 篇"
+        f"{security_text}{supplement_text}{error_text}"
+    )
+
+def update_task_status(**kwargs):
+    with task_status_lock:
+        if 'progress' not in kwargs:
+            task_status['progress'] = task_status.get('progress', 0) + 1
+        task_status.update(kwargs)
+        return dict(task_status)
+
+def resolve_subscription_info(sub_type, sub_value, source_name='', openalex_query=''):
+    sub = {
+        'sub_type': sub_type,
+        'sub_value': sub_value,
+        'source_name': source_name,
+        'openalex_query': openalex_query,
+    }
+    metadata = fetcher._resolve_journal_metadata(sub) if sub_type == 'rss' else None
+    resolved = {
+        'source_name': source_name,
+        'openalex_query': openalex_query,
+        'issn': '',
+        'doi_prefix': '',
+        'openalex_source_id': '',
+        'matched_by': ''
+    }
+    if metadata:
+        resolved.update({
+            'source_name': source_name or metadata.get('name', ''),
+            'openalex_query': openalex_query or metadata.get('openalex_query', '') or metadata.get('full_name', '') or metadata.get('name', ''),
+            'issn': metadata.get('issn', ''),
+            'doi_prefix': metadata.get('doi_prefix', ''),
+            'openalex_source_id': metadata.get('openalex_source_id', ''),
+            'matched_by': 'journal_library'
+        })
+        return resolved
+
+    query = (openalex_query or source_name or '').strip()
+    if query and sub_type in ['rss', 'openalex']:
+        try:
+            service = OpenAlexService(api_key=db.get_config('openalex_api_key', ''))
+            matched_sources = service.get_source_id(query)
+            if matched_sources:
+                resolved.update({
+                    'source_name': source_name or matched_sources[0]['display_name'],
+                    'openalex_query': openalex_query or matched_sources[0]['display_name'],
+                    'openalex_source_id': matched_sources[0]['id'],
+                    'matched_by': 'openalex'
+                })
+        except Exception as e:
+            print(f"OpenAlex metadata lookup failed for {query}: {e}")
+    return resolved
+
 app.jinja_env.filters['format_date'] = format_date
 app.jinja_env.filters['remove_html_tags'] = remove_html_tags
 
@@ -175,7 +298,7 @@ def index():
 @app.route('/library')
 def library():
     # 我的文库 (状态为 saved 的文献)
-    sort_by = request.args.get('sort_by', 'read_status')
+    sort_by = request.args.get('sort_by', 'id_desc')
     source_filter = request.args.get('source', '')
     page = request.args.get('page', 1, type=int)
     page_size = 20
@@ -309,7 +432,7 @@ def pubmed_generate_query():
                  f"5. 确保生成的检索式可以直接复制到 PubMed 的搜索框中使用。"
              
     try:
-        generated_query = t.call_llm(prompt, "你是一个专业的 PubMed 检索专家。只输出最终的检索式。", temperature=0.2).strip()
+        generated_query = t.call_llm(prompt, "你是一个专业的 PubMed 检索专家。只输出最终的检索式。", temperature=0.2, task='survey').strip()
         
         # 移除可能的 markdown 代码块标记
         if generated_query.startswith("```"):
@@ -347,7 +470,7 @@ def pubmed_survey():
         prompt = f"请判断以下文献是否与查询主题“{query}”密切相关。请仅回复“是”或“否”。\n\n{content}"
         try:
             # 使用较小的 temperature 以获得确定性回答
-            ans = t.call_llm(prompt, "你是一个严格的学术文献筛选助手。", temperature=0.1).strip()
+            ans = t.call_llm(prompt, "你是一个严格的学术文献筛选助手。", temperature=0.1, task='recommend').strip()
             if ans.startswith("是"):
                 return article
         except Exception as e:
@@ -383,7 +506,7 @@ def pubmed_survey():
              
     try:
         # 这里复用 Translator 的模型调用功能
-        survey_result = t.call_llm(prompt, "你是一个专业的医学文献分析助手。")
+        survey_result = t.call_llm(prompt, "你是一个专业的医学文献分析助手。", task='survey')
         
         # 在报告前面追加筛选信息，提升用户体验
         final_report = f"<div class='mb-4 p-3 bg-purple-100/50 rounded-lg text-sm text-purple-800 border border-purple-200'><strong>AI 筛选统计：</strong> 初始检索获得 {len(results)} 篇文献，经过 AI 逐条并发鉴别，确认 <strong>{len(relevant_results)}</strong> 篇高度相关文献参与最终调研总结。</div>\n\n" + survey_result
@@ -416,7 +539,9 @@ def api_recommend():
     sources = request.form.getlist('source')
     read_status = request.form.get('read_status', 'unread')
     analysis_mode = request.form.get('analysis_mode', 'global')
-    
+    date_start = request.form.get('date_start', '').strip()
+    date_end = request.form.get('date_end', '').strip()
+
     file = request.files.get('wos_file')
     
     if not criteria:
@@ -471,6 +596,10 @@ def api_recommend():
         # 过滤掉空字符串（代表“所有期刊”）
         sources = [s for s in sources if s.strip()]
         articles = db.get_articles_for_recommendation(sources=sources, read_status=read_status)
+        if date_start or date_end:
+            articles = [a for a in articles if
+                (not date_start or (a.get('published','') or '')[:10] >= date_start) and
+                (not date_end or (a.get('published','') or '')[:10] <= date_end)]
         if not articles:
             return jsonify({'success': False, 'message': '当前筛选条件下没有任何文献可供推荐'})
         
@@ -488,10 +617,50 @@ def api_recommend():
         recommended_articles = db.get_articles_by_ids(recommended_ids)
         
     recommended_articles = process_articles(recommended_articles)
-    
-    # 渲染文献卡片组件并返回给前端
     total_found = len(recommended_articles)
-    html = render_template('components/article_cards.html', articles=recommended_articles, view_type='pending', is_wos_file=is_wos_file)
+
+    # ── 分类：将推荐结果按 criteria 相关类别分组 ──
+    categories = {}
+    if total_found > 2:
+        try:
+            categories = recommender.categorize_articles(recommended_articles, criteria)
+        except Exception as e:
+            print(f"推荐结果分类失败: {e}")
+
+    # 渲染文献卡片
+    if categories and len(categories) > 1:
+        import html as _html
+        html_parts = []
+        all_cat_ids = set()
+        for cat_name, cat_articles in categories.items():
+            for a in cat_articles:
+                all_cat_ids.add(a['id'])
+            cat_html = render_template('components/article_cards.html',
+                                       articles=cat_articles, view_type='pending', is_wos_file=is_wos_file)
+            html_parts.append(f'''<div class="category-group mb-6 bg-white rounded-2xl border border-purple-100 overflow-hidden shadow-sm">
+<div class="category-header flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-purple-50 to-blue-50 cursor-pointer select-none" onclick="toggleCategory(this)">
+<svg class="w-5 h-5 text-purple-400 category-chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+<span class="font-bold text-gray-800 text-base">{_html.escape(cat_name)}</span>
+<span class="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-700">{len(cat_articles)} 篇</span>
+</div>
+<div class="category-body px-4 pb-4 pt-1 space-y-3">{cat_html}</div>
+</div>''')
+        # 未归类的文章
+        uncategorized = [a for a in recommended_articles if a['id'] not in all_cat_ids]
+        if uncategorized:
+            uncat_html = render_template('components/article_cards.html',
+                                         articles=uncategorized, view_type='pending', is_wos_file=is_wos_file)
+            html_parts.append(f'''<div class="category-group mb-6 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+<div class="category-header flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-gray-50 to-slate-50 cursor-pointer select-none" onclick="toggleCategory(this)">
+<svg class="w-5 h-5 text-gray-400 category-chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+<span class="font-bold text-gray-700 text-base">其他</span>
+<span class="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">{len(uncategorized)} 篇</span>
+</div>
+<div class="category-body px-4 pb-4 pt-1 space-y-3">{uncat_html}</div>
+</div>''')
+        html = '\n'.join(html_parts)
+    else:
+        html = render_template('components/article_cards.html', articles=recommended_articles, view_type='pending', is_wos_file=is_wos_file)
     
     csv_data = []
     # 不管是不是 WOS，只要有推荐结果都可以导出为 CSV
@@ -517,7 +686,7 @@ def api_recommend():
 def inbox():
     # 获取来源筛选参数和排序参数，默认改为按阅读状态
     source_filter = request.args.get('source', '')
-    sort_by = request.args.get('sort_by', 'read_status')
+    sort_by = request.args.get('sort_by', 'id_desc')
     page = request.args.get('page', 1, type=int)
     page_size = 20
     
@@ -664,6 +833,103 @@ def save_article(db_id):
     next_url = request.referrer or url_for('inbox')
     return redirect(next_url)
 
+@app.route('/api/download/<int:db_id>')
+def api_download_paper(db_id):
+    """通过 DOI 自动检索并下载 PDF 全文（异步，前端轮询状态）。"""
+    article = db.get_article_by_id(db_id)
+    if not article:
+        return jsonify({'success': False, 'message': '文章不存在'}), 404
+
+    doi = article.get('doi', '') or ''
+    link = article.get('link', '') or ''
+    aid = article.get('article_id', '') or ''
+
+    query = doi or link or aid
+    if not query:
+        return jsonify({'success': False, 'message': '该文章无 DOI 或 PDF 链接，无法自动下载'}), 400
+
+    import re as _re
+    title = article.get('translated_title', '') or article.get('title', '') or 'paper'
+    safe = _re.sub(r'[\\/:*?"<>|\r\n\t]+', '_', title)[:120].strip('. _') or 'paper'
+
+    # arXiv 快速通道检测
+    import re
+    arxiv_match = re.search(r'(?:arxiv\.org/abs/|arXiv:|oai:arXiv\.org:)(\d{4}\.\d{4,5}(?:v\d+)?)', query, re.I)
+    is_arxiv = bool(arxiv_match)
+
+    task_id = str(uuid.uuid4())
+    download_tasks[task_id] = {'status': 'downloading', 'message': '正在下载...', 'file': None}
+
+    def _do_download():
+        import time as _time
+        try:
+            if is_arxiv:
+                import urllib.request
+                dl_dir = db.get_config('download_dir', '') or os.path.join(os.path.expanduser('~'), 'Downloads')
+                os.makedirs(dl_dir, exist_ok=True)
+                dest = os.path.join(dl_dir, f'{safe}.pdf')
+                base, ext = os.path.splitext(dest)
+                counter = 2
+                while os.path.exists(dest):
+                    dest = f'{base}_{counter}{ext}'; counter += 1
+                url = f'https://arxiv.org/pdf/{arxiv_match.group(1)}.pdf'
+
+                # 最多重试 3 次，指数退避
+                last_error = None
+                for attempt in range(3):
+                    try:
+                        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                        with urllib.request.urlopen(req, timeout=30) as resp:
+                            data = resp.read()
+                        if len(data) < 1000:
+                            last_error = 'PDF 文件异常（<1KB）'
+                            _time.sleep(2 ** attempt)
+                            continue
+                        with open(dest, 'wb') as f:
+                            f.write(data)
+                        download_tasks[task_id] = {'status': 'success', 'message': f'已保存: {os.path.basename(dest)}', 'file': dest}
+                        return
+                    except Exception as e:
+                        last_error = str(e)
+                        if attempt < 2:
+                            _time.sleep(2 ** attempt)
+                download_tasks[task_id] = {'status': 'failed', 'message': f'arXiv 下载失败（重试3次）: {last_error}', 'file': None}
+            else:
+                pkg = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'paperdownload')
+                if pkg not in sys.path:
+                    sys.path.insert(0, pkg)
+                from sync_download import download_by_query
+                path = download_by_query(query)
+                if path and path.exists():
+                    import shutil
+                    dl_dir = db.get_config('download_dir', '') or os.path.join(os.path.expanduser('~'), 'Downloads')
+                    os.makedirs(dl_dir, exist_ok=True)
+                    dest = os.path.join(dl_dir, f'{safe}.pdf')
+                    base, ext = os.path.splitext(dest)
+                    counter = 2
+                    while os.path.exists(dest):
+                        dest = f'{base}_{counter}{ext}'; counter += 1
+                    shutil.copy2(str(path), dest)
+                    download_tasks[task_id] = {'status': 'success', 'message': f'已保存: {os.path.basename(dest)}', 'file': dest}
+                else:
+                    download_tasks[task_id] = {'status': 'failed', 'message': '未找到可下载的 PDF（可能为闭源期刊或无开放获取版本）', 'file': None}
+        except Exception as e:
+            download_tasks[task_id] = {'status': 'failed', 'message': str(e), 'file': None}
+
+    import threading
+    t = threading.Thread(target=_do_download, daemon=True)
+    t.start()
+    return jsonify({'success': True, 'task_id': task_id, 'message': '开始下载...'})
+
+
+@app.route('/api/download/status/<task_id>')
+def api_download_status(task_id):
+    """轮询下载任务状态。"""
+    task = download_tasks.get(task_id)
+    if not task:
+        return jsonify({'success': False, 'message': '任务不存在或已过期'}), 404
+    return jsonify({'success': True, **task})
+
 @app.route('/remove_article/<int:db_id>', methods=['POST'])
 def remove_article(db_id):
     # 此处选择一种“删除”逻辑：可以直接从数据库删，或者将其标记为 hidden。此处我们使用硬删除
@@ -700,7 +966,9 @@ def translate(db_id):
 @app.route('/fetch_source', methods=['POST'])
 def fetch_source():
     global task_status
-    if task_status['is_running']:
+    with task_status_lock:
+        is_running = task_status['is_running']
+    if is_running:
         flash("已有获取任务正在运行，请稍候...", "warning")
         return redirect(request.referrer or url_for('inbox'))
 
@@ -710,35 +978,137 @@ def fetch_source():
     # 如果没有传 source_name，则表示获取所有订阅
     if not source_name:
         targets = subs
-        task_status['message'] = '正在准备获取所有订阅...'
+        initial_message = '正在准备获取所有订阅...'
     else:
         targets = [s for s in subs if s['source_name'] == source_name]
         if not targets:
             flash("找不到该订阅源配置，可能已被删除", "warning")
             return redirect(url_for('inbox', source=source_name))
-        task_status['message'] = f'正在准备获取 {source_name}...'
+        initial_message = f'正在准备获取 {source_name}...'
 
-    task_status['is_running'] = True
-    task_status['progress'] = 0
-    task_status['total'] = len(targets)
+    rss_target_count = 0
+    update_task_status(
+        is_running=True,
+        message=initial_message,
+        progress=0,
+        total=len(targets),
+        details=[],
+        errors=[]
+    )
 
     def fetch_task(targets):
         global task_status
-        total_fetched = 0
+        total_inserted = 0
+        total_duplicates = 0
+        all_errors = []
+        details = []
         try:
-            for idx, target in enumerate(targets):
-                name = target['source_name']
-                task_status['message'] = f'正在抓取: {name} ({idx+1}/{len(targets)})'
-                
+            update_task_status(message=f'正在并发抓取 {len(targets)} 个订阅，补源将在主抓取后串行执行...')
+            max_workers = min(8, max(len(targets), 1))
+
+            def fetch_one(target):
                 end_date = datetime.now(timezone.utc)
-                # 使用订阅配置的抓取天数（如果未设置默认 7 天）
-                fetch_days = target.get('fetch_days') or 7
-                start_date = end_date - timedelta(days=fetch_days)
-                
-                count = fetcher.fetch_subscription(target, default_end_date=end_date)
-                
-                total_fetched += count
-                task_status['progress'] = idx + 1
+                result = fetcher.fetch_subscription(
+                    target,
+                    default_end_date=end_date,
+                    return_details=True,
+                    include_supplements=False
+                )
+                return result, end_date
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                future_map = {executor.submit(fetch_one, target): target for target in targets}
+                rss_supplement_jobs = []
+                for future in concurrent.futures.as_completed(future_map):
+                    target = future_map[future]
+                    name = target.get('source_name') or target.get('sub_value')
+                    try:
+                        result, end_date = future.result()
+                    except Exception as e:
+                        result = {
+                            'source': name,
+                            'type': target.get('sub_type'),
+                            'fetched': 0,
+                            'inserted': 0,
+                            'duplicates': 0,
+                            'errors': [str(e)],
+                            'warnings': [],
+                            'supplements': []
+                        }
+                        end_date = datetime.now(timezone.utc)
+                        print(f"Fetch failed for {name}: {e}")
+
+                    total_inserted += result.get('inserted', 0)
+                    total_duplicates += result.get('duplicates', 0)
+                    source_errors = result.get('errors') or []
+                    for error in source_errors:
+                        all_errors.append(f"{result.get('source')}: {error}")
+                    details.append(summarize_fetch_result(result))
+
+                    # ── 补源策略：安全拦截全量补源，RSS成功轻量PubMed兜底 ──
+                    if target.get('sub_type') == 'rss':
+                        sub_value = target.get('sub_value', '')
+                        is_security_blocked = result.get('security_blocked', False)
+                        has_errors = bool(result.get('errors'))
+
+                        if is_security_blocked:
+                            # 被安全验证拦截 → 全量补源
+                            _update_supplement_tracking(sub_value, is_blocked=True)
+                            fetch_days = target.get('fetch_days') or 7
+                            start_date = max(
+                                end_date - timedelta(days=fetch_days),
+                                end_date - timedelta(days=30)
+                            )
+                            rss_supplement_jobs.append((target, name, start_date, end_date, 'full'))
+                        elif has_errors:
+                            # 非安全类错误（网络超时等），不补源
+                            status = _update_supplement_tracking(sub_value, is_blocked=False)
+                            if status == 'restored':
+                                all_errors.append(f"{name}: RSS 安全验证已解除，恢复正常抓取")
+                                details.append(f"{name}: RSS 已恢复，取消补源")
+                        else:
+                            # RSS 正常 → 轻量 PubMed 补齐最近 3 天
+                            status = _update_supplement_tracking(sub_value, is_blocked=False)
+                            if status == 'restored':
+                                all_errors.append(f"{name}: RSS 安全验证已解除，恢复正常抓取")
+                                details.append(f"{name}: RSS 已恢复，取消补源")
+                            light_start = end_date - timedelta(days=3)
+                            rss_supplement_jobs.append((target, name, light_start, end_date, 'light'))
+
+                    update_task_status(
+                        total=len(targets) + len(rss_supplement_jobs),
+                        message=(
+                            f"已完成: {name}，累计新增 {total_inserted} 篇，重复 {total_duplicates} 篇"
+                        ),
+                        details=details[-8:],
+                        errors=all_errors[-8:]
+                    )
+
+            for target, name, start_date, end_date, mode in rss_supplement_jobs:
+                label = '轻量PubMed' if mode == 'light' else '全量补源'
+                update_task_status(message=f'正在{label} {name}...')
+                result = fetcher._new_result(name, 'supplement')
+                try:
+                    fetcher.supplement_subscription(target, name, start_date, end_date, base_result=result, mode=mode)
+                except Exception as e:
+                    result['errors'].append(str(e))
+                    print(f"Supplement failed for {name}: {e}")
+
+                total_inserted += result.get('inserted', 0)
+                total_duplicates += result.get('duplicates', 0)
+                source_errors = result.get('errors') or []
+                for error in source_errors:
+                    all_errors.append(f"{result.get('source')}: {error}")
+                details.append(summarize_fetch_result(result))
+
+                update_task_status(
+                    message=(
+                        f"已完成补源 {name}，"
+                        f"累计新增 {total_inserted} 篇，重复 {total_duplicates} 篇"
+                    ),
+                    details=details[-8:],
+                    errors=all_errors[-8:]
+                )
 
             # 抓取完成后统一清理主表中过期数据，保持主表基础近 30 天内容
             base_cleanup = db.prune_old_articles(days=30, return_details=True)
@@ -750,24 +1120,26 @@ def fetch_source():
             base_cleanup_text = format_cleanup_details(base_cleanup['details'])
             rule_cleanup_text = format_cleanup_details(rule_cleanup['details'], include_retention=True)
 
-            task_status['message'] = (
-                f'抓取完成！共新增 {total_fetched} 篇文章，'
+            update_task_status(
+                is_running=False,
+                progress=len(targets) + len(rss_supplement_jobs),
+                message=(
+                f'抓取完成！共新增 {total_inserted} 篇文章，重复跳过 {total_duplicates} 篇，'
                 f'基础清理 {base_deleted_count} 篇（{base_cleanup_text}），'
                 f'规则清理 {sub_deleted_count} 篇（{rule_cleanup_text}）。'
+                ),
+                details=details[-8:],
+                errors=all_errors[-8:]
             )
         except Exception as e:
-            task_status['message'] = f'抓取过程发生错误: {str(e)}'
+            update_task_status(is_running=False, message=f'抓取过程发生错误: {str(e)}', errors=[str(e)])
             print(f"Fetch failed: {e}")
         finally:
             # 延迟几秒后重置状态以便前端显示完成信息
             import time
-            time.sleep(3)
-            task_status['is_running'] = False
+            time.sleep(FETCH_RESULT_TTL_SECONDS)
             # 完全重置任务状态，防止后续提示“任务正在运行”
-            time.sleep(3) # 稍微再等一下确保前端读取到完成状态
-            task_status['message'] = ''
-            task_status['progress'] = 0
-            task_status['total'] = 0
+            update_task_status(message='', progress=0, total=0, details=[], errors=[])
 
     threading.Thread(target=fetch_task, args=(targets,), daemon=True).start()
     
@@ -779,10 +1151,20 @@ def fetch_source():
 def about_page():
     return render_template('about.html')
 
+@app.route('/search')
+def search_page():
+    query = request.args.get('q', '').strip()
+    results = []
+    if query:
+        results = db.search_articles(query, limit=50)
+    return render_template('search.html', query=query, results=results)
+
 @app.route('/api/task_status')
 def api_task_status():
     """提供给前端轮询的任务状态接口"""
-    return jsonify(task_status)
+    with task_status_lock:
+        status = dict(task_status)
+    return jsonify(status)
 
 @app.route('/api/check_translation_status')
 def api_check_translation_status():
@@ -856,18 +1238,26 @@ def subscriptions():
             source_name = request.form.get('source_name', '').strip()
             fetch_days = int(request.form.get('fetch_days', 7))
             retention_days = int(request.form.get('retention_days', 30))
+            openalex_query = request.form.get('openalex_query', '').strip()
             if sub_value:
-                if db.add_subscription(sub_type, sub_value.strip(), source_name, fetch_days, retention_days):
+                resolved_info = resolve_subscription_info(sub_type, sub_value.strip(), source_name, openalex_query)
+                source_name = resolved_info['source_name'] or source_name
+                openalex_query = resolved_info['openalex_query'] or openalex_query
+                if db.add_subscription(sub_type, sub_value.strip(), source_name, fetch_days, retention_days, openalex_query):
                     flash("订阅添加成功", "success")
                 else:
                     flash("该订阅已存在", "warning")
         elif action == 'update':
+            sub_type = request.form.get('sub_type', 'rss')
             sub_value = request.form.get('sub_value')
             source_name = request.form.get('source_name', '').strip()
             fetch_days = int(request.form.get('fetch_days', 7))
             retention_days = int(request.form.get('retention_days', 30))
+            openalex_query = request.form.get('openalex_query', '').strip()
             if sub_value:
-                db.update_subscription(sub_value, source_name, fetch_days, retention_days)
+                resolved_info = resolve_subscription_info(sub_type, sub_value.strip(), source_name, openalex_query)
+                openalex_query = resolved_info['openalex_query'] or openalex_query
+                db.update_subscription(sub_value, source_name, fetch_days, retention_days, openalex_query)
                 flash("订阅配置已更新", "success")
         elif action == 'delete':
             sub_value = request.form.get('sub_value')
@@ -904,6 +1294,19 @@ def subscriptions():
         builtin_journals=BUILTIN_JOURNALS
     )
 
+@app.route('/api/subscriptions/resolve', methods=['POST'])
+def api_resolve_subscription():
+    sub_type = request.form.get('sub_type', 'rss').strip()
+    sub_value = request.form.get('sub_value', '').strip()
+    source_name = request.form.get('source_name', '').strip()
+    openalex_query = request.form.get('openalex_query', '').strip()
+    if not sub_value and not source_name and not openalex_query:
+        return jsonify({'success': False, 'message': '请输入 RSS 链接、期刊名或 OpenAlex 补源名'})
+    resolved = resolve_subscription_info(sub_type, sub_value, source_name, openalex_query)
+    if not resolved.get('matched_by'):
+        return jsonify({'success': False, 'message': '未自动识别到期刊信息', 'resolved': resolved})
+    return jsonify({'success': True, 'resolved': resolved})
+
 @app.route('/subscriptions/import', methods=['POST'])
 def import_subscriptions():
     if 'file' not in request.files:
@@ -939,7 +1342,8 @@ def import_subscriptions():
                     url = line
                     
                 if url.startswith('http'):
-                    if db.add_subscription('rss', url, title):
+                    resolved_info = resolve_subscription_info('rss', url, title, '')
+                    if db.add_subscription('rss', url, resolved_info['source_name'] or title, openalex_query=resolved_info['openalex_query']):
                         success_count += 1
                     else:
                         duplicate_count += 1
@@ -956,8 +1360,9 @@ def import_subscriptions():
                     desc = outline.get('description', '')
                     if desc.startswith('Type: '):
                         sub_type = desc.replace('Type: ', '').strip()
-                        
-                    if db.add_subscription(sub_type, xml_url, title):
+
+                    resolved_info = resolve_subscription_info(sub_type, xml_url, title, '')
+                    if db.add_subscription(sub_type, xml_url, resolved_info['source_name'] or title, openalex_query=resolved_info['openalex_query']):
                         success_count += 1
                     else:
                         duplicate_count += 1
@@ -1026,18 +1431,35 @@ def export_subscriptions():
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if request.method == 'POST':
-        db.set_config('api_key', request.form.get('api_key', '').strip())
-        db.set_config('base_url', request.form.get('base_url', '').strip())
-        db.set_config('model', request.form.get('model', '').strip())
-        # 重置客户端实例，使新配置生效
-        translator.client = None 
+        for key in ['api_key', 'base_url', 'openalex_api_key', 'flaresolverr_url', 'crossref_mailto',
+                     'model', 'translate_model', 'recommend_model', 'survey_model', 'extra_body', 'think_mode',
+                     'temperature', 'translate_temperature', 'survey_temperature',
+                     'timeout', 'recommend_concurrency', 'download_dir']:
+            val = request.form.get(key, '').strip()
+            if val:
+                db.set_config(key, val)
+        translator.client = None
         flash("设置已保存！", "success")
         return redirect(url_for('settings'))
-        
+
     config = {
         'api_key': db.get_config('api_key', ''),
         'base_url': db.get_config('base_url', 'https://api.openai.com/v1'),
-        'model': db.get_config('model', 'gpt-3.5-turbo')
+        'model': db.get_config('model', 'gpt-3.5-turbo'),
+        'translate_model': db.get_config('translate_model', ''),
+        'recommend_model': db.get_config('recommend_model', ''),
+        'survey_model': db.get_config('survey_model', ''),
+        'temperature': db.get_config('temperature', '0.3'),
+        'translate_temperature': db.get_config('translate_temperature', '0.3'),
+        'survey_temperature': db.get_config('survey_temperature', '0.5'),
+        'timeout': db.get_config('timeout', '60'),
+        'recommend_concurrency': db.get_config('recommend_concurrency', '20'),
+        'extra_body': db.get_config('extra_body', ''),
+        'think_mode': db.get_config('think_mode', 'off'),
+        'openalex_api_key': db.get_config('openalex_api_key', ''),
+        'flaresolverr_url': db.get_config('flaresolverr_url', ''),
+        'crossref_mailto': db.get_config('crossref_mailto', ''),
+        'download_dir': db.get_config('download_dir', ''),
     }
     return render_template('settings.html', config=config)
 
@@ -1182,7 +1604,7 @@ def api_openalex_filter():
                     prompt += f"标题: {work['title']}\n\n"
                 prompt += "要求：\n1. 第一行仅回复“是”或“否”。\n2. 第二行给出简要的判定理由（50字以内）。"
                 
-                ans = t.call_llm(prompt, "你是一个严谨的学术文献筛选助手。", temperature=0.1).strip()
+                ans = t.call_llm(prompt, "你是一个严谨的学术文献筛选助手。", temperature=0.1, task='recommend').strip()
                 lines = [line.strip() for line in ans.split('\n') if line.strip()]
                 if lines:
                     is_related = '是' in lines[0]
@@ -1268,12 +1690,15 @@ def api_dashboard_weekly():
 
 @app.route('/api/dashboard/today')
 def api_dashboard_today():
-    stats = db.get_today_stats()
-    articles = db.get_today_articles(limit=200)
+    dashboard = db.get_recent_dashboard(limit=200)
     return jsonify({
         'success': True,
-        'stats': stats,
-        'articles': articles
+        'stats': {
+            'total': dashboard['total'],
+            'by_source': dashboard['by_source'],
+            'by_category': dashboard['by_category'],
+        },
+        'articles': dashboard['articles']
     })
 
 @app.route('/api/dashboard/categorize', methods=['POST'])
@@ -1315,18 +1740,24 @@ def api_dashboard_categorize():
 
     try:
         from openai import OpenAI
+        extra_str = db.get_config('extra_body', '')
+        extra = {}
+        if extra_str:
+            try: extra = json.loads(extra_str)
+            except: pass
         client = OpenAI(
             api_key=api_key,
             base_url=db.get_config('base_url', 'https://api.openai.com/v1')
         )
-        model = db.get_config('model', 'gpt-3.5-turbo')
+        model = db.get_config('recommend_model', '') or db.get_config('model', 'gpt-3.5-turbo')
         response_obj = client.chat.completions.create(
             model=model,
             messages=[
                 {"role": "system", "content": "你是一个专业的科研文献分类助手。请严格按格式输出。"},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.2
+            temperature=0.2,
+            extra_body=extra if extra else None,
         )
         response = response_obj.choices[0].message.content
 
@@ -1352,14 +1783,39 @@ def api_dashboard_categorize():
 
 
 if __name__ == '__main__':
-    import webbrowser
-    from threading import Timer
+    port = 5012
 
-    def open_browser():
-        webbrowser.open_new("http://127.0.0.1:5000")
-        
-    if getattr(sys, 'frozen', False):
-        Timer(1.5, open_browser).start()
-        app.run(port=5000)
+    # python app.py --web：浏览器模式（原行为）；默认：桌面窗口
+    if '--web' in sys.argv:
+        import webbrowser
+        from threading import Timer
+        def open_browser():
+            webbrowser.open_new(f"http://127.0.0.1:{port}")
+        if getattr(sys, 'frozen', False):
+            Timer(1.5, open_browser).start()
+            app.run(port=port)
+        else:
+            Timer(1.5, open_browser).start()
+            app.run(debug=True, port=port)
     else:
-        app.run(debug=True, port=5000)
+        # 桌面窗口模式（pywebview）
+        import threading
+        t = threading.Thread(target=app.run, kwargs={'debug': False, 'port': port}, daemon=True)
+        t.start()
+        try:
+            import webview
+            import time
+            while True:
+                try:
+                    import urllib.request
+                    urllib.request.urlopen(f"http://127.0.0.1:{port}", timeout=1)
+                    break
+                except Exception:
+                    time.sleep(0.5)
+            webview.create_window('FolPaper', f'http://127.0.0.1:{port}', width=1280, height=800)
+            webview.start()
+        except ImportError:
+            print('pywebview 未安装，使用浏览器模式：pip install pywebview')
+            print(f'浏览器打开 http://127.0.0.1:{port}')
+            t.daemon = False
+            app.run(debug=True, port=port)

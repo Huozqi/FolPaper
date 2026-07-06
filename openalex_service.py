@@ -1,11 +1,22 @@
 import json
 import re
+import threading
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 
 
 class OpenAlexService:
+    _request_lock = threading.Lock()
+    _last_request_at = 0.0
+    _anonymous_cooldown_until = 0.0
+
+    ANONYMOUS_MIN_INTERVAL_SECONDS = 2.0
+    AUTHENTICATED_MIN_INTERVAL_SECONDS = 0.25
+    ANONYMOUS_COOLDOWN_SECONDS = 600
+    MAX_RETRIES = 5
+
     CONFERENCE_RULES = (
         {
             'rule_id': 'neurips',
@@ -137,21 +148,59 @@ class OpenAlexService:
     MAX_CONFERENCE_SEARCH_PAGES = 5
 
     def __init__(self, api_key=None):
-        self.api_key = api_key
+        self.api_key = (api_key or '').strip()
         self.base_url = "https://api.openalex.org"
+        self._source_cache = {}
 
     def _normalize_text(self, value):
         return re.sub(r'[^a-z0-9]+', ' ', (value or '').lower()).strip()
 
     def _append_api_key(self, url):
         if self.api_key:
-            return f"{url}&api_key={self.api_key}"
+            separator = '&' if '?' in url else '?'
+            return f"{url}{separator}api_key={urllib.parse.quote(self.api_key)}"
         return url
 
+    def _min_request_interval(self):
+        return self.AUTHENTICATED_MIN_INTERVAL_SECONDS if self.api_key else self.ANONYMOUS_MIN_INTERVAL_SECONDS
+
+    def _wait_for_rate_limit(self):
+        with self._request_lock:
+            now = time.monotonic()
+            wait_seconds = self._min_request_interval() - (now - self.__class__._last_request_at)
+            if wait_seconds > 0:
+                time.sleep(wait_seconds)
+            self.__class__._last_request_at = time.monotonic()
+
+    def _retry_after_seconds(self, error, attempt):
+        retry_after = error.headers.get('Retry-After') if getattr(error, 'headers', None) else None
+        if retry_after:
+            try:
+                return min(max(float(retry_after), self._min_request_interval()), 60.0)
+            except ValueError:
+                pass
+        return min(60.0, self._min_request_interval() * (2 ** (attempt + 1)))
+
     def _request_json(self, url, timeout=30):
-        req = urllib.request.Request(self._append_api_key(url))
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            return json.loads(response.read())
+        if not self.api_key and time.monotonic() < self.__class__._anonymous_cooldown_until:
+            raise RuntimeError('OpenAlex anonymous requests are cooling down after rate limiting')
+        request_url = self._append_api_key(url)
+        max_retries = self.MAX_RETRIES if self.api_key else 1
+        for attempt in range(max_retries):
+            self._wait_for_rate_limit()
+            req = urllib.request.Request(request_url)
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as response:
+                    return json.loads(response.read())
+            except urllib.error.HTTPError as e:
+                if e.code == 429 and not self.api_key:
+                    self.__class__._anonymous_cooldown_until = time.monotonic() + self.ANONYMOUS_COOLDOWN_SECONDS
+                    raise RuntimeError('OpenAlex anonymous rate limited; skipping OpenAlex temporarily') from e
+                if e.code != 429 or attempt == max_retries - 1:
+                    raise
+                sleep_seconds = self._retry_after_seconds(e, attempt)
+                print(f"OpenAlex rate limited, retrying in {sleep_seconds:.1f}s")
+                time.sleep(sleep_seconds)
 
     def _extract_source_id(self, source):
         source_id = source.get('id', '')
@@ -321,31 +370,188 @@ class OpenAlexService:
             return item_id
         return (item.get('title') or '').strip().lower()
 
-    def get_source_id(self, journal_name):
-        return self.search_sources(journal_name)
+    def get_source_id(self, journal_name, issn=None, source_id=None):
+        return self.search_sources(journal_name, issn=issn, source_id=source_id)
 
-    def search_sources(self, source_name):
-        source_names = [name.strip() for name in source_name.split(',') if name.strip()]
+    def _source_result(self, source):
+        source_id = self._extract_source_id(source)
+        if not source_id:
+            return None
+        return {
+            'id': source_id,
+            'display_name': source.get('display_name', ''),
+            'type': source.get('type', ''),
+            'issn': source.get('issn') or [],
+            'issn_l': source.get('issn_l') or '',
+        }
+
+    def _fetch_source_by_id(self, source_id):
+        if not source_id:
+            return None
+        clean_id = source_id.split('/')[-1]
+        if not clean_id:
+            return None
+        url = f"{self.base_url}/sources/{clean_id}"
+        try:
+            return self._source_result(self._request_json(url, timeout=20))
+        except Exception as e:
+            print(f"Error fetching OpenAlex source {source_id}: {e}")
+        return None
+
+    def _search_source_by_issn(self, issn):
+        if not issn:
+            return None
+        encoded_issn = urllib.parse.quote(issn)
+        url = f"{self.base_url}/sources?filter=issn:{encoded_issn}&per-page=5"
+        try:
+            data = self._request_json(url, timeout=20)
+            for source in data.get('results', []):
+                if (source.get('type') or '').lower() == 'journal':
+                    return self._source_result(source)
+            if data.get('results'):
+                return self._source_result(data['results'][0])
+        except Exception as e:
+            print(f"Error fetching OpenAlex source by ISSN {issn}: {e}")
+        return None
+
+    def _choose_source_match(self, results, query_name):
+        if not results:
+            return None
+        normalized_query = self._normalize_text(query_name)
+        journal_results = [source for source in results if (source.get('type') or '').lower() == 'journal'] or results
+
+        for source in journal_results:
+            if self._normalize_text(source.get('display_name', '')) == normalized_query:
+                return source
+        for source in journal_results:
+            alternate_titles = source.get('alternate_titles') or []
+            if any(self._normalize_text(title) == normalized_query for title in alternate_titles):
+                return source
+        return journal_results[0]
+
+    def _source_candidate_score(self, source, query_name):
+        normalized_query = self._normalize_text(query_name)
+        names = [source.get('display_name', '')] + (source.get('alternate_titles') or [])
+        normalized_names = [self._normalize_text(name) for name in names if name]
+        if normalized_query and normalized_query in normalized_names:
+            return 100
+        if normalized_query and any(normalized_query in name or name in normalized_query for name in normalized_names):
+            return 80
+        return 0
+
+    def _work_sources(self, work):
+        sources = []
+        seen_ids = set()
+        raw_sources = []
+        primary_source = (work.get('primary_location') or {}).get('source')
+        if primary_source:
+            raw_sources.append(primary_source)
+        for location in work.get('locations') or []:
+            source = (location or {}).get('source')
+            if source:
+                raw_sources.append(source)
+        for source in raw_sources:
+            source_result = self._source_result(source)
+            if not source_result or source_result['id'] in seen_ids:
+                continue
+            seen_ids.add(source_result['id'])
+            sources.append(source_result)
+        return sources
+
+    def _search_sources_by_works(self, source_name, max_results=25):
+        if not source_name:
+            return []
+        encoded_name = urllib.parse.quote(source_name)
+        url = f"{self.base_url}/works?search={encoded_name}&per-page={max_results}"
+        matched_sources = []
+        seen_ids = set()
+        try:
+            data = self._request_json(url, timeout=30)
+            candidates = []
+            for work in data.get('results', []):
+                for source in self._work_sources(work):
+                    if (source.get('type') or '').lower() != 'journal':
+                        continue
+                    score = self._source_candidate_score(source, source_name)
+                    if score <= 0:
+                        continue
+                    candidates.append((score, source))
+            candidates.sort(key=lambda item: item[0], reverse=True)
+            for score, source in candidates:
+                if source['id'] in seen_ids:
+                    continue
+                seen_ids.add(source['id'])
+                matched_sources.append(source)
+        except Exception as e:
+            print(f"Error inferring OpenAlex source from works for {source_name}: {e}")
+        return matched_sources
+
+    def _expand_journal_abbreviation(self, source_name):
+        expanded = source_name.strip()
+        replacements = (
+            (r'^J\.\s+', 'Journal of '),
+            (r'^Int\.\s+J\.\s+', 'International Journal of '),
+            (r'^European\s+J\.\s+', 'European Journal of '),
+            (r'^Asian\s+J\.\s+', 'Asian Journal of '),
+            (r'^British\s+J\.\s+', 'British Journal of '),
+            (r'^Chinese\s+J\.\s+', 'Chinese Journal of '),
+        )
+        for pattern, replacement in replacements:
+            expanded = re.sub(pattern, replacement, expanded)
+        return expanded
+
+    def search_sources(self, source_name, issn=None, source_id=None):
+        cache_key = (
+            self._normalize_text(source_name),
+            (issn or '').strip().lower(),
+            (source_id or '').strip().lower(),
+        )
+        if cache_key in self._source_cache:
+            return [dict(source) for source in self._source_cache[cache_key]]
+
+        source_names = []
+        for name in [name.strip() for name in (source_name or '').split(',') if name.strip()]:
+            expanded_name = self._expand_journal_abbreviation(name)
+            if expanded_name != name:
+                source_names.append(expanded_name)
+            source_names.append(name)
         matched_sources = []
         seen_ids = set()
 
+        for source in [self._fetch_source_by_id(source_id), self._search_source_by_issn(issn)]:
+            if source and source['id'] not in seen_ids:
+                seen_ids.add(source['id'])
+                matched_sources.append(source)
+
+        if matched_sources:
+            self._source_cache[cache_key] = [dict(source) for source in matched_sources]
+            return matched_sources
+
         for name in source_names:
             encoded_name = urllib.parse.quote(name)
-            url = f"{self.base_url}/sources?search={encoded_name}"
+            url = f"{self.base_url}/sources?search={encoded_name}&per-page=10"
             try:
                 data = self._request_json(url, timeout=20)
                 if data.get('results'):
-                    source = data['results'][0]
-                    source_id = self._extract_source_id(source)
-                    if source_id not in seen_ids:
-                        seen_ids.add(source_id)
-                        matched_sources.append({
-                            'id': source_id,
-                            'display_name': source['display_name']
-                        })
+                    source = self._choose_source_match(data['results'], name)
+                    source_result = self._source_result(source)
+                    if source_result and source_result['id'] not in seen_ids:
+                        seen_ids.add(source_result['id'])
+                        matched_sources.append(source_result)
             except Exception as e:
                 print(f"Error fetching source ID for {name}: {e}")
 
+        if matched_sources:
+            self._source_cache[cache_key] = [dict(source) for source in matched_sources]
+            return matched_sources
+
+        for name in source_names:
+            for source_result in self._search_sources_by_works(name):
+                if source_result['id'] not in seen_ids:
+                    seen_ids.add(source_result['id'])
+                    matched_sources.append(source_result)
+
+        self._source_cache[cache_key] = [dict(source) for source in matched_sources]
         return matched_sources
 
     def search_conference_sources(self, conferences):
@@ -390,7 +596,6 @@ class OpenAlexService:
                         if len(results) < 50:
                             break
                         page += 1
-                        time.sleep(0.15)
                     except Exception as e:
                         print(f"Error fetching conference sources for {conf.get('name') or term} page {page}: {e}")
                         break
@@ -402,9 +607,10 @@ class OpenAlexService:
         source_id_str = "|".join(source_ids)
         page = 1
         per_page = 200
+        seen_work_keys = set()
 
         while len(works) < max_results:
-            url = f"{self.base_url}/works?filter=primary_location.source.id:{source_id_str},from_publication_date:{start_date},to_publication_date:{end_date}&per-page={per_page}&page={page}"
+            url = f"{self.base_url}/works?filter=locations.source.id:{source_id_str},from_publication_date:{start_date},to_publication_date:{end_date}&per-page={per_page}&page={page}"
             try:
                 data = self._request_json(url, timeout=30)
                 results = data.get('results', [])
@@ -412,7 +618,14 @@ class OpenAlexService:
                     break
 
                 for item in results:
+                    work_key = self._work_key(item)
+                    if work_key in seen_work_keys:
+                        continue
+                    seen_work_keys.add(work_key)
                     journal_display = item.get('primary_location', {}).get('source', {}).get('display_name', '')
+                    if not journal_display:
+                        sources = self._item_sources(item)
+                        journal_display = sources[0]['display_name'] if sources else ''
                     works.append(self._extract_work(item, journal_display))
                     if len(works) >= max_results:
                         break

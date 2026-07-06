@@ -1,34 +1,157 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-3xl mx-auto">
+<div class="max-w-3xl mx-auto pb-12">
     <div class="cyber-hero p-6 mb-8">
-    <div class="relative z-10">
-        <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">Model Control Center</div>
-        <h2 class="cyber-title text-4xl font-black">系统设置</h2>
-        <p class="text-sm text-gray-500 mt-2">配置模型连接、API 网关和默认推理模型。</p>
+        <div class="relative z-10">
+            <div class="text-xs uppercase tracking-[0.35em] text-gray-400 mb-2">Model Control Center</div>
+            <h2 class="cyber-title text-4xl font-black">系统设置</h2>
+            <p class="text-sm text-gray-500 mt-2">配置大语言模型连接、推理参数及 API 数据源。</p>
+        </div>
     </div>
-</div>
-    
-    <form action="{{ url_for('settings') }}" method="POST" class="cyber-console border rounded-2xl p-8 shadow-sm space-y-6">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">API Key</label>
-            <input type="password" name="api_key" value="{{ config.api_key }}" placeholder="sk-..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-            <p class="text-xs text-gray-500 mt-2">用于访问大模型翻译接口的密钥。</p>
+
+    <form method="POST" class="space-y-8">
+
+        <!-- LLM 连接 -->
+        <div class="cyber-console border rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span> LLM 连接
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+                    <input type="password" name="api_key" value="{{ config.api_key }}" placeholder="sk-..."
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Base URL</label>
+                    <input type="text" name="base_url" value="{{ config.base_url }}" placeholder="https://api.openai.com/v1"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+            </div>
         </div>
-        
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Base URL</label>
-            <input type="text" name="base_url" value="{{ config.base_url }}" placeholder="https://api.openai.com/v1" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-            <p class="text-xs text-gray-500 mt-2">如果使用代理服务或第三方兼容接口，请修改此项。</p>
+
+        <!-- 模型选择 -->
+        <div class="cyber-console border rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span> 模型选择
+            </h3>
+            <p class="text-xs text-gray-500">为不同任务指定模型，留空则使用「默认模型」。</p>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">默认模型</label>
+                <input type="text" name="model" value="{{ config.model }}" placeholder="gpt-3.5-turbo"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">翻译模型</label>
+                    <input type="text" name="translate_model" value="{{ config.translate_model }}" placeholder="同默认模型"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">推荐 / 筛选模型</label>
+                    <input type="text" name="recommend_model" value="{{ config.recommend_model }}" placeholder="同默认模型"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">调研 / 综述模型</label>
+                    <input type="text" name="survey_model" value="{{ config.survey_model }}" placeholder="同默认模型"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">推荐并发数</label>
+                    <input type="number" name="recommend_concurrency" value="{{ config.recommend_concurrency }}" placeholder="20" min="1" max="50"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-gray-400 mt-1">并发过高可能触发 API 限流</p>
+                </div>
+            </div>
         </div>
-        
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Model</label>
-            <input type="text" name="model" value="{{ config.model }}" placeholder="gpt-3.5-turbo" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-            <p class="text-xs text-gray-500 mt-2">翻译时使用的模型名称，如 gpt-3.5-turbo 或 gpt-4。</p>
+
+        <!-- 生成参数 -->
+        <div class="cyber-console border rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span> 生成参数
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Temperature</label>
+                    <input type="number" name="temperature" value="{{ config.temperature }}" placeholder="0.3" step="0.1" min="0" max="2"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-gray-400 mt-1">0=确定性强，2=高随机。翻译建议 0.1~0.3，调研建议 0.5~0.7。</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">请求超时 (秒)</label>
+                    <input type="number" name="timeout" value="{{ config.timeout }}" placeholder="60" min="5" max="300"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-gray-400 mt-1">API 调用最大等待时间。调研/综述建议 120+。</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">翻译 Temperature</label>
+                    <input type="number" name="translate_temperature" value="{{ config.translate_temperature }}" placeholder="0.3" step="0.1" min="0" max="2"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-gray-400 mt-1">翻译专用，覆盖全局值。需高确定性，建议 0.1~0.3。</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">调研 Temperature</label>
+                    <input type="number" name="survey_temperature" value="{{ config.survey_temperature }}" placeholder="0.5" step="0.1" min="0" max="2"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-gray-400 mt-1">调研/综述专用，覆盖全局值。适当提高避免过于呆板。</p>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Extra Body (JSON)</label>
+                <textarea name="extra_body" rows="2" placeholder='{"reasoning_effort": "high"}'
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none transition">{{ config.extra_body }}</textarea>
+                <p class="text-xs text-gray-400 mt-1">透传给 API 的额外 JSON。DeepSeek 可用 <code>reasoning_effort</code>（low/medium/high/xhigh/max），思考模式开关会自动注入 <code>thinking</code> 块，无需手动设置。</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">思考模式 / Reasoning</label>
+                <select name="think_mode" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <option value="off" {% if config.think_mode == 'off' %}selected{% endif %}>关闭 — 直接输出答案，不展示思考链</option>
+                    <option value="auto" {% if config.think_mode == 'auto' %}selected{% endif %}>自动 — 由模型自行决定是否需要深度思考</option>
+                    <option value="on" {% if config.think_mode == 'on' %}selected{% endif %}>开启 — 强制启用深度思考</option>
+                </select>
+                <p class="text-xs text-gray-400 mt-1">控制模型在回答前进行 chain-of-thought 推理。开启后质量更高但耗 token 更多。</p>
+            </div>
         </div>
-        
-        <div class="pt-4 flex space-x-4">
+
+        <!-- 数据源 -->
+        <div class="cyber-console border rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span> 数据源
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OpenAlex API Key</label>
+                    <input type="password" name="openalex_api_key" value="{{ config.openalex_api_key }}" placeholder="可选，提高拉取速率"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">FlareSolverr 地址</label>
+                    <input type="text" name="flaresolverr_url" value="{{ config.flaresolverr_url }}" placeholder="http://127.0.0.1:8191/v1"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Crossref 联系邮箱</label>
+                    <input type="email" name="crossref_mailto" value="{{ config.crossref_mailto }}" placeholder="researcher@example.com"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- 下载 -->
+        <div class="cyber-console border rounded-2xl p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-violet-500"></span> PDF 下载
+            </h3>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">下载保存目录</label>
+                <input type="text" name="download_dir" value="{{ config.download_dir }}" placeholder="C:\Users\xxx\Downloads"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                <p class="text-xs text-gray-400 mt-1">PDF 下载后的保存路径。留空使用系统「下载」文件夹。</p>
+            </div>
+        </div>
+
+        <div class="flex space-x-4">
             <button type="submit" class="flex-1 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm">
                 保存设置
             </button>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto pb-8">
+    <form method="GET" action="{{ url_for('search_page') }}" class="mb-8">
+        <div class="flex gap-3">
+            <input type="text" name="q" value="{{ query }}" placeholder="搜索标题、摘要、作者、翻译..."
+                   class="flex-1 border border-gray-300 rounded-xl px-5 py-3 text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                   autofocus>
+            <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium">
+                搜索
+            </button>
+        </div>
+    </form>
+
+    {% if query %}
+        <div class="text-sm text-gray-500 mb-4">找到 {{ results|length }} 条结果："{{ query }}"</div>
+        {% if results %}
+            <div class="space-y-3">
+            {% for article in results %}
+                <div class="cyber-console border rounded-xl p-5">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-bold text-gray-800 mb-1 line-clamp-2">{{ article.title }}</h3>
+                            {% if article.translated_title %}
+                                <p class="text-sm text-blue-600 mb-1">{{ article.translated_title }}</p>
+                            {% endif %}
+                            <p class="text-xs text-gray-500">
+                                {{ article.authors[:120] if article.authors else 'Unknown' }} ·
+                                {{ article.source or '' }} ·
+                                {{ article.published[:10] if article.published else '' }}
+                            </p>
+                            {% if article.summary and article.summary != 'No summary provided.' %}
+                                <p class="text-sm text-gray-600 mt-2 line-clamp-3">{{ article.summary[:300] }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="flex gap-2 shrink-0">
+                            {% if article.link %}
+                            <a href="{{ article.link }}" target="_blank" class="text-xs px-3 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition">原文</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-16 text-gray-400">
+                <div class="text-4xl mb-3">&#x1F50D;</div>
+                未找到匹配的文章
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

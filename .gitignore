@@ -25,3 +25,5 @@ test_install_2/
 .vscode/
 .claude/
 opencode.json
+paperdownload/downloads/
+supplement_state.json

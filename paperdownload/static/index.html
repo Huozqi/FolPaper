@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PaperDownload · 文献原文下载器</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="badge">DOI · arXiv · bioRxiv · medRxiv · ChemRxiv/OA</div>
+      <h1>文献下载</h1>
+      <p>支持 DOI、arXiv、bioRxiv、medRxiv、ChemRxiv，批量下载开放获取论文原文。</p>
+    </section>
+
+    <section class="panel input-panel">
+      <div class="panel-head">
+        <div>
+          <h2>批量输入</h2>
+          <p>每行一个标识。支持 DOI、arXiv ID、arXiv URL、bioRxiv/medRxiv DOI、开放期刊 DOI。</p>
+        </div>
+        <button id="sampleBtn" class="ghost">填入示例</button>
+      </div>
+      <textarea id="inputs" spellcheck="false" placeholder="例如：&#10;2307.09288&#10;10.48550/arXiv.2307.09288&#10;10.1101/2020.01.01.123456"></textarea>
+      <div class="actions">
+        <div class="actions-left">
+          <label class="check"><input id="translateToggle" type="checkbox" /> AI 翻译标题</label>
+          <div class="apikey-row">
+            <input id="apiKey" type="password" placeholder="DeepSeek API Key (sk-…)" autocomplete="off" />
+            <button id="saveKeyBtn" class="ghost small">保存</button>
+            <span id="keyStatus" class="key-status"></span>
+          </div>
+        </div>
+        <div class="actions-right">
+          <button id="cancelBtn" class="ghost hidden">取消</button>
+          <button id="downloadBtn" class="primary">开始下载</button>
+        </div>
+      </div>
+      <div id="progress" class="progress hidden"><span></span><span class="progress-text"></span></div>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-head compact">
+          <h2>下载结果</h2>
+          <button id="clearResults" class="ghost small">清空</button>
+        </div>
+        <div id="results" class="results empty">结果会显示在这里。</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head compact">
+          <h2>已下载文件</h2>
+          <button id="refreshFiles" class="ghost small">刷新</button>
+        </div>
+        <div id="files" class="files empty">暂无文件。</div>
+      </section>
+    </section>
+  </main>
+
+  <template id="resultTemplate">
+    <article class="result-card">
+      <div class="status-dot"></div>
+      <div class="result-body">
+        <div class="query"></div>
+        <div class="title"></div>
+        <div class="meta"></div>
+        <a class="file-link" target="_blank" rel="noopener">打开 PDF</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>

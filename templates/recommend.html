@@ -50,6 +50,19 @@
                 </div>
             </div>
             
+            <!-- 时间范围 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">获取时间范围（留空=不限）</label>
+                <div class="flex gap-3 items-center">
+                    <input type="date" name="date_start" value="{{ date_start }}"
+                        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                    <span class="text-gray-400">至</span>
+                    <input type="date" name="date_end" value="{{ date_end }}"
+                        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <p class="text-xs text-gray-400 mt-1">按文献入库日期筛选。留空则不限时间范围。</p>
+            </div>
+
             <!-- 阅读状态选择 -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">阅读状态</label>
@@ -73,18 +86,18 @@
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">分析模式</label>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label class="flex items-start space-x-3 p-3 border border-purple-200 bg-purple-50 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
-                    <input type="radio" name="analysis_mode" value="global" class="mt-1 text-purple-600 focus:ring-purple-500" checked>
+                <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input type="radio" name="analysis_mode" value="global" class="mt-1 text-purple-600 focus:ring-purple-500">
                     <span>
                         <span class="block text-sm font-medium text-gray-800">全局分析</span>
                         <span class="block text-xs text-gray-500 mt-1">将当前筛选范围内的文献整体提交给模型统一判断。</span>
                     </span>
                 </label>
-                <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                    <input type="radio" name="analysis_mode" value="single" class="mt-1 text-purple-600 focus:ring-purple-500">
+                <label class="flex items-start space-x-3 p-3 border border-purple-200 bg-purple-50 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
+                    <input type="radio" name="analysis_mode" value="single" class="mt-1 text-purple-600 focus:ring-purple-500" checked>
                     <span>
                         <span class="block text-sm font-medium text-gray-800">逐条采样分析</span>
-                        <span class="block text-xs text-gray-500 mt-1">逐篇提交给模型判断，后台并发数固定为 20。</span>
+                        <span class="block text-xs text-gray-500 mt-1">逐篇提交给模型判断，后台并发数可配置（设置页）。</span>
                     </span>
                 </label>
             </div>
@@ -92,7 +105,7 @@
 
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">输入筛选要求 (Prompt)</label>
-            <textarea name="criteria" rows="3" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow text-sm text-gray-800 placeholder-gray-400" placeholder="例如：请帮我筛选出与强化学习（Reinforcement Learning）和自然语言处理相关的最新论文，尤其是关注大模型微调方向的。">帮我筛选出AI和分子、化学、生物学、医学、药学等领域交叉的文章</textarea>
+            <textarea name="criteria" rows="3" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow text-sm text-gray-800 placeholder-gray-400" placeholder="例如：请帮我筛选出与强化学习（Reinforcement Learning）和自然语言处理相关的最新论文，尤其是关注大模型微调方向的。">帮我筛选出AI在药物发现、分子生成、分子优化、结构改造、活性预测、亲和力预测、分子性质预测、药物重定位、靶点发现、分子表征领域的文章</textarea>
         </div>
 
         <div class="mb-4">
@@ -184,7 +197,7 @@ function renderRecommendPaginationControls(totalItems) {
 }
 
 window.goToRecommendPage = function(page) {
-    const cards = document.querySelectorAll('#results-container > [id^="article-"]');
+    const cards = document.querySelectorAll('#results-container [id^="article-"]');
     const totalPages = Math.ceil(cards.length / RECOMMEND_PAGE_SIZE);
     if (page < 1 || page > totalPages) return;
     
@@ -215,7 +228,7 @@ window.goToRecommendPage = function(page) {
 
 function initRecommendPagination() {
     window.recommendCurrentPage = 1;
-    const cards = document.querySelectorAll('#results-container > [id^="article-"]');
+    const cards = document.querySelectorAll('#results-container [id^="article-"]');
     if (cards.length > RECOMMEND_PAGE_SIZE) {
         window.goToRecommendPage(1);
     }
@@ -231,7 +244,9 @@ function collectFormState(form) {
         sourceAllChecked: document.getElementById('source-all').checked,
         selectedSources: selectedSources,
         readStatus: readStatus,
-        analysisMode: analysisMode
+        analysisMode: analysisMode,
+        dateStart: form.date_start?.value || '',
+        dateEnd: form.date_end?.value || ''
     };
 }
 
@@ -262,7 +277,9 @@ function restoreRecommendPageState() {
         const results = document.getElementById('results-container');
         const resultsHeader = document.getElementById('results-header');
 
-        form.criteria.value = state.criteria || '';
+        form.criteria.value = state.criteria || form.criteria.value;
+        if (form.date_start) form.date_start.value = state.dateStart || '';
+        if (form.date_end) form.date_end.value = state.dateEnd || '';
         sourceAllCheckbox.checked = state.sourceAllChecked !== false;
 
         document.querySelectorAll('.source-checkbox').forEach(checkbox => {
@@ -313,6 +330,19 @@ function restoreRecommendPageState() {
         }
     } catch (error) {
         console.error('恢复推荐页面状态失败', error);
+    }
+}
+
+function toggleCategory(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.category-chevron');
+    if (!body || !chevron) return;
+    if (body.style.display === 'none') {
+        body.style.display = '';
+        chevron.style.transform = '';
+    } else {
+        body.style.display = 'none';
+        chevron.style.transform = 'rotate(-90deg)';
     }
 }
 
@@ -649,6 +679,8 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('input[name="read_status"], input[name="analysis_mode"]').forEach(input => {
         input.addEventListener('change', () => saveRecommendPageState());
     });
+    if (form.date_start) form.date_start.addEventListener('change', () => saveRecommendPageState());
+    if (form.date_end) form.date_end.addEventListener('change', () => saveRecommendPageState());
     window.addEventListener('pagehide', () => saveRecommendPageState({
         resultsHtml: document.getElementById('results-container')?.innerHTML || '',
         resultsHeaderHidden: document.getElementById('results-header')?.classList.contains('hidden') || false,

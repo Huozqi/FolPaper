@@ -128,7 +128,7 @@
 |------|------|---------|------|
 | ACS Applied Materials & Interfaces | `aamick` | `https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=aamick` | ✅ |
 | ACS Applied Nano Materials | `acsanm` | `https://pubs.acs.org/rss/acsanm` | ✅ |
-| ACS Applied Energy Materials | `acsaelm` | `https://pubs.acs.org/rss/acsaelm` | ✅ |
+| ACS Applied Energy Materials | `acsaem` | `https://pubs.acs.org/rss/acsaem` | ✅ |
 | ACS Applied Electronic Materials | `acsaelm` | `https://pubs.acs.org/rss/acsaelm` | ✅ |
 | ACS Applied Catalysis | `acsapcat` | `https://pubs.acs.org/rss/acsapcat` | ✅ |
 | ACS Applied Engineering Materials | `acsapem` | `https://pubs.acs.org/rss/acsapem` | ✅ |
