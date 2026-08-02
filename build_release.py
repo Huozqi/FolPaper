@@ -2,6 +2,7 @@ import os
 import shutil
 import sqlite3
 import subprocess
+import sys
 import zipfile
 
 from PIL import Image
@@ -25,9 +26,15 @@ SETUP_EXE = os.path.join(DIST_DIR, 'FolPaper_Setup.exe')
 PYTHON_EXE = os.path.join(ROOT_DIR, '.venv', 'Scripts', 'python.exe')
 
 
-def ensure_python():
-    if not os.path.exists(PYTHON_EXE):
-        raise RuntimeError('未找到 venv_new 的 Python 解释器')
+def resolve_python():
+    """优先使用 .venv，失效则回退系统 python。"""
+    if os.path.exists(PYTHON_EXE):
+        try:
+            subprocess.run([PYTHON_EXE, '-c', 'import sys'], check=True, capture_output=True)
+            return PYTHON_EXE
+        except subprocess.CalledProcessError:
+            pass
+    return sys.executable
 
 
 def run_command(args):
@@ -101,7 +108,7 @@ def build_seed_db():
 
 def build_app(icon_path):
     command = [
-        PYTHON_EXE,
+        resolve_python(),
         '-m',
         'PyInstaller',
         '--noconfirm',
@@ -152,7 +159,7 @@ def make_payload_zip():
 
 def build_uninstaller(icon_path):
     command = [
-        PYTHON_EXE,
+        resolve_python(),
         '-m',
         'PyInstaller',
         '--noconfirm',
@@ -170,7 +177,7 @@ def build_uninstaller(icon_path):
 
 def build_setup(icon_path):
     command = [
-        PYTHON_EXE,
+        resolve_python(),
         '-m',
         'PyInstaller',
         '--noconfirm',
@@ -204,7 +211,7 @@ def verify_outputs():
 
 
 def main():
-    ensure_python()
+    resolve_python()
     clean_old_artifacts()
     icon_path = build_icon()
     build_seed_db()
