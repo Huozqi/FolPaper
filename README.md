@@ -20,6 +20,13 @@ FolPaper is a powerful literature subscription, reading, and translation assista
 
 ### 🚀 Getting Started
 
+#### Installation
+
+Two ways to run FolPaper:
+
+1. **Installer EXE (recommended)**: Download the latest `FolPaper_Setup.exe` from the [Releases](https://github.com/Huozqi/FolPaper/releases) page and run the installer. No Python environment needed.
+2. **Source code**: Clone the repo, install Python 3.9+, then `pip install -r requirements.txt` and double-click `run.bat` (it prefers `.venv` if present, otherwise falls back to system Python).
+
 #### Model Configuration
 FolPaper's core intelligent capabilities rely entirely on external Large Language Models. Therefore, before using any AI features (such as title translation, full-text translation, AI recommendation screening, and survey report generation), you **must** complete the following configuration:
 
@@ -61,6 +68,13 @@ FolPaper 是一款专为科研人员、学者及学生打造的强大文献订�
    * 在 PubMed 检索中，只需输入主题，AI 即可帮您构建检索式、并发筛选数百篇文献摘要，并自动生成一篇带有标准学术引用的高质量中文背景调研报告。
 
 ### 🚀 快速开始
+
+#### 安装与运行
+
+FolPaper 提供两种使用方式，任选其一：
+
+1. **安装包 EXE（推荐）**：前往 [Releases](https://github.com/Huozqi/FolPaper/releases) 页面下载最新版 `FolPaper_Setup.exe` 并安装，无需 Python 环境。
+2. **源码运行**：克隆项目后，安装 Python 3.9+，执行 `pip install -r requirements.txt`，然后双击 `run.bat`（脚本优先使用项目内 `.venv`，否则回退系统 Python）。
 
 #### 模型配置
 FolPaper 的核心智能化能力完全依托于外部大语言模型。因此，在开始使用所有 AI 功能（如标题翻译、全文翻译、AI 推荐筛选、生成调研报告）之前，您**必须**先完成以下配置：

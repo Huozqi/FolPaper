@@ -34,6 +34,39 @@ FolPaper 的核心智能化能力完全依托于外部大语言模型。因此�
 
 ---
 
+## 0. 安装与运行
+
+FolPaper 提供两种使用方式，任选其一即可：
+
+### 方式一：直接安装 EXE（推荐）
+
+无需安装 Python，适合绝大多数用户。
+
+1. 前往项目的 GitHub Releases 页面（https://github.com/Huozqi/FolPaper/releases）下载最新版本的 `FolPaper_Setup.exe` 安装包。
+2. 双击运行安装包，按照向导完成安装（安装路径可自选，建议安装在非系统盘）。
+3. 安装完成后，从桌面或开始菜单启动 FolPaper，浏览器将自动打开应用界面。
+4. 如需卸载，可在安装目录中运行 `FolPaper_Uninstall.exe`，或在控制面板的"程序和功能"中卸载。
+
+### 方式二：源码运行（run.bat）
+
+适合开发者、希望自行修改代码或不想安装 EXE 的用户。
+
+1. 克隆或下载项目源码（确保包含 `app.py`、`run.bat`、`requirements.txt` 等文件）。
+2. 安装 **Python 3.9 及以上版本**，并在安装时勾选 **"Add Python to PATH"**。
+3. 打开命令行，进入项目根目录，安装依赖：
+   ```
+   pip install -r requirements.txt
+   ```
+   > 如果下载速度慢，可以追加国内镜像源，例如：`pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple`。
+4. 双击运行 **`run.bat`**。脚本会自动检测并优先使用项目内的 `.venv`（若已创建），否则回退到系统 Python，启动后浏览器将自动打开应用界面。
+5. 首次运行后，请按下一章"使用前需要配置什么"完成 API 配置。
+
+### ⚠️ 注意事项
+* 两种方式使用完全相同的功能与界面；EXE 安装包内置了运行所需的全部依赖，源码运行则依赖于您本地安装的 Python 环境。
+* 若源码运行时报错提示缺少模块，请确认 `pip install -r requirements.txt` 已成功执行且未使用错误的 Python 环境。
+
+---
+
 ## 1. 首页 (Home)
 
 ### 📌 功能概述
