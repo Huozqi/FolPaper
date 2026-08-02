@@ -15,6 +15,7 @@ FolPaper is a powerful literature subscription, reading, and translation assista
 3. **Efficient Knowledge Management**: Easily manage and retrieve high-value scientific literature through a library, historical archives, and automated cleanup strategies.
 4. **AI-driven Survey & Screening**:
    * Use natural language commands to let AI select highly relevant literature from your library or locally imported files.
+   * Per-article **AI Insights** judge each article as *hit / excluded / failed* with reasons, auto-retry on failure, and support in-result search, sorting and filtering.
    * In PubMed search, simply input a topic, and AI will help you build a search query, concurrently screen hundreds of literature abstracts, and automatically generate a high-quality background survey report with standard academic citations.
 
 ### 🚀 Getting Started
@@ -23,8 +24,8 @@ FolPaper is a powerful literature subscription, reading, and translation assista
 FolPaper's core intelligent capabilities rely entirely on external Large Language Models. Therefore, before using any AI features (such as title translation, full-text translation, AI recommendation screening, and survey report generation), you **must** complete the following configuration:
 
 1. Open the application and click on **[Settings]** in the left navigation bar.
-2. Enter a **Base URL** compatible with the OpenAI API format (supports official or third-party relay service providers, e.g., `https://api.deepseek.com/v1`). Here, **Alibaba Cloud Bailian (阿里云百炼)** API is filled in by default, and it is **not recommended to change** (mainly because the cost is extremely low, it meets daily use, and the backend code is currently hard-adapted to this platform).
-3. Enter your **API Key** and the corresponding **Model Name** (e.g., `deepseek-chat`). Here, `qwen-3.5-flash` is filled in by default. This model has an extremely low cost and comes with free quota; at a scale of fetching 400 articles daily, the daily cost is about 0.1 RMB. *Note: To reduce costs and increase concurrency speed, the reasoning/thinking mode is turned off by default.*
+2. Enter a **Base URL** compatible with the OpenAI API format (supports official or third-party relay service providers, e.g., `https://api.deepseek.com/v1` or Alibaba Cloud Bailian's compatible endpoint). The reasoning/thinking-mode control is **auto-adapted to your provider** (Bailian/DashScope uses `enable_thinking`, DeepSeek uses `thinking: {type}`), so switching providers requires no code changes.
+3. Enter your **API Key** and the corresponding **Model Name** (e.g., `deepseek-chat`). For Bailian, `qwen3.6-flash` is a good default: extremely low cost with free quota — at a scale of fetching 400 articles daily, the cost is about 0.1 RMB/day. *Note: to reduce cost and increase concurrency speed, the thinking mode is turned off by default; you can switch it to `on`/`auto` in Settings → System Settings → Thinking Mode.*
 4. Click "Test API Connectivity".
 
 *Even without this configuration, you can still track literature progress, but features like translation and screening will not be available.*
@@ -56,6 +57,7 @@ FolPaper 是一款专为科研人员、学者及学生打造的强大文献订�
 3. **高效知识管理**：通过文库、历史归档及自动清理策略，轻松管理和找回具有高价值的科研文献。
 4. **AI 智能调研与筛选**：
    * 用大白话指令让 AI 从您的文库或本地导入文件中精选高度相关的文献。
+   * 逐条 **AI 洞察**：对每篇文献判定 *命中 / 排除 / 失败* 并给出理由，失败自动重试，支持结果内搜索、排序与过滤。
    * 在 PubMed 检索中，只需输入主题，AI 即可帮您构建检索式、并发筛选数百篇文献摘要，并自动生成一篇带有标准学术引用的高质量中文背景调研报告。
 
 ### 🚀 快速开始
@@ -64,8 +66,8 @@ FolPaper 是一款专为科研人员、学者及学生打造的强大文献订�
 FolPaper 的核心智能化能力完全依托于外部大语言模型。因此，在开始使用所有 AI 功能（如标题翻译、全文翻译、AI 推荐筛选、生成调研报告）之前，您**必须**先完成以下配置：
 
 1. 打开应用后，点击左侧导航栏的 **[系统设置]**。
-2. 填入兼容 OpenAI 接口格式的 **Base URL**（支持官方或第三方中转服务商，如 `https://api.deepseek.com/v1`）。这里已默认填入阿里云百炼 API，不建议更改（主要是费用极低，可满足日常使用，且后台代码目前硬适配该平台）。
-3. 填入**API 密钥 (API Key)** 及对应的 **模型名称**（如 `deepseek-chat`）。这里已默认填入 `qwen-3.5-flash`，该模型成本极低，有赠送额度，每日 400 篇文献规模的获取数量下，日消耗约 0.1 元。注意，为降低成本提高并发速度，已默认关闭思考模式。
+2. 填入兼容 OpenAI 接口格式的 **Base URL**（支持官方或第三方中转服务商，如 `https://api.deepseek.com/v1` 或阿里云百炼兼容端点）。思考模式开关会**按服务商自动适配**（百炼/DashScope 使用 `enable_thinking`，DeepSeek 使用 `thinking: {type}`），切换服务商无需改代码。
+3. 填入**API 密钥 (API Key)** 及对应的 **模型名称**（如 `deepseek-chat`）。百炼推荐使用 `qwen3.6-flash`：成本极低且有赠送额度，每日 400 篇文献规模的获取数量下，日消耗约 0.1 元。注意，为降低成本提高并发速度，默认已关闭思考模式；可在 系统设置 → 思考模式 中切换为 `on`/`auto`。
 4. 点击“测试 API 连通性”。
 
 *不使用该配置，仍然可追踪文献进展，只不过没有翻译、筛选等功能。*
