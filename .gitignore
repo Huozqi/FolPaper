@@ -27,3 +27,6 @@ test_install_2/
 opencode.json
 paperdownload/downloads/
 supplement_state.json
+*.spec
+requirements_temp.txt
+test_pubmed_query.py
