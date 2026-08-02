@@ -57,7 +57,7 @@
                 <input type="number" name="retention_days" value="30" min="1" class="w-16 border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-center" title="收件箱保留几天的数据">
                 <span class="text-sm text-gray-600">天</span>
             </div>
-            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm shrink-0">添加</button>
+            <button type="submit" class="px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition font-medium shadow-sm shrink-0">添加</button>
         </form>
         <p class="text-sm text-gray-500 mt-3" id="sub_help_text">提示：添加订阅支持 RSS 链接。抓取天数决定每次拉取多旧的文章，保留天数决定待处理列表中文章过期自动清理的时间。</p>
         <p class="text-xs text-gray-500 mt-2" id="journal-resolve-status"></p>
@@ -235,6 +235,12 @@
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-gray-800">我的订阅</h3>
             <div class="flex items-center space-x-2">
+                {% if subs %}
+                <form id="bulk-subscriptions-form" action="{{ url_for('subscriptions') }}" method="POST">
+                    <input type="hidden" name="action" value="bulk_update">
+                    <button type="submit" class="px-4 py-1.5 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800 transition border border-teal-700 shadow-sm">保存全部更改</button>
+                </form>
+                {% endif %}
                 <a href="{{ url_for('export_subscriptions', format='txt') }}" class="px-3 py-1.5 bg-white text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition flex items-center gap-1.5 border border-gray-200 shadow-sm" title="导出为纯文本格式">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -259,35 +265,29 @@
                     <span class="text-gray-500 text-sm truncate" title="{{ sub.sub_value }}">{{ sub.sub_value }}</span>
                 </div>
                 <div class="flex items-center gap-4 shrink-0">
-                    <form action="{{ url_for('subscriptions') }}" method="POST" class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="sub_type" value="{{ sub.sub_type }}">
-                        <input type="hidden" name="sub_value" value="{{ sub.sub_value }}">
-                        
+                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                        <input type="hidden" name="sub_id" value="{{ sub.id }}" form="bulk-subscriptions-form">
+                         
                         <div class="flex items-center w-full md:w-auto mb-2 md:mb-0">
                             <label class="text-xs text-gray-500 mr-2 whitespace-nowrap">名称</label>
-                            <input type="text" name="source_name" value="{{ sub.source_name }}" required class="flex-1 md:w-32 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500">
+                            <input type="text" name="source_name" value="{{ sub.source_name }}" required form="bulk-subscriptions-form" class="flex-1 md:w-32 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500">
                         </div>
-                        
+                         
                         <div class="flex items-center w-1/2 md:w-auto pr-1 md:pr-0">
                             <label class="text-xs text-gray-500 mr-1 whitespace-nowrap">抓取(天)</label>
-                            <input type="number" name="fetch_days" value="{{ sub.fetch_days or 7 }}" min="1" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
+                            <input type="number" name="fetch_days" value="{{ sub.fetch_days or 7 }}" min="1" required form="bulk-subscriptions-form" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
                         </div>
-                        
+                         
                         <div class="flex items-center w-1/2 md:w-auto pl-1 md:pl-0">
                             <label class="text-xs text-gray-500 mr-1 whitespace-nowrap">保留(天)</label>
-                            <input type="number" name="retention_days" value="{{ sub.retention_days or 30 }}" min="1" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
+                            <input type="number" name="retention_days" value="{{ sub.retention_days or 30 }}" min="1" required form="bulk-subscriptions-form" class="w-12 md:w-14 border border-gray-300 rounded px-1.5 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500 text-center">
                         </div>
 
                         <div class="flex items-center w-full md:w-auto mb-2 md:mb-0">
                             <label class="text-xs text-gray-500 mr-2 whitespace-nowrap">OpenAlex</label>
-                            <input type="text" name="openalex_query" value="{{ sub.openalex_query or '' }}" placeholder="补源期刊全称" class="flex-1 md:w-40 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500">
+                            <input type="text" name="openalex_query" value="{{ sub.openalex_query or '' }}" placeholder="补源期刊全称" form="bulk-subscriptions-form" class="flex-1 md:w-40 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500">
                         </div>
-                        
-                        <div class="flex items-center justify-end w-full md:w-auto mt-2 md:mt-0 space-x-2">
-                            <button type="submit" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 rounded hover:bg-blue-50 transition border border-blue-200 shadow-sm">保存</button>
-                        </div>
-                    </form>
+                    </div>
                     <div class="w-px h-6 bg-gray-300 hidden md:block mx-2"></div>
                     <form action="{{ url_for('subscriptions') }}" method="POST" class="shrink-0 ml-auto md:ml-0 mt-2 md:mt-0" onsubmit="return confirm('确定要删除该订阅及相关待处理文献吗？');">
                         <input type="hidden" name="action" value="delete">
@@ -332,7 +332,7 @@
                     <label class="text-sm text-gray-600">上传 .txt 或 .opml 文件</label>
                     <input type="file" name="file" accept=".txt,.opml,.xml" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm mt-4">上传并导入</button>
+                <button type="submit" class="w-full py-2.5 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition font-medium shadow-sm mt-4">上传并导入</button>
             </form>
             <p class="text-xs text-gray-500 mt-3">支持包含 RSS XML 链接的文件。TXT 格式每行一个链接或"名称:链接"；OPML 格式支持标准阅读器导出文件。</p>
         </div>

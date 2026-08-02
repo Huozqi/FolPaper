@@ -10,7 +10,7 @@
             <div class="grid lg:grid-cols-[minmax(0,1fr)_220px] gap-8 items-start">
                 <div class="space-y-5">
                     <div class="workbench-kicker">Reading Surface / Paper Dossier</div>
-                    <h1 class="cyber-title text-4xl md:text-6xl font-black font-serif leading-tight">{{ article.title }}</h1>
+                    <h1 class="cyber-title text-4xl md:text-6xl font-black font-serif leading-tight cursor-pointer hover:text-blue-700 transition-colors" onclick="copyText(event, this.getAttribute('data-text') || this.innerText, this)" data-text="{{ article.title }}" title="点击复制标题">{{ article.title }}</h1>
                     {% if article.translated_title %}
                     <h2 class="text-xl md:text-2xl font-medium text-gray-600 cursor-pointer hover:text-gray-800 transition-colors max-w-4xl" onclick="copyText(event, this.getAttribute('data-text') || this.innerText, this)" data-text="{{ article.translated_title }}" title="点击复制翻译标题">{{ article.translated_title }}</h2>
                     {% endif %}
@@ -67,6 +67,12 @@
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 </a>
 
+                <button type="button" onclick="downloadPaper({{ article.id }}, this)"
+                   class="px-6 py-2.5 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition font-medium shadow-sm flex items-center"
+                   title="通过 DOI 自动检索并下载 PDF">
+                    📥 下载全文
+                </button>
+
                 {% if not article.translated_title %}
                 <form action="{{ url_for('translate', db_id=article.id) }}" method="POST">
                     <button type="submit" class="px-6 py-2.5 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium shadow-sm flex items-center">
@@ -75,7 +81,31 @@
                 </form>
                 {% endif %}
 
+                {% if article.status == 'saved' %}
+                <form action="{{ url_for('toggle_follow', db_id=article.id) }}" method="POST" class="ajax-form ajax-follow">
+                    <button type="submit" id="btn-follow-{{ article.id }}" class="px-6 py-2.5 text-sm font-medium rounded-lg shadow-sm border transition-colors {% if article.is_followed %}bg-green-50 text-green-700 border-green-200{% else %}bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100{% endif %}">
+                        {% if article.is_followed %}⭐ 已关注{% else %}☆ 关注全文{% endif %}
+                    </button>
+                </form>
+                {% endif %}
+
                 <div class="flex-1"></div>
+
+                <div class="flex items-center gap-2">
+                    {% if prev_id %}
+                    <a href="{{ url_for('article_detail', db_id=prev_id, return_url=return_url) }}" class="px-4 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium shadow-sm flex items-center text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        上一篇
+                    </a>
+                    {% endif %}
+                    {% if next_id %}
+                    <a href="{{ url_for('article_detail', db_id=next_id, return_url=return_url) }}" class="px-4 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium shadow-sm flex items-center text-sm">
+                        下一篇
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                    {% endif %}
+                </div>
+
                 <form action="{{ url_for('remove_article', db_id=article.id) }}" method="POST" class="ajax-form ajax-remove" onsubmit="return confirm('确定要删除吗？');">
                     <button type="submit" class="px-6 py-2.5 bg-white text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition font-medium shadow-sm flex items-center">
                         删除文献

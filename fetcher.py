@@ -10,6 +10,7 @@ import time
 from email.utils import parsedate_to_datetime
 import re
 import logging
+import concurrent.futures
 
 # 拉取日志：记录每次抓取的详细过程到 fetch.log
 _fetch_log = logging.getLogger('folpaper.fetch')
@@ -648,6 +649,13 @@ class LiteratureFetcher:
             result = self.fetch_arxiv(sub['sub_value'], current_start_date, default_end_date, max_results=1000, source_name=source_name, return_details=True)
             return result if return_details else result['inserted']
         if sub['sub_type'] == 'rss':
+            if 'biorxiv.org' in (sub.get('sub_value') or '').lower():
+                result = self.fetch_biorxiv_api(
+                    sub['sub_value'], current_start_date, default_end_date,
+                    max_results=1000, source_name=source_name
+                )
+                if result.get('api_success'):
+                    return result if return_details else result['inserted']
             result = self.fetch_rss(sub['sub_value'], current_start_date, default_end_date, source_name=source_name, return_details=True)
             if include_supplements:
                 self.supplement_subscription(sub, source_name, current_start_date, default_end_date, base_result=result)
@@ -720,6 +728,87 @@ class LiteratureFetcher:
                 count += 1
         return count
 
+    def fetch_biorxiv_api(self, feed_url, start_date, end_date, max_results=1000, source_name='bioRxiv'):
+        """通过 bioRxiv 分页 API 获取指定日期和学科范围内的预印本。"""
+        result = self._new_result(source_name, 'biorxiv')
+        result['api_success'] = False
+        raw_subject = next((part.split('=', 1)[1] for part in
+                            urllib.parse.urlparse(feed_url).query.split('&')
+                            if part.startswith('subject=')), '')
+        subjects = {
+            urllib.parse.unquote(item).replace('_', ' ').strip().lower()
+            for item in raw_subject.split('+') if item.strip()
+        }
+
+        start_str = start_date.strftime('%Y-%m-%d')
+        end_str = end_date.strftime('%Y-%m-%d')
+
+        def fetch_page(cursor):
+            url = f'https://api.biorxiv.org/details/biorxiv/{start_str}/{end_str}/{cursor}'
+            req = urllib.request.Request(url, headers=RSS_HEADERS)
+            with urllib.request.urlopen(req, timeout=30) as response:
+                return json.loads(response.read().decode('utf-8'))
+
+        def record_collection(collection):
+            for item in collection:
+                category = (item.get('category') or '').replace('_', ' ').strip().lower()
+                if subjects and category not in subjects:
+                    continue
+                doi = normalize_doi(item.get('doi'))
+                article_data = {
+                    'article_id': doi or item.get('jatsxml') or item.get('title'),
+                    'title': item.get('title') or 'Unknown Title',
+                    'authors': item.get('authors') or 'Unknown',
+                    'summary': item.get('abstract') or 'No summary provided.',
+                    'link': f'https://doi.org/{doi}' if doi else (item.get('jatsxml') or ''),
+                    'published': f"{item.get('date')}T00:00:00Z" if item.get('date') else '',
+                    'source': source_name,
+                    'doi': doi,
+                    'journal': 'bioRxiv'
+                }
+                result['fetched'] += 1
+                self._record_article(article_data, result)
+                if result['fetched'] >= max_results:
+                    break
+
+        try:
+            first_page = fetch_page(0)
+            first_collection = first_page.get('collection') or []
+            messages = first_page.get('messages') or []
+            meta = messages[0] if messages else {}
+            page_size = int(meta.get('count') or len(first_collection) or 100)
+            total = int(meta.get('total') or len(first_collection))
+            scan_limit = min(total, max(max_results * 5, 1000))
+            record_collection(first_collection)
+
+            cursors = range(page_size, scan_limit, page_size)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+                future_to_cursor = {executor.submit(fetch_page, cursor): cursor for cursor in cursors}
+                pages = []
+                for future in concurrent.futures.as_completed(future_to_cursor):
+                    cursor = future_to_cursor[future]
+                    try:
+                        pages.append((cursor, future.result()))
+                    except Exception as e:
+                        result['warnings'].append(f'bioRxiv API 分页 {cursor} 获取失败: {e}')
+                for _, payload in sorted(pages):
+                    if result['fetched'] >= max_results:
+                        break
+                    record_collection(payload.get('collection') or [])
+
+            if scan_limit < total:
+                result['warnings'].append(
+                    f'bioRxiv 区间内共有 {total} 条记录，本次为控制耗时扫描前 {scan_limit} 条'
+                )
+
+            result['api_success'] = True
+            _fetch_log.info('bioRxiv API 抓取完成 %s: fetched=%d inserted=%d dup=%d',
+                            source_name, result['fetched'], result['inserted'], result['duplicates'])
+        except Exception as e:
+            result['errors'].append(f'bioRxiv API 请求失败，回退 RSS: {e}')
+            _fetch_log.warning('bioRxiv API 失败 %s: %s', source_name, e)
+        return result
+
     def fetch_arxiv(self, category="cs.AI", start_date=None, end_date=None, max_results=20, source_name=None, return_details=False):
         # 订阅指定预印本类别，例如 cs.AI (人工智能)
         base_url = 'http://export.arxiv.org/api/query?'
@@ -733,11 +822,99 @@ class LiteratureFetcher:
         result = self._parse_arxiv_feed(url, source=source_name, start_date=start_date, end_date=end_date, return_details=True)
         return result if return_details else result['inserted']
 
+    @staticmethod
+    def _parse_sciencedirect_summary(summary_html):
+        """从 ScienceDirect RSS 的 HTML summary 中提取元数据。
+
+        ScienceDirect/Elsevier RSS feed 仅返回极少字段（标题、链接、HTML摘要），
+        DOI、日期、作者全部嵌在 <p> 标签中。此方法解析这些隐藏字段。
+
+        返回 (published_date_str, author_str, journal_str)。
+        """
+        import re as _re
+        date_str = ''
+        author_str = ''
+        journal_str = ''
+
+        if not summary_html:
+            return date_str, author_str, journal_str
+
+        text = _re.sub(r'<[^>]+>', ' ', str(summary_html))
+        text = _re.sub(r'\s+', ' ', text).strip()
+
+        # Publication date: stop before "Source:" or "Author(s):" or end
+        m = _re.search(r'Publication\s+date:\s*(.+?)(?=\s*(?:Source:|Author\s*\(s\):)|$)', text, _re.I)
+        if m:
+            date_str = m.group(1).strip()
+
+        # Author(s): stop before "Source:" or end
+        m = _re.search(r'Author\s*\(s\):\s*(.+?)(?=\s*(?:Source:)|$)', text, _re.I)
+        if m:
+            author_str = m.group(1).strip()
+
+        # Source: stop before "Author(s):" or end
+        m = _re.search(r'Source:\s*(.+?)(?=\s*(?:Author\s*\(s\):)|$)', text, _re.I)
+        if m:
+            journal_str = m.group(1).strip()
+
+        return date_str, author_str, journal_str
+
+    @staticmethod
+    def _resolve_sciencedirect_doi(entry_id, title, timeout=5):
+        """通过 Crossref API 按标题搜索 ScienceDirect 论文的 DOI。
+
+        ScienceDirect RSS 的 entry id 是 PII URL（不含DOI），
+        通过 Crossref 标题搜索可以找回真实 DOI。
+        每批次最多查询 10 篇以防止 Crossref 限流。
+
+        返回 DOI 字符串或 None。
+        """
+        if not hasattr(LiteratureFetcher, '_sd_doi_cache'):
+            LiteratureFetcher._sd_doi_cache = {}
+        if not hasattr(LiteratureFetcher, '_sd_doi_count'):
+            LiteratureFetcher._sd_doi_count = 0
+
+        cache = LiteratureFetcher._sd_doi_cache
+        # 每个 fetch_rss 调用最多查 10 次 Crossref
+        if LiteratureFetcher._sd_doi_count >= 10:
+            return None
+        # 仅命中正向缓存时直接返回（不缓存 None，允许重试）
+        if entry_id in cache and cache[entry_id] is not None:
+            return cache[entry_id]
+
+        import json as _json
+        import urllib.parse as _up
+        import urllib.request as _ur
+        if not title:
+            return None
+        safe_title = title[:300]
+        try:
+            q = _up.quote(safe_title)
+            url = f'https://api.crossref.org/works?query.title={q}&rows=1'
+            req = _ur.Request(url, headers={
+                'User-Agent': 'FolPaper/1.0 (mailto:folpaper@example.com)'
+            })
+            with _ur.urlopen(req, timeout=timeout) as resp:
+                data = _json.loads(resp.read().decode('utf-8'))
+            items = (data.get('message') or {}).get('items') or []
+            LiteratureFetcher._sd_doi_count += 1
+            doi = None
+            if items:
+                doi = normalize_doi(items[0].get('DOI'))
+            # 只缓存成功结果，失败不缓存以便重试
+            if doi:
+                cache[entry_id] = doi
+            return doi
+        except Exception:
+            return None
+
     def fetch_rss(self, feed_url, start_date=None, end_date=None, source_name=None, return_details=False):
         if not source_name:
             source_name = f"RSS: {feed_url}"
         result = self._new_result(source_name, 'rss')
         result['security_blocked'] = False
+        # 每次抓取重置 Crossref DOI 查询计数器（每批上限 10 次）
+        LiteratureFetcher._sd_doi_count = 0
         _fetch_log.info('开始抓取 %s (%d级)', source_name, 2 + (1 if self._get_flaresolverr_url() else 1))
 
         # ── 三级 RSS 抓取：直连 → Cookie 预取 → Patchright/FlareSolverr ──
@@ -831,7 +1008,12 @@ class LiteratureFetcher:
                 
                 # 增强发布时间字符串的获取，适配不同规范的 RSS 源
                 published = entry.get('published') or entry.get('updated') or entry.get('pubDate') or entry.get('dc_date') or ''
-                
+
+                # ScienceDirect/Elsevier RSS 的所有元数据藏在 HTML summary 中
+                sd_date, sd_authors, sd_journal = self._parse_sciencedirect_summary(summary)
+                if not published and sd_date:
+                    published = sd_date
+
                 # 提取作者，兼容常见的 authors 列表、单独的 author 字段以及 dc:creator 和 creator
                 authors = []
                 if 'authors' in entry:
@@ -843,11 +1025,20 @@ class LiteratureFetcher:
                 elif 'creator' in entry:
                     authors = [entry.creator]
                 author_str = ", ".join([a for a in authors if a]) if authors else "Unknown"
+                if author_str == 'Unknown' and sd_authors:
+                    author_str = sd_authors
+
+                # 从 ScienceDirect summary 提取期刊名
+                journal_name = sd_journal or ''
+
                 
                 # 尝试直接从 RSS 节点获取 DOI（如 prism:doi 或 dc:identifier）
                 doi = normalize_doi(entry.get('prism_doi') or entry.get('dc_identifier'))
                 if not doi:
                     doi = extract_doi(link, article_id, summary)
+                # ScienceDirect RSS 不含 DOI（PII URL），尝试 Crossref 标题搜索
+                if not doi and ('sciencedirect' in str(link).lower() or 'sciencedirect' in str(article_id).lower()):
+                    doi = self._resolve_sciencedirect_doi(article_id, title)
                 
                 article_data = {
                     'article_id': str(article_id),
@@ -857,7 +1048,8 @@ class LiteratureFetcher:
                     'link': str(link),
                     'published': parse_to_iso(str(published)), # 转换为 ISO 格式保证排序准确
                     'source': source_name,
-                    'doi': doi # 提取 DOI 供归档使用
+                    'doi': doi, # 提取 DOI 供归档使用
+                    'journal': journal_name, # 从 summary 或 RSS 元数据提取的期刊名
                 }
                 
                 # 以增量形式添加，利用数据库 UNIQUE 约束去重

@@ -115,13 +115,24 @@ def build_app(icon_path):
         '--add-data',
         'templates;templates',
         '--add-data',
-        'static;static',
-        '--add-data',
         'builtin_journals.json;.',
+        '--add-data',
+        'paperdownload;paperdownload',
         '--hidden-import',
         'sqlite3',
+        '--hidden-import',
+        'sync_download',
+        '--hidden-import',
+        'paperdownload.sync_download',
+        '--hidden-import',
+        'webview',
+        '--hidden-import',
+        'pandas',
         'app.py',
     ]
+    # static 目录在干净检出中可能不存在，仅在存在时打包
+    if os.path.isdir(os.path.join(ROOT_DIR, 'static')):
+        command.extend(['--add-data', 'static;static'])
     run_command(command)
     shutil.copy2(SEED_DB, os.path.join(APP_DIST_DIR, 'articles.db'))
     shutil.copy2(icon_path, os.path.join(APP_DIST_DIR, 'folpaper.ico'))

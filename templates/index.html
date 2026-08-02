@@ -14,7 +14,7 @@
                     {% endif %}
                 </h2>
                 {% if view_type == 'pending' and not current_source and total_unread %}
-                <span class="unread-badge">{{ total_unread }} 篇未读</span>
+                <span id="total-unread-badge" class="unread-badge" data-count="{{ total_unread }}">{{ total_unread }} 篇未读</span>
                 {% endif %}
                 <span class="meta-chip">共 {{ total_articles }} 篇</span>
                 {% if view_type == 'pending' and sources %}
@@ -22,7 +22,7 @@
                     <select name="source" onchange="this.form.submit()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                         <option value="">全部来源 ({{ total_articles }} 篇)</option>
                         {% for src in sources %}
-                        <option value="{{ src }}" {% if current_source == src %}selected{% endif %}>{{ src }} ({{ unread_counts.get(src, 0) }} 未读)</option>
+                        <option value="{{ src }}" data-source="{{ src }}" data-unread-count="{{ unread_counts.get(src, 0) }}" {% if current_source == src %}selected{% endif %}>{{ src }} ({{ unread_counts.get(src, 0) }} 未读)</option>
                         {% endfor %}
                     </select>
                 </form>
@@ -49,7 +49,9 @@
 
                 <form action="{{ url_for('translate_titles') }}" method="POST">
                     <input type="hidden" name="source" value="{{ current_source }}">
-                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition border border-indigo-200 shadow-sm whitespace-nowrap">翻译标题</button>
+                    <input type="hidden" name="page" value="{{ current_page }}">
+                    <input type="hidden" name="sort_by" value="{{ sort_by }}">
+                    <button type="submit" class="text-xs font-bold px-2.5 py-1.5 bg-teal-50 text-teal-700 rounded-lg hover:bg-teal-100 transition border border-teal-200 shadow-sm whitespace-nowrap">翻译所有标题</button>
                 </form>
 
                 <form action="{{ url_for('fetch_source') }}" method="POST">
@@ -74,7 +76,7 @@
     </div>
     {% else %}
     <div class="workbench-card p-12 text-center">
-        <div class="text-4xl mb-3">📚</div>
+        <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
         <h3 class="text-xl font-bold text-gray-800 mb-2">当前没有文献</h3>
         <p class="text-sm text-gray-500">
             {% if view_type == 'saved' %}

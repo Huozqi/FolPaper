@@ -795,12 +795,13 @@ class OpenAlexService:
             # Then try search-based
             if len(conf_works) < remaining:
                 search_works = self._fetch_conference_works_by_search(
-                conf_spec,
-                start_date,
-                end_date,
-                remaining,
-                seen_work_keys,
-            )
+                    conf_spec,
+                    start_date,
+                    end_date,
+                    remaining - len(conf_works),
+                    seen_work_keys,
+                )
+                conf_works.extend(search_works)
 
             # Fall back to source-based if search didn't get enough
             if len(conf_works) < remaining and conf_source_ids:

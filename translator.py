@@ -1,14 +1,39 @@
 import json
 from openai import OpenAI
 
+def apply_think_mode(extra, think, base_url):
+    """按厂商格式写入思考模式开关。
+    阿里百炼(aliyuncs/dashscope)用 enable_thinking: bool，
+    DeepSeek 及兼容方用 thinking: {type: enabled/disabled}。
+    'auto' 不设置，由 API 默认行为决定。"""
+    if think == 'auto':
+        return extra
+    enabled = think == 'on'
+    url = (base_url or '').lower()
+    if 'aliyuncs.com' in url or 'dashscope' in url:
+        extra['enable_thinking'] = enabled
+    else:
+        extra['thinking'] = {'type': 'enabled' if enabled else 'disabled'}
+    return extra
+
 class Translator:
     def __init__(self, db_manager):
         self.db = db_manager
         self.client = None
 
+    def _get_float_config(self, key, default):
+        """容错读取数值配置：空串或非法值回退默认。"""
+        try:
+            val = self.db.get_config(key, '')
+            if val in (None, ''):
+                return float(default)
+            return float(val)
+        except (TypeError, ValueError):
+            return float(default)
+
     def _init_client(self):
         api_key = self.db.get_config('api_key', '')
-        base_url = self.db.get_config('base_url', 'https://api.openai.com/v1')
+        base_url = self.db.get_config('base_url', '') or 'https://api.openai.com/v1'
         if not api_key:
             return False
         try:
@@ -22,14 +47,14 @@ class Translator:
         """按任务取模型名，回退到默认模型。"""
         key_map = {'translate': 'translate_model', 'recommend': 'recommend_model', 'survey': 'survey_model'}
         key = key_map.get(task, 'model')
-        model = self.db.get_config(key, '') or self.db.get_config('model', 'gpt-3.5-turbo')
+        model = self.db.get_config(key, '') or self.db.get_config('model', '') or 'gpt-3.5-turbo'
         return model
 
     def _get_params(self, task='default'):
         """获取通用 LLM 调用参数。"""
         model = self._get_model(task)
-        temp = float(self.db.get_config('temperature', '0.3'))
-        timeout = float(self.db.get_config('timeout', '60'))
+        temp = self._get_float_config('temperature', 0.3)
+        timeout = self._get_float_config('timeout', 60)
         extra_str = self.db.get_config('extra_body', '')
         extra = {}
         if extra_str:
@@ -37,14 +62,9 @@ class Translator:
                 extra = json.loads(extra_str)
             except json.JSONDecodeError:
                 pass
-        # 思考模式：使用 DeepSeek 新格式 thinking: {type: "enabled"/"disabled"}
-        # 兼容其他厂商：在 Extra Body 中覆盖即可
+        base_url = self.db.get_config('base_url', '')
         think = self.db.get_config('think_mode', 'off')
-        if think == 'on':
-            extra['thinking'] = {'type': 'enabled'}
-        elif think == 'off':
-            extra['thinking'] = {'type': 'disabled'}
-        # 'auto' 不设，由 API 默认行为决定
+        extra = apply_think_mode(extra, think, base_url)
         return model, temp, timeout, extra
 
     def _get_task_temp(self, task='default'):
@@ -53,9 +73,12 @@ class Translator:
         key = key_map.get(task)
         if key:
             val = self.db.get_config(key, '')
-            if val:
-                return float(val)
-        return float(self.db.get_config('temperature', '0.3'))
+            if val not in (None, ''):
+                try:
+                    return float(val)
+                except (TypeError, ValueError):
+                    pass
+        return self._get_float_config('temperature', 0.3)
 
     def translate_title_only(self, title):
         if not self.client and not self._init_client():
@@ -80,10 +103,12 @@ class Translator:
             print(f"标题翻译请求发生错误: {e}")
             return "翻译出错"
 
-    def call_llm(self, prompt, system_prompt="你是一个专业的学术助手。", temperature=0.5, task='default'):
+    def call_llm(self, prompt, system_prompt="你是一个专业的学术助手。", temperature=None, task='default'):
         if not self.client and not self._init_client():
             raise Exception("API Key 未配置或初始化失败")
         model, _, timeout, extra = self._get_params(task)
+        if temperature is None:
+            temperature = self._get_task_temp(task)
         try:
             response = self.client.chat.completions.create(
                 model=model,

@@ -4,7 +4,7 @@ echo 正在准备打包 FolPaper 安装版应用...
 echo.
 
 echo 正在执行打包流程，请稍候...
-.\venv_new\Scripts\python.exe build_release.py
+.\.venv\Scripts\python.exe build_release.py
 
 echo.
 echo 打包完成！

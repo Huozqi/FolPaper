@@ -23,11 +23,10 @@
 
     <section class="hero-stage">
         <canvas id="particles-canvas" class="particles-canvas"></canvas>
-        <div class="hero-stage__bg-text" aria-hidden="true">TRACK</div>
+        <div class="hero-stage__bg-text" aria-hidden="true">PACE</div>
         <div class="hero-statement">
             <div class="hero-statement__rule" aria-hidden="true"></div>
-            <h2 class="hero-statement__cn">万物皆可追踪</h2>
-            <p class="hero-statement__en">Everything Trackable</p>
+            <h2 class="hero-statement__cn hero-statement__cn--en">Keep Pace with Your Field</h2>
             <div class="hero-statement__rule" aria-hidden="true"></div>
         </div>
         <div class="pulse-ring" id="pulse-ring">
@@ -40,16 +39,16 @@
 
     <!-- KPI Row -->
     <section class="kpi-row anim-up" id="kpi-row">
-        <div class="kpi-card" id="kpi-today"><span class="kpi-card__label">最近新增</span><span class="kpi-card__value">--</span></div>
-        <div class="kpi-card" id="kpi-unread"><span class="kpi-card__label">待处理</span><span class="kpi-card__value">--</span></div>
-        <div class="kpi-card" id="kpi-sources"><span class="kpi-card__label">活跃来源</span><span class="kpi-card__value">--</span></div>
-        <div class="kpi-card" id="kpi-week"><span class="kpi-card__label">本周累计</span><span class="kpi-card__value">--</span></div>
+        <a href="{{ url_for('inbox') }}" class="kpi-card kpi-card--link" id="kpi-today"><span class="kpi-card__label">今日新增</span><span class="kpi-card__value">--</span></a>
+        <a href="{{ url_for('inbox') }}" class="kpi-card kpi-card--link" id="kpi-unread"><span class="kpi-card__label">未读待处理</span><span class="kpi-card__value">--</span></a>
+        <a href="{{ url_for('subscriptions') }}" class="kpi-card kpi-card--link" id="kpi-sources"><span class="kpi-card__label">订阅来源</span><span class="kpi-card__value">--</span></a>
+        <a href="{{ url_for('archive') }}" class="kpi-card kpi-card--link" id="kpi-week"><span class="kpi-card__label">近7天新增</span><span class="kpi-card__value">--</span></a>
     </section>
 
     <!-- Waterfall -->
     <section class="wf-section anim-up" id="wf-section" style="display:none">
         <div class="wf-head">
-            <h3 class="wf-title">最近新增</h3>
+            <h3 class="wf-title">最近入库</h3>
             <div class="wf-arrows"><button class="wf-arrow" onclick="slideWF(-1)">&larr;</button><button class="wf-arrow" onclick="slideWF(1)">&rarr;</button></div>
         </div>
         <div class="wf-track" id="wf-track"></div>
@@ -88,7 +87,6 @@
         <div id="dash-empty" class="dash-empty" style="display:none"><p>暂无待处理文献</p><p class="dash-empty__sub">文献将在抓取后自动出现在此看板</p></div>
     </section>
 
-    <div class="ticker" id="ticker-bar" style="display:none"><div class="ticker__track" id="ticker-track"></div></div>
     <button class="theme-toggle" id="theme-toggle" title="切换日/夜模式" onclick="toggleTheme()">&#9788;</button>
 </div>
 
@@ -129,7 +127,6 @@ async function loadDashboard(){
     document.getElementById('dash-loading').style.display='block';
     document.getElementById('dash-body').style.display='none';
     document.getElementById('dash-empty').style.display='none';
-    document.getElementById('ticker-bar').style.display='none';
     document.getElementById('wf-section').style.display='none';
     document.getElementById('cat-expand').style.display='none';
     try{
@@ -137,20 +134,21 @@ async function loadDashboard(){
         dashboardData=data;
         if(!data.success||data.stats.total===0){document.getElementById('dash-loading').style.display='none';document.getElementById('dash-empty').style.display='block';return;}
 
-        // KPI cards
-        document.getElementById('kpi-today').querySelector('.kpi-card__value').textContent=data.stats.total;
-        document.getElementById('kpi-unread').querySelector('.kpi-card__value').textContent=data.stats.by_source.reduce((s,x)=>s+x.cnt,0);
-        document.getElementById('kpi-sources').querySelector('.kpi-card__value').textContent=data.stats.by_source.length;
-        document.getElementById('kpi-week').querySelector('.kpi-card__value').textContent=data.stats.total;
+        // KPI cards（真实口径，由后端统一计算）
+        const k = data.kpis || {};
+        document.getElementById('kpi-today').querySelector('.kpi-card__value').textContent = k.today_new ?? 0;
+        document.getElementById('kpi-unread').querySelector('.kpi-card__value').textContent = k.unread ?? 0;
+        document.getElementById('kpi-sources').querySelector('.kpi-card__value').textContent = k.sources ?? 0;
+        document.getElementById('kpi-week').querySelector('.kpi-card__value').textContent = k.week_new ?? 0;
         updatePulse(data.stats.total);
 
-        // Source list with bar chart
+        // Source list with bar chart（点击跳转对应来源）
         const maxSrc=Math.max(...data.stats.by_source.map(s=>s.cnt),1);
         let srcHtml='';
         data.stats.by_source.forEach((s,i)=>{
             const pct=Math.round(s.cnt/maxSrc*100);
             const c=CAT_COLORS[i%CAT_COLORS.length];
-            srcHtml+=`<div class="src-row"><span class="src-row__name">${escHtml(s.source)}</span><span class="src-row__bar"><span class="src-row__fill" style="width:${pct}%;background:${c}"></span></span><span class="src-row__cnt">${s.cnt}</span></div>`;
+            srcHtml+=`<a class="src-row src-row--link" href="/inbox?source=${encodeURIComponent(s.source)}"><span class="src-row__name" title="${escHtml(s.source)}">${escHtml(s.source)}</span><span class="src-row__bar"><span class="src-row__fill" style="width:${pct}%;background:${c}"></span></span><span class="src-row__cnt">${s.cnt}</span></a>`;
         });
         document.getElementById('sources-list').innerHTML=srcHtml||'<span class="dash-muted">暂无</span>';
 
@@ -162,9 +160,6 @@ async function loadDashboard(){
 
         // Word cloud
         buildWordCloud(data.articles||[]);
-
-        // Ticker
-        if(data.articles&&data.articles.length>0){const tt=document.getElementById('ticker-track');const items=data.articles.slice(0,30);let th='';for(let i=0;i<2;i++)items.forEach(a=>{th+=`<span class="ticker__item">${escHtml(a.title||'?')}</span>`;});tt.innerHTML=th;document.getElementById('ticker-bar').style.display='';}
 
         document.getElementById('dash-loading').style.display='none';
         document.getElementById('dash-body').style.display='block';
@@ -200,7 +195,7 @@ function drawDonut(categories){
 function handleDonutClick(e){const canvas=document.getElementById('donut-canvas'),rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left-100,y=e.clientY-rect.top-100,dist=Math.sqrt(x*x+y*y);if(dist<50||dist>80)return;let angle=Math.atan2(y,x);if(angle<-Math.PI/2)angle+=Math.PI*2;for(const s of donutSlices){if(angle>=s.startAngle&&angle<s.endAngle){expandCategory(s.idx);return;}}}
 function expandCategory(idx){const s=donutSlices[idx];if(!s||!dashboardData)return;const el=document.getElementById('cat-expand'),catName=s.category.category,articles=(dashboardData.articles||[]).filter(a=>a.category===catName);let html=`<div class="cat-expand__head"><span class="cat-expand__dot" style="background:${s.color}"></span><span class="cat-expand__title">${escHtml(catName)}</span><span class="cat-expand__cnt">${articles.length} 篇</span><button class="cat-expand__close" onclick="document.getElementById('cat-expand').style.display='none'">&times;</button></div>`;if(articles.length===0){html+='<p class="dash-muted" style="padding:.5rem">该分类暂无可显示文献（需先运行 AI 分类）</p>';}else{articles.forEach(a=>{html+=`<div class="cat-expand__item"><span class="cat-expand__item-title">${escHtml(a.title||'?')}</span><span class="cat-expand__item-src">${escHtml(a.source||'?')}</span></div>`;});}el.innerHTML=html;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
 
-function buildWordCloud(articles){const c=document.getElementById('word-cloud');if(!articles||articles.length===0){c.innerHTML='<span class="dash-muted">暂无文献</span>';return;}const stop=new Set(['the','a','an','of','in','on','to','for','and','or','with','by','from','at','is','it','as','be','are','was','we','our','this','that','using','based','via','its','not','but','can','has','been','new','all','more','no','also','some','each','both','which','their','these','have','into','over','than','through','between','about','other','such','novel','method','approach','towards','toward','efficient','learning','deep','prediction','data','model','models','analysis','study','results','two','one','high','low','large','small','first','part','role','key','non','de','et','al']);const freq={};articles.forEach(a=>{const text=((a.title||'')+' '+(a.summary||'')).toLowerCase().replace(/<[^>]+>/g,'').replace(/[^a-z0-9\\s]/g,' ').replace(/\s+/g,' ').trim();const words=text.split(' ').filter(w=>w.length>3&&!stop.has(w)&&!/^\d+$/.test(w));words.forEach(w=>{freq[w]=(freq[w]||0)+1;});});const entries=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,60);if(!entries.length){c.innerHTML='<span class="dash-muted">暂无关键词</span>';return;}const maxF=entries[0][1],minF=entries[entries.length-1][1];const colors=['#3ea094','#113722','#e95144','#2556d9','#8a3ffc','#c0ab3c','#FA5D29','#49B3FC','#27ae60'];let h='';entries.forEach(([w,f])=>{const s=.8+(f-minF)/Math.max(maxF-minF,1)*1.6;h+=`<span class="word-tag" style="font-size:${s.toFixed(2)}rem;color:${colors[Math.floor(Math.random()*colors.length)]}">${escHtml(w)}</span>`;});c.innerHTML=h;}
+function buildWordCloud(articles){const c=document.getElementById('word-cloud');if(!articles||articles.length===0){c.innerHTML='<span class="dash-muted">暂无文献</span>';return;}const stop=new Set(['the','a','an','of','in','on','to','for','and','or','with','by','from','at','is','it','as','be','are','was','we','our','this','that','using','based','via','its','not','but','can','has','been','new','all','more','no','also','some','each','both','which','their','these','have','into','over','than','through','between','about','other','such','novel','method','approach','towards','toward','efficient','learning','deep','prediction','data','model','models','analysis','study','results','two','one','high','low','large','small','first','part','role','key','non','de','et','al']);const freq={};articles.forEach(a=>{const text=((a.title||'')+' '+(a.summary||'')).toLowerCase().replace(/<[^>]+>/g,'').replace(/[^a-z0-9\\s]/g,' ').replace(/\s+/g,' ').trim();const words=text.split(' ').filter(w=>w.length>3&&!stop.has(w)&&!/^\d+$/.test(w));words.forEach(w=>{freq[w]=(freq[w]||0)+1;});});const entries=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,60);if(!entries.length){c.innerHTML='<span class="dash-muted">暂无关键词</span>';return;}const maxF=entries[0][1],minF=entries[entries.length-1][1];let h='';entries.forEach(([w,f])=>{const ratio=(f-minF)/Math.max(maxF-minF,1);const s=.8+ratio*1.6;const alpha=(0.55+ratio*0.45).toFixed(2);h+=`<span class="word-tag" style="font-size:${s.toFixed(2)}rem;color:rgba(15,118,110,${alpha})">${escHtml(w)}</span>`;});c.innerHTML=h;}
 
 async function triggerCategorize(){const btn=document.getElementById('btn-categorize');btn.disabled=true;btn.textContent='分类中...';try{const r=await fetch('/api/dashboard/categorize',{method:'POST'});const d=await r.json();if(d.success){await loadDashboard();}else{alert(d.message||'分类失败');}}catch(e){alert('请求失败: '+e.message);}btn.disabled=false;btn.textContent='AI 分类';}
 function escHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}

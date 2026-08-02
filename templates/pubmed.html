@@ -653,11 +653,12 @@ async function generateSurvey() {
             } else {
                 window.surveyArticles = [];
             }
-            // 渲染 Markdown 为 HTML 并展示
+            // 渲染 Markdown 为 HTML 并展示（经 DOMPurify 净化，防止提示注入 XSS）
             if (typeof marked !== 'undefined') {
-                content.innerHTML = marked.parse(data.survey);
+                const rawHtml = marked.parse(data.survey);
+                content.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(rawHtml) : rawHtml;
             } else {
-                content.innerHTML = `<div class="whitespace-pre-wrap">${data.survey}</div>`;
+                content.textContent = data.survey;
             }
             
             // 缓存成功生成的报告数据
@@ -667,7 +668,11 @@ async function generateSurvey() {
             cachePubmedPageState();
             
         } else {
-            content.innerHTML = `<div class="text-red-500">生成失败: ${data.message}</div>`;
+            content.innerHTML = '';
+            const errDiv = document.createElement('div');
+            errDiv.className = 'text-red-500';
+            errDiv.textContent = `生成失败: ${data.message}`;
+            content.appendChild(errDiv);
         }
     } catch (err) {
         console.error(err);
@@ -825,9 +830,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (typeof marked !== 'undefined') {
-                content.innerHTML = marked.parse(lastSurvey);
+                const rawHtml = marked.parse(lastSurvey);
+                content.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(rawHtml) : rawHtml;
             } else {
-                content.innerHTML = `<div class="whitespace-pre-wrap">${lastSurvey}</div>`;
+                content.textContent = lastSurvey;
             }
             
             // 增加一个恢复提示标识

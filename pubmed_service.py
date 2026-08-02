@@ -4,22 +4,26 @@ import json
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 import time
+import threading
 
 class PubMedService:
     BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
     # NCBI E-utilities: 无 API key 时限 3 req/s，留余量 2 req/s
     _MIN_INTERVAL = 0.5
     _last_request = 0
+    _rate_lock = threading.Lock()
 
     def __init__(self, tool_name="FolPaper", email="researcher@example.com"):
         self.tool_name = tool_name
         self.email = email
 
     def _rate_limit(self):
-        elapsed = time.time() - self._last_request
-        if elapsed < self._MIN_INTERVAL:
-            time.sleep(self._MIN_INTERVAL - elapsed)
-        self._last_request = time.time()
+        # 类级共享 + 锁：跨实例、跨线程统一限流
+        with PubMedService._rate_lock:
+            elapsed = time.time() - PubMedService._last_request
+            if elapsed < self._MIN_INTERVAL:
+                time.sleep(self._MIN_INTERVAL - elapsed)
+            PubMedService._last_request = time.time()
 
     def search_journal(self, journal_name='', issn='', retmax=200, start_date=None, end_date=None):
         terms = []
@@ -206,6 +210,7 @@ class PubMedService:
                 'email': self.email
             }
             try:
+                self._rate_limit()
                 data_encoded = urllib.parse.urlencode(fetch_params).encode('utf-8')
                 req3 = urllib.request.Request(f"{self.BASE_URL}efetch.fcgi", data=data_encoded)
                 with urllib.request.urlopen(req3, timeout=60) as response3:

@@ -6,27 +6,28 @@
     <title>FolPaper - 订阅阅读与翻译助手</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
     <style>
         :root {
-            --app-bg: #f3f6fb;
-            --app-bg-soft: #eef3f9;
+            --app-bg: #f4f7f5;
+            --app-bg-soft: #ecf2ef;
             --app-surface: #ffffff;
-            --app-surface-soft: #f8fbff;
-            --app-surface-muted: #f1f5f9;
-            --app-border: #e2e8f0;
-            --app-border-strong: #dbe5f2;
-            --app-text: #0f172a;
-            --app-text-soft: #334155;
-            --app-muted: #64748b;
-            --app-subtle: #94a3b8;
-            --app-primary: #2563eb;
-            --app-primary-strong: #1d4ed8;
-            --app-primary-soft: #eff6ff;
-            --app-indigo: #4f46e5;
-            --app-success: #16a34a;
+            --app-surface-soft: #f6faf8;
+            --app-surface-muted: #eef4f1;
+            --app-border: #dde7e2;
+            --app-border-strong: #cfe0d8;
+            --app-text: #12211a;
+            --app-text-soft: #31473d;
+            --app-muted: #5c7268;
+            --app-subtle: #8aa295;
+            --app-primary: #0f766e;
+            --app-primary-strong: #115e59;
+            --app-primary-soft: #eef7f4;
+            --app-indigo: #0d9488;
+            --app-success: #15803d;
             --app-danger: #dc2626;
-            --app-shadow: 0 24px 60px rgba(15, 23, 42, 0.07);
-            --app-shadow-sm: 0 12px 32px rgba(15, 23, 42, 0.06);
+            --app-shadow: 0 24px 60px rgba(18, 33, 26, 0.07);
+            --app-shadow-sm: 0 12px 32px rgba(18, 33, 26, 0.06);
         }
 
         * { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
@@ -42,9 +43,9 @@
         body.cyber-shell {
             color: var(--app-text);
             background:
-                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.10), transparent 26rem),
-                radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.08), transparent 22rem),
-                linear-gradient(180deg, #f9fbff 0%, #f3f6fb 42%, #eef3f9 100%);
+                radial-gradient(circle at 0% 0%, rgba(15, 118, 110, 0.08), transparent 26rem),
+                radial-gradient(circle at 100% 0%, rgba(62, 160, 148, 0.07), transparent 22rem),
+                linear-gradient(180deg, #f7faf8 0%, #f4f7f5 42%, #ecf2ef 100%);
         }
 
         body.cyber-shell::before {
@@ -85,9 +86,9 @@
         }
         .cyber-nav-active {
             color: var(--app-primary) !important;
-            border-color: #dbeafe !important;
+            border-color: #bfe3da !important;
             background: var(--app-primary-soft) !important;
-            box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.04);
+            box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.04);
         }
 
         .cyber-main {
@@ -207,8 +208,8 @@
         textarea:focus,
         select:focus {
             outline: none !important;
-            border-color: #93c5fd !important;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12) !important;
+            border-color: #5eead4 !important;
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12) !important;
         }
 
         option,
@@ -238,7 +239,7 @@
         }
 
         tbody tr:hover {
-            background: #f8fbff !important;
+            background: #f6faf8 !important;
         }
 
         .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
@@ -263,18 +264,18 @@
         }
 
         .markdown-body code {
-            background: #eff6ff;
+            background: var(--app-primary-soft);
             color: var(--app-primary);
         }
 
         .markdown-body pre {
-            background: #f8fafc;
+            background: #f6faf8;
             border: 1px solid var(--app-border);
         }
 
         .markdown-body a {
             color: var(--app-primary);
-            text-decoration-color: rgba(37, 99, 235, 0.35);
+            text-decoration-color: rgba(15, 118, 110, 0.35);
         }
 
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -285,7 +286,7 @@
             overflow: hidden;
             border: 1px solid var(--app-border-strong);
             border-radius: 1.75rem;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(244, 248, 255, 0.96));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(243, 249, 246, 0.96));
             box-shadow: var(--app-shadow);
             backdrop-filter: blur(18px);
         }
@@ -296,8 +297,8 @@
             inset: 0;
             pointer-events: none;
             background:
-                radial-gradient(circle at 88% 14%, rgba(59, 130, 246, 0.12), transparent 16rem),
-                radial-gradient(circle at 16% 80%, rgba(14, 165, 233, 0.08), transparent 14rem);
+                radial-gradient(circle at 88% 14%, rgba(15, 118, 110, 0.10), transparent 16rem),
+                radial-gradient(circle at 16% 80%, rgba(62, 160, 148, 0.07), transparent 14rem);
         }
 
         .cyber-hero::after {
@@ -305,7 +306,7 @@
             position: absolute;
             inset: auto 1.75rem 0 1.75rem;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.18), transparent);
+            background: linear-gradient(90deg, transparent, rgba(15, 118, 110, 0.16), transparent);
         }
 
         .cyber-grid-dashboard {
@@ -359,7 +360,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), transparent 45%, rgba(14, 165, 233, 0.05));
+            background: linear-gradient(135deg, rgba(15, 118, 110, 0.05), transparent 45%, rgba(62, 160, 148, 0.04));
             pointer-events: none;
         }
 
@@ -367,8 +368,8 @@
             display: inline-flex;
             align-items: center;
             gap: .45rem;
-            border: 1px solid #dbeafe;
-            background: #eff6ff;
+            border: 1px solid #bfe3da;
+            background: var(--app-primary-soft);
             color: var(--app-primary);
             border-radius: 999px;
             padding: .42rem .75rem;
@@ -380,7 +381,7 @@
         .cyber-step {
             border-radius: 1.125rem;
             padding: 1rem;
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
+            background: linear-gradient(180deg, #ffffff, #f6faf8);
         }
 
         .cyber-step-index {
@@ -392,7 +393,7 @@
             border-radius: .75rem;
             color: var(--app-primary);
             background: var(--app-primary-soft);
-            border: 1px solid #bfdbfe;
+            border: 1px solid #99dcd0;
             font-weight: 800;
             box-shadow: none;
         }
@@ -417,7 +418,7 @@
             position: absolute;
             inset: auto 1.5rem 0 1.5rem;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.14), transparent);
+            background: linear-gradient(90deg, transparent, rgba(15, 118, 110, 0.14), transparent);
         }
 
         .workbench-card {
@@ -427,8 +428,8 @@
 
         .workbench-card:hover {
             transform: translateY(-1px);
-            border-color: #d7e3f4;
-            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+            border-color: #c4dcd3;
+            box-shadow: 0 18px 36px rgba(18, 33, 26, 0.08);
         }
 
         .reading-surface {
@@ -456,7 +457,7 @@
         }
 
         .reading-copy:hover {
-            background: #f8fbff !important;
+            background: #f6faf8 !important;
         }
 
         /* Hero homepage layout */
@@ -561,6 +562,11 @@
             letter-spacing: .06em;
             line-height: 1.05;
         }
+        .hero-statement__cn--en {
+            font-size: clamp(2.6rem, 6.2vw, 5.2rem);
+            letter-spacing: .01em;
+            line-height: 1.1;
+        }
         .hero-statement__en {
             font-family: var(--atlas-display);
             font-size: clamp(2rem, 5vw, 3.8rem);
@@ -654,6 +660,8 @@
         /* KPI Row */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-bottom: 1.25rem; }
         .kpi-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 1.15rem; padding: 1rem 1.15rem; display: flex; flex-direction: column; gap: .25rem; }
+        .kpi-card--link { text-decoration: none !important; transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+        .kpi-card--link:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(17,55,34,.07); }
         .kpi-card__label { font-size: .64rem; font-weight: 800; color: var(--ink2); letter-spacing: .08em; text-transform: uppercase; }
         .kpi-card__value { font-family: var(--atlas-display); font-size: 2rem; font-weight: 900; color: var(--accent); line-height: 1; }
 
@@ -678,8 +686,10 @@
 
         /* Source rows */
         .src-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .5rem; padding: .3rem 0; }
+        .src-row--link { text-decoration: none !important; border-radius: .4rem; padding-left: .3rem; padding-right: .3rem; transition: background .15s; }
+        .src-row--link:hover { background: rgba(17,55,34,.05); }
         .src-row__name { font-size: .72rem; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 12ch; }
-        .src-row__bar { height: .35rem; border-radius: 999px; background: rgba(17,55,34,.05); overflow: hidden; }
+        .src-row__bar { height: .5rem; border-radius: 999px; background: rgba(17,55,34,.07); overflow: hidden; }
         .src-row__fill { height: 100%; border-radius: 999px; transition: width .6s; }
         .src-row__cnt { font-family: var(--atlas-display); font-size: .74rem; font-weight: 900; color: var(--accent); min-width: 2ch; text-align: right; }
         @media (max-width: 700px) {
@@ -785,8 +795,31 @@
         .donut-legend__item--clickable:hover { background: rgba(17,55,34,.05); }
         @media (max-width: 700px) { .wf-track { grid-template-columns: 1fr; } }
 
-        .unread-badge { display: inline-flex; align-items: center; padding: .35rem .75rem; border-radius: 999px; background: #FA5D29; color: #fff; font-size: .72rem; font-weight: 900; letter-spacing: .04em; white-space: nowrap; animation: badge-pulse 2s ease-in-out infinite; }
-        @keyframes badge-pulse { 0%,100% { opacity: 1; } 50% { opacity: .8; } }
+        .unread-badge { display: inline-flex; align-items: center; padding: .35rem .75rem; border-radius: 999px; background: #c2410c; color: #fff; font-size: .72rem; font-weight: 900; letter-spacing: .04em; white-space: nowrap; }
+
+        /* 卡片操作按钮：常显弱态，hover 加深，避免 hover-only 无法发现 */
+        .action-btns form { display: block; }
+        .card-act-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
+            padding: .38rem .7rem; border-radius: .55rem;
+            background: rgba(255,255,255,.92); color: var(--app-muted);
+            border: 1px solid var(--app-border);
+            font-size: .7rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(18,33,26,.05);
+            transition: color .15s ease, border-color .15s ease, background .15s ease;
+        }
+        .card-act-btn:hover { color: var(--app-primary); border-color: #99dcd0; background: #fff; transform: none; }
+        .card-act-btn--dl { color: #6d28d9; }
+        .card-act-btn--dl:hover { color: #5b21b6; border-color: #c4b5fd; }
+        .card-act-btn--save { color: var(--app-success); }
+        .card-act-btn--save:hover { border-color: #86efac; }
+        .card-act-btn--read { color: #b45309; }
+        .card-act-btn--read:hover { border-color: #fcd34d; }
+        .card-act-btn--del { color: var(--app-danger); }
+        .card-act-btn--del:hover { border-color: #fca5a5; }
+        @media (max-width: 768px) {
+            .action-btns { position: static !important; flex-direction: row !important; flex-wrap: wrap; margin-top: .75rem; }
+        }
     </style>
 </head>
 <body class="cyber-shell flex flex-col h-screen overflow-hidden text-slate-100">
@@ -1002,6 +1035,27 @@
             });
         };
 
+        function decrementUnreadCounters(card) {
+            if (!card || card.dataset.unreadCounted !== '1') return;
+            card.dataset.unreadCounted = '0';
+
+            const totalBadge = document.getElementById('total-unread-badge');
+            if (totalBadge) {
+                const nextTotal = Math.max(0, (parseInt(totalBadge.dataset.count || '0', 10) || 0) - 1);
+                totalBadge.dataset.count = String(nextTotal);
+                totalBadge.textContent = `${nextTotal} 篇未读`;
+                if (nextTotal === 0) totalBadge.classList.add('hidden');
+            }
+
+            const source = card.dataset.source || '';
+            document.querySelectorAll('select[name="source"] option[data-source]').forEach(option => {
+                if (option.dataset.source !== source) return;
+                const nextCount = Math.max(0, (parseInt(option.dataset.unreadCount || '0', 10) || 0) - 1);
+                option.dataset.unreadCount = String(nextCount);
+                option.textContent = `${source} (${nextCount} 未读)`;
+            });
+        }
+
         // 拦截带有 ajax-form 类的表单提交，改为异步请求以避免页面刷新或跳转
         document.addEventListener('submit', async (e) => {
             const form = e.target.closest('.ajax-form');
@@ -1038,6 +1092,8 @@
                             // 更新卡片上的标签 (如果存在)
                             const card = form.closest('.group.relative');
                             if (card) {
+                                decrementUnreadCounters(card);
+                                card.dataset.status = 'saved';
                                 const titleDiv = card.querySelector('h3').parentNode;
                                 if (titleDiv && !titleDiv.querySelector('.bg-green-100')) {
                                     const badge = document.createElement('span');
@@ -1055,6 +1111,8 @@
                             // 去除未读小蓝点和加粗标题
                             const card = form.closest('.group.relative');
                             if (card) {
+                                decrementUnreadCounters(card);
+                                card.dataset.isRead = '1';
                                 card.classList.remove('bg-blue-50/30');
                                 const unreadDot = card.querySelector('.bg-blue-500.rounded-full');
                                 if (unreadDot) unreadDot.remove();
@@ -1078,6 +1136,17 @@
                                     btn.innerHTML = '关注全文';
                                     btn.classList.remove('bg-green-600', 'text-white', 'border-green-700', 'hover:bg-green-700');
                                     btn.classList.add('bg-white', 'text-green-600', 'border-green-300', 'hover:bg-green-50');
+                                }
+                            } else {
+                                // 详情页无卡片容器，直接更新按钮文字
+                                if (result.is_followed) {
+                                    btn.innerHTML = '⭐ 已关注';
+                                    btn.classList.remove('bg-amber-50', 'text-amber-700', 'border-amber-200', 'hover:bg-amber-100');
+                                    btn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+                                } else {
+                                    btn.innerHTML = '☆ 关注全文';
+                                    btn.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
+                                    btn.classList.add('bg-amber-50', 'text-amber-700', 'border-amber-200', 'hover:bg-amber-100');
                                 }
                             }
                             // 由于操作成功，手动恢复按钮状态并结束（不要走到下方的恢复错误状态）
@@ -1133,7 +1202,7 @@
             btn.disabled = true;
             const MAX_POLL = 90; // 最多轮询 90 次（3 分钟）
             try {
-                const resp = await fetch('/api/download/' + articleId);
+                const resp = await fetch('/api/download/' + articleId, { method: 'POST' });
                 const data = await resp.json();
                 if (!data.success || !data.task_id) {
                     btn.innerHTML = '❌';

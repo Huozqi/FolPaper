@@ -40,6 +40,27 @@ else:
 
 app.secret_key = os.environ.get('FOLPAPER_SECRET', os.urandom(32).hex())
 
+
+@app.before_request
+def enforce_same_origin_writes():
+    """本地应用的 CSRF 防线：跨站表单/fetch 总会携带攻击方 Origin，予以拒绝。
+
+    同源浏览器请求、pywebview 桌面窗口以及不带 Origin 的本地客户端均不受影响。
+    """
+    if request.method in ('GET', 'HEAD', 'OPTIONS'):
+        return None
+    from urllib.parse import urlsplit
+    # 本地应用只需拒绝非本机域名的跨站请求；localhost/127.0.0.1 任意端口均视为同源
+    allowed_hosts = {'localhost', '127.0.0.1'}
+    for header in ('Origin', 'Referer'):
+        value = request.headers.get(header, '').strip()
+        if not value:
+            continue
+        hostname = urlsplit(value).hostname
+        if hostname and hostname.lower() not in allowed_hosts:
+            return jsonify({'success': False, 'message': '跨站请求被拒绝'}), 403
+    return None
+
 # 全局任务状态字典，用于跟踪后台抓取进度
 task_status = {
     'is_running': False,
@@ -538,7 +559,6 @@ def api_recommend():
     criteria = request.form.get('criteria', '').strip()
     sources = request.form.getlist('source')
     read_status = request.form.get('read_status', 'unread')
-    analysis_mode = request.form.get('analysis_mode', 'global')
     date_start = request.form.get('date_start', '').strip()
     date_end = request.form.get('date_end', '').strip()
 
@@ -606,10 +626,37 @@ def api_recommend():
     from recommender import Recommender
     recommender = Recommender(db)
     
-    # 根据前端选择的模式切换推荐策略，结果页面仍然复用原有卡片展示
-    recommended_ids = recommender.get_recommendations(articles, criteria, mode=analysis_mode)
+    recommended_ids = recommender.get_recommendations(articles, criteria)
+    screening_stats = recommender.last_stats
+    source_scope = os.path.basename(file.filename) if is_wos_file else ('、'.join(sources) if sources else '所有来源')
+    read_scope = {'unread': '仅未读', 'read': '仅已读', 'all': '全部文献'}.get(read_status, '全部文献')
+    date_scope = f"{date_start or '不限'} 至 {date_end or '不限'}"
+    scope_summary = f"{source_scope} · {read_scope} · {date_scope}"
+    title_only_count = sum(1 for article in articles if not str(article.get('summary') or '').strip())
+    if screening_stats['failed'] == len(articles):
+        return jsonify({
+            'success': False,
+            'message': '全部文献的 AI 判定请求均失败，请检查模型配置、API 额度或并发设置。'
+        })
     if not recommended_ids:
-        return jsonify({'success': True, 'message': '没有找到符合要求的文献', 'html': '<div class="py-12 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">没有找到符合要求的文献，请尝试调整筛选条件。</div>'})
+        import html as _html
+        scope_hint = _html.escape(scope_summary)
+        return jsonify({
+            'success': True,
+            'message': '没有找到符合要求的文献',
+            'html': ('<div class="py-12 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">'
+                     '没有找到符合要求的文献，请尝试调整筛选条件。'
+                     f'<div class="mt-3 text-xs text-amber-600">本次候选范围：{scope_hint}</div></div>'),
+            'is_wos_file': is_wos_file,
+            'csv_data': [],
+            'total_found': 0,
+            'total_analyzed': len(articles),
+            'total_failed': screening_stats['failed'],
+            'total_rejected': screening_stats['rejected'],
+            'total_retried': screening_stats.get('retried', 0),
+            'title_only_count': title_only_count,
+            'scope_summary': scope_summary
+        })
         
     if is_wos_file:
         recommended_articles = [a for a in articles if a['article_id'] in recommended_ids]
@@ -617,50 +664,16 @@ def api_recommend():
         recommended_articles = db.get_articles_by_ids(recommended_ids)
         
     recommended_articles = process_articles(recommended_articles)
+    for article in recommended_articles:
+        detail = recommender.last_details.get(article['id'], {})
+        article['ai_reason'] = detail.get('reason', '')
+        article['ai_topics'] = detail.get('matched_topics', [])
+        article['ai_confidence'] = detail.get('confidence', 'medium')
     total_found = len(recommended_articles)
 
-    # ── 分类：将推荐结果按 criteria 相关类别分组 ──
-    categories = {}
-    if total_found > 2:
-        try:
-            categories = recommender.categorize_articles(recommended_articles, criteria)
-        except Exception as e:
-            print(f"推荐结果分类失败: {e}")
-
-    # 渲染文献卡片
-    if categories and len(categories) > 1:
-        import html as _html
-        html_parts = []
-        all_cat_ids = set()
-        for cat_name, cat_articles in categories.items():
-            for a in cat_articles:
-                all_cat_ids.add(a['id'])
-            cat_html = render_template('components/article_cards.html',
-                                       articles=cat_articles, view_type='pending', is_wos_file=is_wos_file)
-            html_parts.append(f'''<div class="category-group mb-6 bg-white rounded-2xl border border-purple-100 overflow-hidden shadow-sm">
-<div class="category-header flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-purple-50 to-blue-50 cursor-pointer select-none" onclick="toggleCategory(this)">
-<svg class="w-5 h-5 text-purple-400 category-chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-<span class="font-bold text-gray-800 text-base">{_html.escape(cat_name)}</span>
-<span class="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-700">{len(cat_articles)} 篇</span>
-</div>
-<div class="category-body px-4 pb-4 pt-1 space-y-3">{cat_html}</div>
-</div>''')
-        # 未归类的文章
-        uncategorized = [a for a in recommended_articles if a['id'] not in all_cat_ids]
-        if uncategorized:
-            uncat_html = render_template('components/article_cards.html',
-                                         articles=uncategorized, view_type='pending', is_wos_file=is_wos_file)
-            html_parts.append(f'''<div class="category-group mb-6 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-<div class="category-header flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-gray-50 to-slate-50 cursor-pointer select-none" onclick="toggleCategory(this)">
-<svg class="w-5 h-5 text-gray-400 category-chevron transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-<span class="font-bold text-gray-700 text-base">其他</span>
-<span class="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">{len(uncategorized)} 篇</span>
-</div>
-<div class="category-body px-4 pb-4 pt-1 space-y-3">{uncat_html}</div>
-</div>''')
-        html = '\n'.join(html_parts)
-    else:
-        html = render_template('components/article_cards.html', articles=recommended_articles, view_type='pending', is_wos_file=is_wos_file)
+    html = render_template('components/article_cards.html', articles=recommended_articles,
+                           view_type='pending', is_wos_file=is_wos_file,
+                           article_return_url=url_for('recommend_page'))
     
     csv_data = []
     # 不管是不是 WOS，只要有推荐结果都可以导出为 CSV
@@ -670,7 +683,10 @@ def api_recommend():
             'Article Title': a.get('title', ''),
             'Translated Title': '',
             'Abstract': a.get('summary', ''),
-            'DOI': a.get('doi', '')
+            'DOI': a.get('doi', ''),
+            'AI Topics': ' | '.join(a.get('ai_topics', [])),
+            'AI Reason': a.get('ai_reason', ''),
+            'AI Confidence': a.get('ai_confidence', '')
         })
             
     return jsonify({
@@ -679,7 +695,12 @@ def api_recommend():
         'is_wos_file': is_wos_file, 
         'csv_data': csv_data,
         'total_found': total_found,
-        'total_analyzed': len(articles)
+        'total_analyzed': len(articles),
+        'total_failed': screening_stats['failed'],
+        'total_rejected': screening_stats['rejected'],
+        'total_retried': screening_stats.get('retried', 0),
+        'title_only_count': title_only_count,
+        'scope_summary': scope_summary
     })
 
 @app.route('/inbox')
@@ -718,29 +739,23 @@ def inbox():
 @app.route('/translate_titles', methods=['POST'])
 def translate_titles():
     source_filter = request.form.get('source', '')
-    
-    if source_filter:
-        articles = db.get_articles_by_source(source=source_filter)
-    else:
-        articles = db.get_articles_by_source()
-        
-    # 筛选出尚未翻译过标题的文章
-    untranslated = [a for a in articles if not a.get('translated_title') and a.get('trans_status') != 'translating']
+    page = request.form.get('page', 1, type=int)
+    sort_by = request.form.get('sort_by', 'id_desc')
+    untranslated = db.claim_articles_for_translation(source=source_filter or None)
     
     if not untranslated:
-        flash("当前列表没有需要翻译标题的文献。", "info")
-        return redirect(url_for('inbox', source=source_filter))
-        
-    # 先将这些文章状态标记为 translating
-    for article in untranslated:
-        db.update_trans_status(article['article_id'], 'translating')
+        flash("当前范围没有需要翻译标题的文献。", "info")
+        return redirect(url_for('inbox', source=source_filter, sort_by=sort_by, page=page))
         
     def _translate_single(article):
-        trans_title = translator.translate_title_only(article['title'])
-        if trans_title and "翻译出错" not in trans_title:
-            db.update_translation(article['article_id'], trans_title, article.get('translated_summary', ''))
-        else:
-            db.update_trans_status(article['article_id'], 'error')
+        try:
+            trans_title = translator.translate_title_only(article['title'])
+            if trans_title and "翻译出错" not in trans_title:
+                db.update_translation(article['article_id'], trans_title, article.get('translated_summary', ''))
+                return
+        except Exception as e:
+            print(f"批量标题翻译失败(ID={article['article_id']}): {e}")
+        db.update_trans_status(article['article_id'], 'error')
             
     def run_batch_trans():
         # 提高并发数从 5 到 15 以加快批量翻译速度（需注意 API 的速率限制）
@@ -748,8 +763,9 @@ def translate_titles():
             executor.map(_translate_single, untranslated)
                 
     threading.Thread(target=run_batch_trans, daemon=True).start()
-    flash(f"已提交 {len(untranslated)} 篇文献的标题翻译任务，请稍后刷新查看。", "success")
-    return redirect(url_for('inbox', source=source_filter))
+    scope_text = f"来源【{source_filter}】" if source_filter else "全部来源"
+    flash(f"已提交{scope_text} {len(untranslated)} 篇文献的标题翻译任务，请稍后刷新查看。", "success")
+    return redirect(url_for('inbox', source=source_filter, sort_by=sort_by, page=page))
 
 @app.route('/translate_single_title/<int:db_id>', methods=['POST'])
 def translate_single_title(db_id):
@@ -813,7 +829,16 @@ def article_detail(db_id):
         return "Article not found", 404
         
     # 获取返回链接，用于保持列表页状态
-    return_url = request.args.get('return_url')
+    return_url = request.args.get('return_url', '')
+    if return_url:
+        try:
+            from urllib.parse import urlsplit
+            parsed = urlsplit(return_url)
+            if parsed.netloc or not parsed.path.startswith('/'):
+                raise ValueError
+            app.url_map.bind('localhost').match(parsed.path, method='GET')
+        except Exception:
+            return_url = ''
         
     # 如果处于未读状态且是 pending，点击查看详情时标记为已读
     if article.get('is_read') == 0 and article.get('status') == 'pending':
@@ -821,7 +846,10 @@ def article_detail(db_id):
         article['is_read'] = 1
         
     article = process_articles([article])[0]
-    return render_template('article.html', article=article, return_url=return_url)
+    if not return_url:
+        return_url = url_for('library') if article.get('status') == 'saved' else url_for('inbox')
+    prev_id, next_id = db.get_adjacent_articles(db_id)
+    return render_template('article.html', article=article, return_url=return_url, prev_id=prev_id, next_id=next_id)
 
 @app.route('/save_article/<int:db_id>', methods=['POST'])
 def save_article(db_id):
@@ -833,7 +861,7 @@ def save_article(db_id):
     next_url = request.referrer or url_for('inbox')
     return redirect(next_url)
 
-@app.route('/api/download/<int:db_id>')
+@app.route('/api/download/<int:db_id>', methods=['POST'])
 def api_download_paper(db_id):
     """通过 DOI 自动检索并下载 PDF 全文（异步，前端轮询状态）。"""
     article = db.get_article_by_id(db_id)
@@ -843,13 +871,23 @@ def api_download_paper(db_id):
     doi = article.get('doi', '') or ''
     link = article.get('link', '') or ''
     aid = article.get('article_id', '') or ''
+    title = article.get('translated_title', '') or article.get('title', '') or 'paper'
+
+    # ScienceDirect 文章通常无 DOI（PII URL），下载前尝试 Crossref 标题搜索补 DOI
+    if not doi and ('sciencedirect' in (link or '').lower() or 'sciencedirect' in (aid or '').lower()):
+        try:
+            from fetcher import LiteratureFetcher
+            resolved = LiteratureFetcher._resolve_sciencedirect_doi(aid or link, title, timeout=5)
+            if resolved:
+                doi = resolved
+        except Exception:
+            pass
 
     query = doi or link or aid
     if not query:
         return jsonify({'success': False, 'message': '该文章无 DOI 或 PDF 链接，无法自动下载'}), 400
 
     import re as _re
-    title = article.get('translated_title', '') or article.get('title', '') or 'paper'
     safe = _re.sub(r'[\\/:*?"<>|\r\n\t]+', '_', title)[:120].strip('. _') or 'paper'
 
     # arXiv 快速通道检测
@@ -1259,6 +1297,43 @@ def subscriptions():
                 openalex_query = resolved_info['openalex_query'] or openalex_query
                 db.update_subscription(sub_value, source_name, fetch_days, retention_days, openalex_query)
                 flash("订阅配置已更新", "success")
+        elif action == 'bulk_update':
+            sub_ids = request.form.getlist('sub_id')
+            source_names = request.form.getlist('source_name')
+            fetch_days_values = request.form.getlist('fetch_days')
+            retention_days_values = request.form.getlist('retention_days')
+            openalex_queries = request.form.getlist('openalex_query')
+            field_counts = {
+                len(sub_ids), len(source_names), len(fetch_days_values),
+                len(retention_days_values), len(openalex_queries)
+            }
+            if len(field_counts) != 1:
+                flash("批量保存数据不完整，请刷新页面后重试。", "danger")
+            else:
+                updates = []
+                try:
+                    for sub_id, source_name, fetch_days, retention_days, openalex_query in zip(
+                            sub_ids, source_names, fetch_days_values,
+                            retention_days_values, openalex_queries):
+                        fetch_days = int(fetch_days)
+                        retention_days = int(retention_days)
+                        if fetch_days < 1 or retention_days < 1:
+                            raise ValueError
+                        source_name = source_name.strip()
+                        if not source_name:
+                            raise ValueError
+                        updates.append({
+                            'id': int(sub_id),
+                            'source_name': source_name,
+                            'fetch_days': fetch_days,
+                            'retention_days': retention_days,
+                            'openalex_query': openalex_query.strip()
+                        })
+                except (TypeError, ValueError):
+                    flash("抓取天数、保留天数必须为正整数，订阅名称不能为空。", "danger")
+                else:
+                    db.update_subscriptions_batch(updates)
+                    flash(f"已保存 {len(updates)} 条订阅配置。", "success")
         elif action == 'delete':
             sub_value = request.form.get('sub_value')
             sub_name = request.form.get('source_name', '')
@@ -1431,13 +1506,35 @@ def export_subscriptions():
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if request.method == 'POST':
+        # 数值类配置服务端校验并限制范围，防止构造请求写入非法值导致 500
+        numeric_bounds = {
+            'temperature': (0.0, 2.0, '0.3'),
+            'translate_temperature': (0.0, 2.0, '0.3'),
+            'survey_temperature': (0.0, 2.0, '0.5'),
+            'timeout': (5.0, 300.0, '60'),
+            'recommend_concurrency': (1.0, 50.0, '20'),
+        }
         for key in ['api_key', 'base_url', 'openalex_api_key', 'flaresolverr_url', 'crossref_mailto',
                      'model', 'translate_model', 'recommend_model', 'survey_model', 'extra_body', 'think_mode',
                      'temperature', 'translate_temperature', 'survey_temperature',
                      'timeout', 'recommend_concurrency', 'download_dir']:
             val = request.form.get(key, '').strip()
-            if val:
-                db.set_config(key, val)
+            if key in numeric_bounds:
+                low, high, default = numeric_bounds[key]
+                if not val:
+                    # 数值字段留空恢复默认值，避免空串导致 float('') 崩溃
+                    db.set_config(key, default)
+                    continue
+                try:
+                    num = min(max(float(val), low), high)
+                    val = str(int(num)) if num == int(num) else str(num)
+                except ValueError:
+                    flash(f"配置项 {key} 数值无效，已保留原值。", "warning")
+                    continue
+            elif key == 'api_key' and not val:
+                # API Key 留空表示保留原值，避免误清空；其余字段留空即清除
+                continue
+            db.set_config(key, val)
         translator.client = None
         flash("设置已保存！", "success")
         return redirect(url_for('settings'))
@@ -1698,6 +1795,7 @@ def api_dashboard_today():
             'by_source': dashboard['by_source'],
             'by_category': dashboard['by_category'],
         },
+        'kpis': db.get_dashboard_kpis(),
         'articles': dashboard['articles']
     })
 
@@ -1740,16 +1838,19 @@ def api_dashboard_categorize():
 
     try:
         from openai import OpenAI
+        from translator import apply_think_mode
+        base_url = db.get_config('base_url', '') or 'https://api.openai.com/v1'
         extra_str = db.get_config('extra_body', '')
         extra = {}
         if extra_str:
             try: extra = json.loads(extra_str)
             except: pass
+        extra = apply_think_mode(extra, db.get_config('think_mode', 'off'), base_url)
         client = OpenAI(
             api_key=api_key,
-            base_url=db.get_config('base_url', 'https://api.openai.com/v1')
+            base_url=base_url
         )
-        model = db.get_config('recommend_model', '') or db.get_config('model', 'gpt-3.5-turbo')
+        model = db.get_config('recommend_model', '') or db.get_config('model', '') or 'gpt-3.5-turbo'
         response_obj = client.chat.completions.create(
             model=model,
             messages=[

@@ -385,14 +385,29 @@
         }
     }
 
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, ch => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+    }
+
+    function safeDoi(value) {
+        const doi = String(value ?? '').trim();
+        return /^10\.\d{4,9}\/[-._;()/:a-zA-Z0-9]+$/.test(doi) ? doi : '';
+    }
+
     function renderTable(works) {
         const tbody = document.getElementById('works-table-body');
         tbody.innerHTML = '';
-        
+
         works.forEach(w => {
             const tr = document.createElement('tr');
-            
-            const doiHtml = w.doi ? `<br><a href="https://doi.org/${w.doi}" target="_blank" class="text-blue-500 hover:underline text-xs">${w.doi}</a>` : '';
+            const doi = safeDoi(w.doi);
+            const title = escapeHtml(w.title);
+            const authors = escapeHtml(w.authors || '-');
+            const reason = escapeHtml(w.llm_reason || '-');
+
+            const doiHtml = doi ? `<br><a href="https://doi.org/${doi}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline text-xs">${doi}</a>` : '';
             
             // 依据 is_related 显示不同颜色标签
             let relatedBadge = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">待判定</span>';
@@ -406,20 +421,20 @@
 
             tr.innerHTML = `
                 <td class="px-6 py-4">
-                    <div class="text-sm font-medium text-gray-900 line-clamp-2" title="${w.title}">${w.title}</div>
+                    <div class="text-sm font-medium text-gray-900 line-clamp-2" title="${title}">${title}</div>
                     ${doiHtml}
                 </td>
                 <td class="px-6 py-4">
-                    <div class="text-sm text-gray-500 line-clamp-2" title="${w.authors}">${w.authors || '-'}</div>
+                    <div class="text-sm text-gray-500 line-clamp-2" title="${authors}">${authors}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">${w.publication_year || '-'}</div>
+                    <div class="text-sm text-gray-900">${escapeHtml(w.publication_year || '-')}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     ${relatedBadge}
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-500 line-clamp-2" title="${w.llm_reason || '-'}">
-                    ${w.llm_reason || '-'}
+                <td class="px-6 py-4 text-sm text-gray-500 line-clamp-2" title="${reason}">
+                    ${reason}
                 </td>
             `;
             tbody.appendChild(tr);

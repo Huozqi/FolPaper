@@ -56,6 +56,9 @@ class DatabaseManager:
         # 初始化数据库，创建表
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
+        # WAL 模式：读写不互斥，显著降低并发任务中的 database is locked
+        cursor.execute('PRAGMA journal_mode=WAL')
+        cursor.execute('PRAGMA busy_timeout=30000')
         
         # articles表保存文献数据，article_id为唯一标识（如链接或DOI），确保增量添加时不重复
         # status字段表示当前文献的状态：'pending' 表示只是在订阅中暂存，'saved' 表示用户已正式添加到个人文库
@@ -248,44 +251,58 @@ class DatabaseManager:
             conn.close()
 
     def update_subscription_limits(self, sub_value, fetch_days, retention_days):
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE subscriptions SET fetch_days = ?, retention_days = ? WHERE sub_value = ?', (fetch_days, retention_days, sub_value))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('UPDATE subscriptions SET fetch_days = ?, retention_days = ? WHERE sub_value = ?', (fetch_days, retention_days, sub_value))
 
     def update_subscription(self, sub_value, source_name, fetch_days, retention_days, openalex_query=""):
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
         # 允许用户修改 source_name，由于文章是按 source 字段关联的，同步更新已有文章的 source
         # 这样不会因为修改了名字导致旧文章游离
-        
-        # 先获取原来的 source_name
-        cursor.execute('SELECT source_name FROM subscriptions WHERE sub_value = ?', (sub_value,))
-        row = cursor.fetchone()
-        old_source_name = row[0] if row else None
-        
-        # 更新订阅表
-        cursor.execute('''
-            UPDATE subscriptions 
-            SET source_name = ?, fetch_days = ?, retention_days = ?, openalex_query = ?
-            WHERE sub_value = ?
-        ''', (source_name, fetch_days, retention_days, openalex_query, sub_value))
-        
-        # 如果 source_name 发生了变化，同步更新关联的 articles 表和 archive_articles 表
-        if old_source_name and old_source_name != source_name:
-            cursor.execute('UPDATE articles SET source = ? WHERE source = ?', (source_name, old_source_name))
-            cursor.execute('UPDATE archive_articles SET source = ? WHERE source = ?', (source_name, old_source_name))
-            
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            cursor = conn.cursor()
+            # 先获取原来的 source_name
+            cursor.execute('SELECT source_name FROM subscriptions WHERE sub_value = ?', (sub_value,))
+            row = cursor.fetchone()
+            old_source_name = row[0] if row else None
+
+            # 更新订阅表
+            cursor.execute('''
+                UPDATE subscriptions
+                SET source_name = ?, fetch_days = ?, retention_days = ?, openalex_query = ?
+                WHERE sub_value = ?
+            ''', (source_name, fetch_days, retention_days, openalex_query, sub_value))
+
+            # 如果 source_name 发生了变化，同步更新关联的 articles 表和 archive_articles 表
+            if old_source_name and old_source_name != source_name:
+                cursor.execute('UPDATE articles SET source = ? WHERE source = ?', (source_name, old_source_name))
+                cursor.execute('UPDATE archive_articles SET source = ? WHERE source = ?', (source_name, old_source_name))
+
+    def update_subscriptions_batch(self, updates):
+        """在单个事务中批量更新订阅配置。"""
+        with self._conn(write=True) as conn:
+            cursor = conn.cursor()
+            for item in updates:
+                cursor.execute('SELECT source_name FROM subscriptions WHERE id = ?', (item['id'],))
+                row = cursor.fetchone()
+                if not row:
+                    continue
+                old_source_name = row[0]
+                cursor.execute('''
+                    UPDATE subscriptions
+                    SET source_name = ?, fetch_days = ?, retention_days = ?, openalex_query = ?
+                    WHERE id = ?
+                ''', (
+                    item['source_name'], item['fetch_days'], item['retention_days'],
+                    item['openalex_query'], item['id']
+                ))
+                if old_source_name and old_source_name != item['source_name']:
+                    cursor.execute('UPDATE articles SET source = ? WHERE source = ?',
+                                   (item['source_name'], old_source_name))
+                    cursor.execute('UPDATE archive_articles SET source = ? WHERE source = ?',
+                                   (item['source_name'], old_source_name))
 
     def remove_subscription(self, sub_value):
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('DELETE FROM subscriptions WHERE sub_value = ?', (sub_value,))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('DELETE FROM subscriptions WHERE sub_value = ?', (sub_value,))
 
     def get_subscriptions(self):
         with self._conn() as conn:
@@ -308,6 +325,16 @@ class DatabaseManager:
                 cursor.execute('SELECT 1 FROM articles WHERE article_id = ? LIMIT 1', (article_id,))
                 if cursor.fetchone():
                     return 'duplicate_article_id' if return_status else False
+
+            # 已归档的文章视为历史记录，清理主表后不再重新进入收件箱
+            if doi:
+                cursor.execute('SELECT 1 FROM archive_articles WHERE lower(doi) = lower(?) LIMIT 1', (doi,))
+                if cursor.fetchone():
+                    return 'duplicate_archived' if return_status else False
+            elif article_id:
+                cursor.execute('SELECT 1 FROM archive_articles WHERE article_id = ? LIMIT 1', (article_id,))
+                if cursor.fetchone():
+                    return 'duplicate_archived' if return_status else False
 
             added_to_main = False
             duplicate_reason = None
@@ -387,14 +414,35 @@ class DatabaseManager:
         # 主表清理只处理没有订阅保留规则兜底的待处理文献
         # 对于已经在 subscriptions 表中登记过的来源，统一交给按订阅时限的清理逻辑处理
         cutoff_date = (datetime.utcnow() - timedelta(days=days)).strftime('%Y-%m-%d')
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
         details = []
-        if return_details:
+        with self._conn(write=True) as conn:
+            cursor = conn.cursor()
+            if return_details:
+                cursor.execute(
+                    '''
+                    SELECT COALESCE(source, '未标记来源') AS source_name, COUNT(*)
+                    FROM articles
+                    WHERE status = 'pending'
+                      AND published IS NOT NULL
+                      AND published != ''
+                      AND substr(published, 1, 10) < ?
+                      AND NOT EXISTS (
+                          SELECT 1
+                          FROM subscriptions
+                          WHERE subscriptions.source_name = articles.source
+                      )
+                    GROUP BY COALESCE(source, '未标记来源')
+                    ORDER BY COUNT(*) DESC, source_name
+                    ''',
+                    (cutoff_date,)
+                )
+                details = [
+                    {'source_name': row[0], 'count': row[1]}
+                    for row in cursor.fetchall()
+                ]
             cursor.execute(
                 '''
-                SELECT COALESCE(source, '未标记来源') AS source_name, COUNT(*)
-                FROM articles
+                DELETE FROM articles
                 WHERE status = 'pending'
                   AND published IS NOT NULL
                   AND published != ''
@@ -404,33 +452,10 @@ class DatabaseManager:
                       FROM subscriptions
                       WHERE subscriptions.source_name = articles.source
                   )
-                GROUP BY COALESCE(source, '未标记来源')
-                ORDER BY COUNT(*) DESC, source_name
                 ''',
                 (cutoff_date,)
             )
-            details = [
-                {'source_name': row[0], 'count': row[1]}
-                for row in cursor.fetchall()
-            ]
-        cursor.execute(
-            '''
-            DELETE FROM articles
-            WHERE status = 'pending'
-              AND published IS NOT NULL
-              AND published != ''
-              AND substr(published, 1, 10) < ?
-              AND NOT EXISTS (
-                  SELECT 1
-                  FROM subscriptions
-                  WHERE subscriptions.source_name = articles.source
-              )
-            ''',
-            (cutoff_date,)
-        )
-        deleted_count = cursor.rowcount
-        conn.commit()
-        conn.close()
+            deleted_count = cursor.rowcount
         if return_details:
             return {
                 'deleted_count': deleted_count,
@@ -440,40 +465,38 @@ class DatabaseManager:
 
     def prune_articles_by_subscription_retention(self, return_details=False):
         # 按照各订阅源配置的留存天数清理待处理文章
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT source_name, retention_days FROM subscriptions')
-        subs = cursor.fetchall()
-        
         deleted_count = 0
         details = []
-        for source_name, retention_days in subs:
-            if not source_name or not retention_days:
-                continue
-                
-            cutoff_date = (datetime.utcnow() - timedelta(days=retention_days)).strftime('%Y-%m-%d')
-            cursor.execute(
-                '''
-                DELETE FROM articles
-                WHERE source = ?
-                  AND status = 'pending'
-                  AND published IS NOT NULL
-                  AND published != ''
-                  AND substr(published, 1, 10) < ?
-                ''',
-                (source_name, cutoff_date)
-            )
-            current_deleted = cursor.rowcount
-            deleted_count += current_deleted
-            if return_details and current_deleted:
-                details.append({
-                    'source_name': source_name,
-                    'count': current_deleted,
-                    'retention_days': retention_days
-                })
+        with self._conn(write=True) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT source_name, retention_days FROM subscriptions')
+            subs = cursor.fetchall()
 
-        conn.commit()
-        conn.close()
+            for source_name, retention_days in subs:
+                if not source_name or not retention_days:
+                    continue
+
+                cutoff_date = (datetime.utcnow() - timedelta(days=retention_days)).strftime('%Y-%m-%d')
+                cursor.execute(
+                    '''
+                    DELETE FROM articles
+                    WHERE source = ?
+                      AND status = 'pending'
+                      AND published IS NOT NULL
+                      AND published != ''
+                      AND substr(published, 1, 10) < ?
+                    ''',
+                    (source_name, cutoff_date)
+                )
+                current_deleted = cursor.rowcount
+                deleted_count += current_deleted
+                if return_details and current_deleted:
+                    details.append({
+                        'source_name': source_name,
+                        'count': current_deleted,
+                        'retention_days': retention_days
+                    })
+
         if return_details:
             return {
                 'deleted_count': deleted_count,
@@ -483,53 +506,57 @@ class DatabaseManager:
 
     def update_translation(self, article_id, translated_title, translated_summary):
         # 更新中文翻译内容及状态
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        
         status = 'done' if "翻译出错" not in translated_title else 'error'
-        cursor.execute('''
-            UPDATE articles 
-            SET translated_title = ?, translated_summary = ?, trans_status = ?
-            WHERE article_id = ?
-        ''', (translated_title, translated_summary, status, article_id))
-        
-        # 同步更新归档表中的翻译标题
-        if status == 'done':
-            cursor.execute('''
-                UPDATE archive_articles
-                SET translated_title = ?
+        with self._conn(write=True) as conn:
+            conn.execute('''
+                UPDATE articles
+                SET translated_title = ?, translated_summary = ?, trans_status = ?
                 WHERE article_id = ?
-            ''', (translated_title, article_id))
-        
-        conn.commit()
-        conn.close()
+            ''', (translated_title, translated_summary, status, article_id))
+            # 同步更新归档表中的翻译标题
+            if status == 'done':
+                conn.execute('''
+                    UPDATE archive_articles
+                    SET translated_title = ?
+                    WHERE article_id = ?
+                ''', (translated_title, article_id))
 
     def update_trans_status(self, article_id, status):
         # 仅更新翻译状态 (如设置为 translating)
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE articles SET trans_status = ? WHERE article_id = ?', (status, article_id))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('UPDATE articles SET trans_status = ? WHERE article_id = ?', (status, article_id))
+
+    def claim_articles_for_translation(self, source=None):
+        """原子领取指定来源中所有待翻译文章，避免重复提交。"""
+        with self._conn(write=True) as conn:
+            params = []
+            where = "COALESCE(TRIM(translated_title), '') = '' AND COALESCE(trans_status, 'none') != 'translating'"
+            if source:
+                where += ' AND source = ?'
+                params.append(source)
+            rows = conn.execute(f'SELECT * FROM articles WHERE {where} ORDER BY id', params).fetchall()
+            if not rows:
+                return []
+            ids = [row['id'] for row in rows]
+            placeholders = ','.join('?' for _ in ids)
+            conn.execute(
+                f"UPDATE articles SET trans_status = 'translating' WHERE id IN ({placeholders})",
+                ids
+            )
+        return [dict(row) for row in rows]
 
     def reset_translating_status(self):
         # 恢复由于程序中断导致的处于 translating 状态的文献为 error，从而实现断点恢复支持
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute("UPDATE articles SET trans_status = 'error' WHERE trans_status = 'translating'")
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute("UPDATE articles SET trans_status = 'error' WHERE trans_status = 'translating'")
 
     def clear_articles(self, status='pending', source=None):
         # 清空特定状态下的文章，如果指定了source则仅清空该source下的文章
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        if source:
-            cursor.execute('DELETE FROM articles WHERE status = ? AND source = ?', (status, source))
-        else:
-            cursor.execute('DELETE FROM articles WHERE status = ?', (status,))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            if source:
+                conn.execute('DELETE FROM articles WHERE status = ? AND source = ?', (status, source))
+            else:
+                conn.execute('DELETE FROM articles WHERE status = ?', (status,))
 
     def get_articles_by_status_paginated(self, status='pending', source=None, sort_by='id_desc', page=1, page_size=20):
         # 文库分页查询，避免列表一次性加载过多记录
@@ -658,41 +685,28 @@ class DatabaseManager:
 
     def update_article_status(self, db_id, new_status):
         # 更新单篇文章的状态（如：将 pending 转为 saved）
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE articles SET status = ? WHERE id = ?', (new_status, db_id))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('UPDATE articles SET status = ? WHERE id = ?', (new_status, db_id))
 
     def update_article_status_by_article_id(self, article_id, new_status):
         # 根据唯一标识更新文章状态
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE articles SET status = ? WHERE article_id = ?', (new_status, article_id))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('UPDATE articles SET status = ? WHERE article_id = ?', (new_status, article_id))
 
     def update_article_read_status(self, db_id, is_read=1):
         # 更新单篇文章的已读状态
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE articles SET is_read = ? WHERE id = ?', (is_read, db_id))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('UPDATE articles SET is_read = ? WHERE id = ?', (is_read, db_id))
 
     def toggle_follow(self, db_id):
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT is_followed FROM articles WHERE id = ?', (db_id,))
-        row = cursor.fetchone()
-        if row:
+        # 单事务读改写，避免并发调用相互覆盖
+        with self._conn(write=True) as conn:
+            row = conn.execute('SELECT is_followed FROM articles WHERE id = ?', (db_id,)).fetchone()
+            if not row:
+                return None
             new_status = 1 if row[0] == 0 else 0
-            cursor.execute('UPDATE articles SET is_followed = ? WHERE id = ?', (new_status, db_id))
-            conn.commit()
-            conn.close()
+            conn.execute('UPDATE articles SET is_followed = ? WHERE id = ?', (new_status, db_id))
             return new_status
-        conn.close()
-        return None
 
     def get_unread_counts_by_source(self):
         # 获取各期刊来源的未读数量（针对 pending 状态的文献）
@@ -710,11 +724,8 @@ class DatabaseManager:
 
     def delete_articles_by_source(self, source, status='pending'):
         # 彻底删除某个来源的特定状态文章（默认待处理）
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('DELETE FROM articles WHERE source = ? AND status = ?', (source, status))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute('DELETE FROM articles WHERE source = ? AND status = ?', (source, status))
 
     def get_all_articles(self):
         # 获取所有文献，按ID降序排列，方便展示最新的
@@ -733,12 +744,62 @@ class DatabaseManager:
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         cursor.execute('SELECT * FROM articles WHERE id = ?', (db_id,))
         row = cursor.fetchone()
-        
+
         conn.close()
         return dict(row) if row else None
+
+    def get_adjacent_articles(self, db_id, status=None, source=None):
+        """获取相邻文章 ID（上一篇/下一篇），用于详情页导航。
+
+        优先在同 status+source 范围内查找，若未找到则放宽条件。
+        返回 (prev_id, next_id)，无相邻时返回 None。
+        """
+        article = self.get_article_by_id(db_id)
+        if not article:
+            return None, None
+
+        conn = sqlite3.connect(self.db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        # 优先：同状态同来源
+        filters = [('status', status or article.get('status', 'pending')),
+                   ('source', source or article.get('source', ''))]
+
+        def _query_one(direction, where_clauses, params):
+            """单方向查询：direction='prev' 查 id < db_id ORDER BY id DESC,
+                          direction='next' 查 id > db_id ORDER BY id ASC"""
+            op = '<' if direction == 'prev' else '>'
+            order = 'DESC' if direction == 'prev' else 'ASC'
+            clause = ' AND '.join(where_clauses) if where_clauses else '1=1'
+            base = f'SELECT id FROM articles WHERE {clause}'
+            cursor.execute(f'{base} AND id {op} ? ORDER BY id {order} LIMIT 1', params + [db_id])
+            row = cursor.fetchone()
+            return row['id'] if row else None
+
+        # 每个方向独立三级回退
+        def _find(direction):
+            status_val = status or article.get('status', 'pending')
+            source_val = source or article.get('source', '')
+            # 第一轮：同 status+source
+            result = _query_one(direction, ['status = ?', 'source = ?'], [status_val, source_val])
+            if result is not None:
+                return result
+            # 第二轮：只按 status
+            result = _query_one(direction, ['status = ?'], [status_val])
+            if result is not None:
+                return result
+            # 第三轮：不限
+            return _query_one(direction, [], [])
+
+        prev_id = _find('prev')
+        next_id = _find('next')
+
+        conn.close()
+        return prev_id, next_id
 
     def get_articles_for_recommendation(self, sources=None, read_status='unread'):
         # 获取文献（用于大模型智能推荐），支持来源和阅读状态筛选
@@ -873,13 +934,29 @@ class DatabaseManager:
             'articles': articles,
         }
 
+    def get_dashboard_kpis(self):
+        """首页 KPI：今日新增、未读待处理、订阅来源数、近7天新增。"""
+        today = time.strftime('%Y-%m-%d')
+        week_ago = (datetime.utcnow() - timedelta(days=7)).strftime('%Y-%m-%d')
+        with self._conn() as conn:
+            today_new = conn.execute(
+                "SELECT COUNT(*) FROM articles WHERE status='pending' AND published LIKE ?",
+                (f'{today}%',)
+            ).fetchone()[0]
+            unread = conn.execute(
+                "SELECT COUNT(*) FROM articles WHERE status='pending' AND is_read=0"
+            ).fetchone()[0]
+            sources = conn.execute("SELECT COUNT(*) FROM subscriptions").fetchone()[0]
+            week_new = conn.execute(
+                "SELECT COUNT(*) FROM articles WHERE status='pending' AND substr(published,1,10) >= ?",
+                (week_ago,)
+            ).fetchone()[0]
+        return {'today_new': today_new, 'unread': unread, 'sources': sources, 'week_new': week_new}
+
     def set_article_category(self, article_id, category):
         """设置文献分类"""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute("UPDATE articles SET category = ? WHERE id = ?", (category, article_id))
-        conn.commit()
-        conn.close()
+        with self._conn(write=True) as conn:
+            conn.execute("UPDATE articles SET category = ? WHERE id = ?", (category, article_id))
 
     def get_uncategorized_articles(self, limit=50):
         """获取今天未分类的文献"""
