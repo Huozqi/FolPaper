@@ -60,6 +60,7 @@ def clean_old_artifacts():
         os.path.join(BUILD_DIR, 'FolPaper'),
         os.path.join(BUILD_DIR, 'FolPaper_Uninstall'),
         os.path.join(BUILD_DIR, 'FolPaper_Setup'),
+        os.path.join(BUILD_DIR, 'paperdownload_clean'),
     ]:
         ensure_clean_path(path)
 
@@ -106,7 +107,22 @@ def build_seed_db():
     db.set_config('api_key', '')
 
 
+def clean_paperdownload_for_packaging():
+    """复制 paperdownload 代码到 build 目录，排除 downloads 缓存等敏感数据。"""
+    src = os.path.join(ROOT_DIR, 'paperdownload')
+    dst = os.path.join(BUILD_DIR, 'paperdownload_clean')
+    ensure_clean_path(dst)
+    if not os.path.isdir(src):
+        raise RuntimeError('未找到 paperdownload 目录')
+    shutil.copytree(
+        src, dst,
+        ignore=shutil.ignore_patterns('downloads', 'downloads/*', '__pycache__', '*.pyc'),
+    )
+    return dst
+
+
 def build_app(icon_path):
+    pd_clean = clean_paperdownload_for_packaging()
     command = [
         resolve_python(),
         '-m',
@@ -124,7 +140,7 @@ def build_app(icon_path):
         '--add-data',
         'builtin_journals.json;.',
         '--add-data',
-        'paperdownload;paperdownload',
+        pd_clean + ';paperdownload',
         '--hidden-import',
         'sqlite3',
         '--hidden-import',
