@@ -52,7 +52,7 @@ SECURITY_CHALLENGE_MARKERS = (
 )
 
 SUPPLEMENT_MIN_THRESHOLD = 3  # 补源至少收到此数量才视为有效，避免只拉到1-2篇就短路
-SUPPLEMENT_TIMEOUT = 45  # 单个补源操作超时秒数
+SUPPLEMENT_TIMEOUT = 180  # 单个补源操作超时秒数（放宽：全量补源按时间范围尽力抓取）
 
 def _is_security_page(content_bytes_or_text):
     """统一的安全页面检测，供 HTTP 响应体和 feed 内容两处复用。"""
@@ -587,29 +587,15 @@ class LiteratureFetcher:
             _fetch_log.info('补源结束 %s (light): supplements=%d', source_name, len(result.get('supplements', [])))
             return result
 
-        # mode == 'full': 安全拦截时全量补源
+        # mode == 'full': 安全拦截时全量补源（按时间范围尽力抓取，不提前短路）
         deadline = time.time() + SUPPLEMENT_TIMEOUT
         # 补源顺序：Crossref → PubMed → OpenAlex（按时效性排序）
-        supplement_start = len(result.get('supplements', []))
-        if time.time() < deadline:
-            self._crossref_supplement(supplement_query, source_name, start_date, end_date, result, metadata=journal_metadata)
-        if self._supplement_fetched_since(result, supplement_start):
-            _fetch_log.info('补源完成 %s: Crossref 满足阈值', source_name)
-            return result
-        supplement_start = len(result.get('supplements', []))
-        if time.time() < deadline:
-            self._pubmed_supplement(supplement_query, source_name, start_date, end_date, result, metadata=journal_metadata)
-        if self._supplement_fetched_since(result, supplement_start):
-            _fetch_log.info('补源完成 %s: PubMed 满足阈值', source_name)
-            return result
-        supplement_start = len(result.get('supplements', []))
+        self._crossref_supplement(supplement_query, source_name, start_date, end_date, result, metadata=journal_metadata)
+        self._pubmed_supplement(supplement_query, source_name, start_date, end_date, result, metadata=journal_metadata)
         if time.time() < deadline:
             self._openalex_supplement(supplement_query, source_name, start_date, end_date, result, metadata=journal_metadata)
         else:
             result['errors'].append(f'补源超时（{SUPPLEMENT_TIMEOUT}秒），跳过 OpenAlex')
-        if self._supplement_fetched_since(result, supplement_start):
-            _fetch_log.info('补源完成 %s: OpenAlex 满足阈值', source_name)
-            return result
         _fetch_log.info('补源结束 %s: supplements=%d', source_name, len(result.get('supplements', [])))
         return result
 

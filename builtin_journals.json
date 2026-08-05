@@ -566,7 +566,7 @@
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=chreay",
     "publisher": "ACS 系列",
     "sub": "化学综合与核心期刊",
-    "issn": "",
+    "issn": "0009-2665",
     "code": "chreay",
     "doi_prefix": "10.1021",
     "source_type": "journal"
@@ -1359,7 +1359,7 @@
     "url": "https://pubs.acs.org/action/showFeed?type=etoc&feed=rss&jc=ancham",
     "publisher": "ACS 系列",
     "sub": "物理、理论与分析化学",
-    "issn": "",
+    "issn": "0003-2700",
     "code": "ancham",
     "doi_prefix": "10.1021",
     "source_type": "journal"
